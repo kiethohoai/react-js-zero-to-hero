@@ -6,34 +6,34 @@ class MyComponent extends React.Component {
    state = {
       name: "David Ho",
       age: 30,
-      address: "Hue",
+      address: "Hue City",
    };
 
    //Events Handle
-   handleClick(e) {
-       console.log("My name is ", this.state.name);
-       console.log("I am ", this.state.age);
-
+    handleOnChangeInput = (e) => {
       this.setState({
-         name: "Ho Hoai Kiet",
-         age: Math.floor((Math.random() * 100) + 1)
+         name: e.target.value
       })
-    }
+   }
 
-   handleOnMoveOver(e) {
-      // console.log(e.target);
+   handleOnSubmit = (e) => {
+      e.preventDefault()
+      console.log(this.state);
    }
 
    //JSX
    render() {
       return (
          <div>
-            My English name's {this.state.name} I am {this.state.age}. and I
-            live in {this.state.address} city!
-            <br />
-            <button onClick={(e) => {this.handleClick(e);}}>Click Me!</button>
-            <br />
-            <button onMouseOver={this.handleOnMoveOver}>Hover Me!</button>
+            My name's {this.state.name} I am {this.state.age}. and I
+            live in {this.state.address}!
+            <form onSubmit={(e) => this.handleOnSubmit(e)}>
+               <input
+                  type="text"
+                  onChange={(e) => this.handleOnChangeInput(e)}
+               />
+               <button>Submit</button>
+            </form>
          </div>
       );
    }
