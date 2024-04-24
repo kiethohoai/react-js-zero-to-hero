@@ -1,42 +1,42 @@
 import React from "react";
 
 class DispalyInfor extends React.Component {
-  // State
+  //State
   state = {
-    isShowListUsers: true,
+    isShowHideListUsers: true,
   };
 
-  // Handler
+  //Handle
   handleShowHide = () => {
     this.setState({
-      isShowListUsers: !this.state.isShowListUsers,
+      isShowHideListUsers: !this.state.isShowHideListUsers,
     });
   };
-
-  // Render
   render() {
     const { listUsers } = this.props;
     return (
       <div>
         <div>
+          <hr />
           <span
             onClick={() => {
               this.handleShowHide();
             }}
           >
-            {this.state.isShowListUsers == true ? "Hide List Users:" : "Show List Users:"}
+            {this.state.isShowHideListUsers == true
+              ? " HIDE List Users:"
+              : "SHOW List Users:"}
           </span>
         </div>
 
-        {this.state.isShowListUsers && (
+        {this.state.isShowHideListUsers && (
           <div>
             {listUsers.map((user) => {
               return (
                 <div key={user.id} className={user.age > 18 ? "green" : "red"}>
-                  <hr></hr>
-                  <div>My name's {user.name}</div>
-                  <div>I'm years {user.age} old!</div>
-                  <hr></hr>
+                  <hr />
+                  <div>My name is {user.name}</div>
+                  <div>And I am {user.age} years old.</div>
                 </div>
               );
             })}
