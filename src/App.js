@@ -9,8 +9,8 @@ import React from "react";
 class App extends React.Component {
   render() {
     return (
-      <div>
-        Hello ReactJS (App)
+      <div className="app-container">
+        Hello ReactJS
         <MyComponent></MyComponent>
       </div>
     );
