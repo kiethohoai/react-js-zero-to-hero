@@ -1,5 +1,6 @@
 import React from "react";
 import "./DisplayInfor.scss";
+import logo from "../logo.svg";
 
 class DispalyInfor extends React.Component {
   //State
@@ -17,6 +18,7 @@ class DispalyInfor extends React.Component {
     const { listUsers } = this.props;
     return (
       <div className="display-infor-container">
+        <img src={logo} alt="no-image" />
         <div>
           <hr />
           <span
