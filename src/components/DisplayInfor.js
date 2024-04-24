@@ -1,33 +1,50 @@
 import React from "react";
 
 class DispalyInfor extends React.Component {
-   render() {
-      //   destructuring props
-      const { listUsers } = this.props; // const listUsers = this.props.listUsers
-      return (
-         <div>
-            {listUsers.map(user => {
-               return (
-                  <div key={user.id}>
-                     <div>My name's {user.name}</div>
-                     <div>I'm years {user.age} old!</div>
-                  </div>
-               );
-            })}
+  // State
+  state = {
+    isShowListUsers: true,
+  };
 
-            {/* <div>My name's {name}</div>
-            <div>I'm {age} years old!</div>
-            <hr />
-            <div>My name's {name}</div>
-            <div>I'm {age} years old!</div>
-            <hr />
-            <div>My name's {name}</div>
-            <div>I'm {age} years old!</div> */}
-            {/* <div>My name's {this.props.name}</div>
-            <div>I'm {this.props.age} years old!</div> */}
-         </div>
-      );
-   }
+  // Handler
+  handleShowHide = () => {
+    this.setState({
+      isShowListUsers: !this.state.isShowListUsers,
+    });
+  };
+
+  // Render
+  render() {
+    const { listUsers } = this.props;
+    return (
+      <div>
+        <div>
+          <span
+            onClick={() => {
+              this.handleShowHide();
+            }}
+          >
+            {this.state.isShowListUsers == true ? "Hide List Users:" : "Show List Users:"}
+          </span>
+        </div>
+
+        {this.state.isShowListUsers && (
+          <div>
+            {listUsers.map((user) => {
+              return (
+                <div key={user.id} className={user.age > 18 ? "green" : "red"}>
+                  <hr></hr>
+                  <div>My name's {user.name}</div>
+                  <div>I'm years {user.age} old!</div>
+                  <hr></hr>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 export default DispalyInfor;
