@@ -18,7 +18,7 @@ class DispalyInfor extends React.Component {
     const { listUsers } = this.props;
     return (
       <div className="display-infor-container">
-        <img src={logo} alt="no-image" />
+        {/* <img src={logo} alt="no-image" /> */}
         <div>
           <hr />
           <span
@@ -40,6 +40,13 @@ class DispalyInfor extends React.Component {
                   <hr />
                   <div>My name is {user.name}</div>
                   <div>And I am {user.age} years old.</div>
+                  <div>
+                    <button
+                      onClick={() => this.props.handleDeleteUser(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               );
             })}

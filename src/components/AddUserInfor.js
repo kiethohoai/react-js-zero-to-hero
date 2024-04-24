@@ -3,7 +3,7 @@ import React from "react";
 class AddUserInfor extends React.Component {
   //State
   state = {
-    name: "David Ho",
+    name: "Kiet",
     age: 30,
     address: "Hue City",
   };
