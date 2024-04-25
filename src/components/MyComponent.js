@@ -13,7 +13,7 @@ class MyComponent extends React.Component {
   };
 
   handleAddNewUsers = (newObj) => {
-    console.log("🚀 ~ newObj:", newObj);
+    // console.log("🚀 ~ newObj:", newObj);
     this.setState({
       listUsers: [newObj, ...this.state.listUsers],
     });
