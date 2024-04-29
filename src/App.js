@@ -4,22 +4,9 @@ import "./App.scss";
 const App = () => {
   return (
     <div className="app-container">
-      Hello World!
       {/* Logic... */}
+      KIETHOHOAI
     </div>
   );
 };
 export default App;
-
-///////////////////////////// BACKUP APP AROW FUNC /////////////////////////////////////
-//Class Component
-// class App extends React.Component {
-//   render() {
-//     return (
-//       <div className="app-container">
-//         Hello ReactJS
-//         <MyComponent></MyComponent>
-//       </div>
-//     );
-//   }
-// }
