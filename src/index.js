@@ -7,6 +7,7 @@ import store from "./redux/store";
 import "bootstrap/dist/css/bootstrap.min.css";
 import User from "./components/User/User";
 import Admin from "./components/Admin/Admin";
+import HomePage from "./components/Home/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -15,6 +16,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route index element={<HomePage />} />
           <Route path="user" element={<User />} />
           <Route path="admin" element={<Admin />} />
         </Route>
