@@ -19,3 +19,29 @@ body {
     }
   }
 }
+
+.header-container {
+  padding: 16px;
+}
+
+.homepage-container {
+  width: 1440px;
+  margin: 0 auto;
+}
+
+.home-media {
+  display: flex;
+  align-items: center;
+}
+
+.home-content {
+  margin: 0 20px;
+}
+
+.home-title {
+  font-size: 80px;
+  width: 85%;
+}
+.home-desc {
+  font-size: 20px;
+}
