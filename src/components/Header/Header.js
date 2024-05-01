@@ -4,13 +4,14 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { NavLink, Outlet } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
         <NavLink className="navbar-brand" to="/">
-          HHK Logo
+          <strong>Hoai Kiet IT</strong>
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -26,14 +27,21 @@ const Header = () => {
             </NavLink>
           </Nav>
 
-          <Nav>
+          <Button className="btn-login" variant="light">
+            Login
+          </Button>
+          <Button className="btn-signup" variant="dark">
+            Singup
+          </Button>
+
+          {/* <Nav>
             <NavDropdown title="Setting" id="basic-nav-dropdown">
               <NavDropdown.Item>Login</NavDropdown.Item>
               <NavDropdown.Item>Logout</NavDropdown.Item>
               <NavDropdown.Item>Profile</NavDropdown.Item>
               <NavDropdown.Divider />
             </NavDropdown>
-          </Nav>
+          </Nav> */}
         </Navbar.Collapse>
       </Container>
     </Navbar>

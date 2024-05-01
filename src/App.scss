@@ -8,6 +8,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (min-width: 1400px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 1500px !important;
+  }
+}
+
 .app-container {
   .header-container {
     .navbar-nav {
@@ -44,4 +55,17 @@ body {
 }
 .home-desc {
   font-size: 20px;
+}
+
+.btn-signup,
+.btn-login {
+  margin-right: 12px;
+}
+
+.container {
+  max-width: 1500px;
+}
+
+.btn-free {
+  background-color: black !important;
 }

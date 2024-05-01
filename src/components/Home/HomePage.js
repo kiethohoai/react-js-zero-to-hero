@@ -1,4 +1,5 @@
 import videoHomePage from "../../assets/video-homepage.webm";
+import Button from "react-bootstrap/Button";
 const HomePage = (props) => {
   return (
     <div className="homepage-container">
@@ -9,6 +10,9 @@ const HomePage = (props) => {
             Get more data—like signups, feedback, and anything else—with forms
             designed to be refreshingly different.
           </p>
+          <Button className="btn-free" variant="secondary" size="lg">
+            Get started - It's free!
+          </Button>
         </div>
         <div className="home-video">
           <video autoPlay muted loop width="700" height="500">
