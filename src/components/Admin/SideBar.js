@@ -19,6 +19,10 @@ import {
 } from "react-icons/fa";
 import sidebarBg from "../../assets/bg2.jpg";
 
+import { DiReact } from "react-icons/di";
+import { MdDashboard } from "react-icons/md";
+import "../Admin/SideBar.scss";
+
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   return (
     <>
@@ -42,28 +46,21 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               whiteSpace: "nowrap",
             }}
           >
-            HHK Menu
+            <DiReact size={"3em"} color={"#00ffff"} />
+            <span>HHK Menu</span>
           </div>
         </SidebarHeader>
 
         <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem
-              icon={<FaTachometerAlt />}
-              suffix={<span className="badge red">New</span>}
-            >
-              dashboard
-            </MenuItem>
-            <MenuItem icon={<FaGem />}> components</MenuItem>
+            <MenuItem icon={<MdDashboard />}>Dashboard</MenuItem>
           </Menu>
+
           <Menu iconShape="circle">
-            <SubMenu
-              suffix={<span className="badge yellow">3</span>}
-              icon={<FaRegLaughWink />}
-            >
-              <MenuItem>Item 1</MenuItem>
-              <MenuItem>Item 2</MenuItem>
-              <MenuItem>Item 3</MenuItem>
+            <SubMenu icon={<FaGem />} title={"Feature"}>
+              <MenuItem>Manage Users</MenuItem>
+              <MenuItem>Manage Quiz</MenuItem>
+              <MenuItem>Manage Questions</MenuItem>
             </SubMenu>
           </Menu>
         </SidebarContent>
@@ -89,7 +86,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                   overflow: "hidden",
                 }}
               >
-                viewSource
+                HHK Home
               </span>
             </a>
           </div>
