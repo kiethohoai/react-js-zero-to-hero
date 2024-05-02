@@ -1,9 +1,20 @@
 .admin-container {
   display: flex;
   .admin-sidebar {
+    .pro-sidebar {
+      height: 100vh !important;
+    }
   }
-}
 
-.pro-sidebar {
-  height: 100vh !important;
+  .admin-content {
+    width: 100%;
+
+    .admin-hearder {
+      border: 1px solid black;
+      height: 40px;
+    }
+    .admin-main {
+      border: 1px solid black;
+    }
+  }
 }
