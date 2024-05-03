@@ -1,7 +1,19 @@
 .manage-user-container {
   .user-title {
+    font-weight: 600;
+    font-size: 22px;
+    padding: 8px;
   }
+
   .user-content {
+    button.btn.btn-primary {
+      margin-left: 7px;
+      margin-bottom: 10px;
+    }
+
+    .table-users-container {
+      margin-left: 10px;
+    }
   }
 }
 

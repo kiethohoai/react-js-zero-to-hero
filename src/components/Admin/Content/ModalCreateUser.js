@@ -2,8 +2,10 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
+import axios from 'axios';
 
-const ModalCreateUser = () => {
+const ModalCreateUser = (props) => {
+  const { show, setShow } = props;
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -11,9 +13,16 @@ const ModalCreateUser = () => {
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    setUserName("")
+    setPassword("")
+    setEmail("")
+    setRole("USER")
+    setImage("")
+
+  };
+  // const handleShow = () => setShow(true);
 
   const handleUploadImage = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
@@ -24,11 +33,36 @@ const ModalCreateUser = () => {
     }
   };
 
+
+  const handleSubmitCreateUser = async () => {
+    //Validate
+
+    //Call API
+    // let data = {
+    //   username: username,
+    //   email: email,
+    //   password: password,
+    //   role: role,
+    //   userImage: previewImage,
+    // }
+    // console.log("🚀 CHECK => data =", data)
+
+    const form = new FormData();
+    form.append('email', email);
+    form.append('password', password);
+    form.append('username', username);
+    form.append('role', role);
+    form.append('userImage', previewImage);
+    let respone = await axios.post('http://localhost:8081/api/v1/participant', form)
+    console.log("🚀 CHECK => respone =", respone)
+
+  }
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      {/* <Button variant="primary" onClick={handleShow}>
         Launch demo modal
-      </Button>
+      </Button> */}
 
       <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -40,6 +74,7 @@ const ModalCreateUser = () => {
             <div className="col-md-6">
               <label className="form-label">Username</label>
               <input
+                autoComplete="username"
                 type="text"
                 className="form-control"
                 value={username}
@@ -51,6 +86,7 @@ const ModalCreateUser = () => {
             <div className="col-md-6">
               <label className="form-label">Password</label>
               <input
+                autoComplete="current-password"
                 type="password"
                 className="form-control"
                 value={password}
@@ -62,6 +98,7 @@ const ModalCreateUser = () => {
             <div className="col-md-6">
               <label className="form-label">Email</label>
               <input
+                autoComplete="email"
                 type="email"
                 className="form-control"
                 value={email}
@@ -104,7 +141,7 @@ const ModalCreateUser = () => {
                 <img
                   className="image-preview__img"
                   src={previewImage}
-                  // src="https://i3.ytimg.com/vi/u9vK5utTcxE/maxresdefault.jpg"
+                // src="https://i3.ytimg.com/vi/u9vK5utTcxE/maxresdefault.jpg"
                 />
               ) : (
                 <span>Preview Image</span>
@@ -116,7 +153,7 @@ const ModalCreateUser = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={() => handleSubmitCreateUser()}>
             Save
           </Button>
         </Modal.Footer>

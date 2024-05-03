@@ -1,5 +1,6 @@
 .admin-container {
   display: flex;
+
   .admin-sidebar {
     .pro-sidebar {
       height: 100vh !important;
@@ -13,8 +14,16 @@
       border: 1px solid black;
       height: 40px;
     }
+
     .admin-main {
       border: 1px solid black;
+    }
+
+    svg.admin-header__logo {
+      position: relative;
+      left: 9px;
+      top: 3px;
+      font-size: 20px;
     }
   }
 }
