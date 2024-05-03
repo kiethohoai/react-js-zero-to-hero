@@ -3,6 +3,8 @@ import "./Admin.scss";
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Admin = (props) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -14,12 +16,28 @@ const Admin = (props) => {
 
       <div className="admin-content">
         <div className="admin-hearder">
-          <FaBars className="admin-header__logo" onClick={() => setCollapsed(!collapsed)} />
+          <FaBars
+            className="admin-header__logo"
+            onClick={() => setCollapsed(!collapsed)}
+          />
         </div>
         <div className="admin-main">
           <Outlet />
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        // transition:Bounce
+      />
     </div>
   );
 };
