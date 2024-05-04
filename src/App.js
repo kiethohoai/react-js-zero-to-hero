@@ -1,10 +1,10 @@
 import "./App.scss";
+import Header from "./components/Header/Header";
 
 const App = () => {
   return (
     <div className="app-container">
-      Hello World
-      <button className="btn btn-primary">Click me!</button>
+      <Header />
     </div>
   );
 };
