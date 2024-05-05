@@ -3,6 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink } from "react-router-dom";
+import "../Header/Header.scss";
 
 const Header = () => {
   return (
@@ -10,7 +11,7 @@ const Header = () => {
       <Container>
         {/* <Navbar.Brand href="#home">Become-Master</Navbar.Brand> */}
         <NavLink className="navbar-brand" to="/">
-          BecomeMaster
+          Typeform
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -27,11 +28,13 @@ const Header = () => {
           </Nav>
 
           <Nav>
-            <NavDropdown title="Setting" id="basic-nav-dropdown">
+            <button className="btn btn-light">Log in</button>
+            <button className="btn btn-dark">Sign up</button>
+            {/* <NavDropdown title="Setting" id="basic-nav-dropdown">
               <NavDropdown.Item>Login</NavDropdown.Item>
               <NavDropdown.Item>Logout</NavDropdown.Item>
               <NavDropdown.Item>Profile</NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

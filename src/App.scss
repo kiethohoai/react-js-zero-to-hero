@@ -54,14 +54,23 @@ code {
 
 .app-container {
   .header-container {
+    padding: 12px;
+    
+      .navbar {
+        background-color: #fff !important;
+      }
     .navbar-nav {
-      .nav-link {}
+      .nav-link {
+          font-size: 1.1rem;
+          // font-weight: 500;
+        }
 
       .active {
         color: red;
       }
     }
   }
+}
 .main-container {
   width: 1440px;
   margin: 0 auto;
@@ -70,5 +79,4 @@ code {
     width: 1170px;
     margin: 0 auto;
   }
-}
 }
