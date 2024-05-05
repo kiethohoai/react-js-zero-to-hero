@@ -9,22 +9,15 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import {
-  FaTachometerAlt,
-  FaGem,
-  FaList,
-  FaGithub,
-  FaRegLaughWink,
-  FaHeart,
-} from "react-icons/fa";
-import sidebarBg from "./../../assets/bg2.jpg";
+import { FaGithub } from "react-icons/fa";
 import { DiReact } from "react-icons/di";
 import { MdDashboard } from "react-icons/md";
+import sidebarBg from "./../../assets/bg2.jpg";
 import "./../Admin/SideBar.scss";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SideBar = (props) => {
-  const { image, collapsed, rtl, toggled, handleToggleSidebar } = props;
+  const { image, collapsed, toggled, handleToggleSidebar } = props;
   return (
     <ProSidebar
       image={sidebarBg}
@@ -58,6 +51,7 @@ const SideBar = (props) => {
             suffix={<span className="badge red">New</span>}
           >
             Dashboard
+            <Link to="/admin" />
           </MenuItem>
         </Menu>
         <Menu iconShape="circle">
@@ -66,7 +60,10 @@ const SideBar = (props) => {
             icon={<MdDashboard />}
             title={"Feature"}
           >
-            <MenuItem>Manage Users</MenuItem>
+            <MenuItem>
+              Manage Users
+              <Link to="/admin/manage-user" />
+            </MenuItem>
             <MenuItem>Manage Quiz</MenuItem>
             <MenuItem>Manage Questions</MenuItem>
           </SubMenu>
@@ -94,7 +91,7 @@ const SideBar = (props) => {
                 overflow: "hidden",
               }}
             >
-              <NavLink to="/">Home</NavLink>
+              Home
             </span>
           </a>
         </div>
