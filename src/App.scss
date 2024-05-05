@@ -62,4 +62,13 @@ code {
       }
     }
   }
+.main-container {
+  width: 1440px;
+  margin: 0 auto;
+
+  .app-content {
+    width: 1170px;
+    margin: 0 auto;
+  }
+}
 }

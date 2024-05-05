@@ -1,0 +1,33 @@
+.homepage-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 24px;
+
+    .home-content {
+        width: 50%;
+
+        h1 {
+            font-size: 4.4rem;
+        }
+
+        p {
+            margin: 16px 0;
+        }
+    }
+
+    .home-media {
+        width: 50%;
+
+        video {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            overflow: hidden;
+        }
+    }
+
+}
