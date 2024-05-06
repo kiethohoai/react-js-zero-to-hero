@@ -3,7 +3,9 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
+import { toast } from "react-toastify";
 
+//ModalCreateUser
 const ModalCreateUser = (props) => {
   const { show, setShow } = props;
 
@@ -14,6 +16,7 @@ const ModalCreateUser = (props) => {
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
 
+  //handleClose
   const handleClose = () => {
     setShow(false);
     setUsername("");
@@ -24,6 +27,7 @@ const ModalCreateUser = (props) => {
     setPreviewImage("");
   };
 
+  //handleUploadImage
   const handleUploadImage = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
@@ -33,8 +37,27 @@ const ModalCreateUser = (props) => {
     }
   };
 
+  //validateEmail
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
+
+  //handleSubmitCreateUser
   const handleSubmitCreateUser = async () => {
     // Validate
+    const isValidateEmail = validateEmail(email);
+    if (!isValidateEmail) {
+      toast.error("Invalid Email");
+      return;
+    }
+    if (!password) {
+      toast.error("Invalid Password");
+      return;
+    }
 
     // Prepare Data, Call API, Save to DB
     const data = new FormData();
@@ -48,8 +71,17 @@ const ModalCreateUser = (props) => {
       "http://localhost:8081/api/v1/participant",
       data,
     );
-    console.log("🚀 CHECK => res =", res);
     console.log("🚀 CHECK => res.data =", res.data);
+
+    // Notify client when create user success or not
+    if (res.data && res.data.EC === 0) {
+      toast.success(res.data.EM);
+      handleClose();
+    }
+
+    if (res.data && res.data.EC !== 0) {
+      toast.error(res.data.EM);
+    }
   };
 
   return (
