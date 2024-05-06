@@ -1,36 +1,59 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import srcImage from "./../../../assets/img-upload-demo.jpg";
 import { FaPlusCircle } from "react-icons/fa";
+import axios from "axios";
 
-const ModalCreateUser = () => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const ModalCreateUser = (props) => {
+  const { show, setShow } = props;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("USER");
+  const [role, setRole] = useState("");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+
+  const handleClose = () => {
+    setShow(false);
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setRole("USER");
+    setImage("");
+    setPreviewImage("");
+  };
 
   const handleUploadImage = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
-      setImage(URL.createObjectURL(e.target.files[0]));
+      setImage(e.target.files[0]);
     } else {
       // setPreviewImage("");
     }
   };
 
+  const handleSubmitCreateUser = async () => {
+    // Validate
+
+    // Prepare Data, Call API, Save to DB
+    const data = new FormData();
+    data.append("username", username);
+    data.append("password", password);
+    data.append("email", email);
+    data.append("role", role);
+    data.append("userImage", image);
+
+    let res = await axios.post(
+      "http://localhost:8081/api/v1/participant",
+      data,
+    );
+    console.log("🚀 CHECK => res =", res);
+    console.log("🚀 CHECK => res.data =", res.data);
+  };
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
       <Modal
         className="modal-add-user"
         backdrop="static"
@@ -76,7 +99,6 @@ const ModalCreateUser = () => {
               <label className="form-label">Role</label>
               <select
                 className="form-select"
-                value="role"
                 onChange={(e) => setRole(e.target.value)}
               >
                 <option value="USER">USER</option>
@@ -114,7 +136,7 @@ const ModalCreateUser = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmitCreateUser}>
             Save
           </Button>
         </Modal.Footer>

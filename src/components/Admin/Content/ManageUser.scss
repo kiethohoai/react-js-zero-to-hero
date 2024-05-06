@@ -1,3 +1,22 @@
+.manage-user-container {
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-left: 15px;
+    }
+
+    .users-content {
+        .btn-add-new {
+            button {
+                margin-left: 14px;
+                margin-top: 4px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+        }
+    }
+}
 .modal-add-user {
     .modal-content {
         .modal-body {
