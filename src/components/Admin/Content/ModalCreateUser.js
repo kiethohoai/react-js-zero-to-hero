@@ -50,6 +50,7 @@ const ModalCreateUser = () => {
                 className="form-control"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
               />
             </div>
             <div className="col-md-6">
@@ -59,6 +60,7 @@ const ModalCreateUser = () => {
                 className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
               />
             </div>
             <div className="col-md-6">
