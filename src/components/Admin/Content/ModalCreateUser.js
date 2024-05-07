@@ -11,7 +11,7 @@ const ModalCreateUser = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
 
@@ -120,6 +120,7 @@ const ModalCreateUser = (props) => {
               <select
                 className="form-select"
                 onChange={(e) => setRole(e.target.value)}
+                value={role}
               >
                 <option value="USER">USER</option>
                 <option value="ADMIN">ADMIN</option>
