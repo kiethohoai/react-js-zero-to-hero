@@ -2,13 +2,12 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaPlusCircle } from "react-icons/fa";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { postCreateNewUser } from "./../../../services/apiService";
 
 //ModalCreateUser
 const ModalCreateUser = (props) => {
   const { show, setShow } = props;
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -54,33 +53,22 @@ const ModalCreateUser = (props) => {
       toast.error("Invalid Email");
       return;
     }
+
     if (!password) {
       toast.error("Invalid Password");
       return;
     }
 
     // Prepare Data, Call API, Save to DB
-    const data = new FormData();
-    data.append("username", username);
-    data.append("password", password);
-    data.append("email", email);
-    data.append("role", role);
-    data.append("userImage", image);
-
-    let res = await axios.post(
-      "http://localhost:8081/api/v1/participant",
-      data,
-    );
-    console.log("🚀 CHECK => res.data =", res.data);
-
+    let data = await postCreateNewUser(username, password, email, role, image);
     // Notify client when create user success or not
-    if (res.data && res.data.EC === 0) {
-      toast.success(res.data.EM);
+    if (data && data.EC === 0) {
+      toast.success(data.EM);
       handleClose();
     }
 
-    if (res.data && res.data.EC !== 0) {
-      toast.error(res.data.EM);
+    if (data && data.EC !== 0) {
+      toast.error(data.EM);
     }
   };
 
@@ -157,7 +145,7 @@ const ModalCreateUser = (props) => {
 
             <div className="col-md-12 img-preview">
               {previewImage ? (
-                <img src={previewImage} alt="no-image-file" />
+                <img src={previewImage} alt="" />
               ) : (
                 <span>Preview Image</span>
               )}
