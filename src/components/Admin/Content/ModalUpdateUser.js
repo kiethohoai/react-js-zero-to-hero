@@ -15,11 +15,9 @@ const ModalUpdateUser = (props) => {
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
-  console.log("🚀 CHECK => dataUpdate =", dataUpdate);
 
   //useEffect()
   useEffect(() => {
-    console.log("Check useEffect()");
     if (!_.isEmpty(dataUpdate)) {
       // Update State
       setUsername(dataUpdate.username);
@@ -89,8 +87,6 @@ const ModalUpdateUser = (props) => {
       toast.error(data.EM);
     }
   };
-
-  console.log("Check Render()");
 
   return (
     <>
