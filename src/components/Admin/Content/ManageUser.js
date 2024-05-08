@@ -28,7 +28,6 @@ const ManageUser = (props) => {
 
   //handleClickUpdateModal
   const handleClickUpdateModal = (user) => {
-    console.log("🚀 CHECK => user =", user);
     setShowModalUpdateUser(true);
     setDataUpdate(user);
   };

@@ -9,7 +9,6 @@ import _ from "lodash";
 //ModalUpdateUser
 const ModalUpdateUser = (props) => {
   const { show, setShow, dataUpdate, resetUpdateData } = props;
-  console.log("🚀 CHECK => dataUpdate =", dataUpdate);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
