@@ -3,12 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaPlusCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { postCreateNewUser } from "./../../../services/apiService";
+import { putUpdateUser } from "./../../../services/apiService";
 import _ from "lodash";
 
 //ModalUpdateUser
 const ModalUpdateUser = (props) => {
-  const { show, setShow, dataUpdate } = props;
+  const { show, setShow, dataUpdate, resetUpdateData } = props;
+  console.log("🚀 CHECK => dataUpdate =", dataUpdate);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -39,6 +40,9 @@ const ModalUpdateUser = (props) => {
     setRole("USER");
     setImage("");
     setPreviewImage("");
+
+    // resetUpdateData
+    resetUpdateData();
   };
 
   //handleUploadImage
@@ -51,31 +55,10 @@ const ModalUpdateUser = (props) => {
     }
   };
 
-  //validateEmail
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      );
-  };
-
   //handleSubmitCreateUser
   const handleSubmitCreateUser = async () => {
-    // Validate
-    const isValidateEmail = validateEmail(email);
-    if (!isValidateEmail) {
-      toast.error("Invalid Email");
-      return;
-    }
-
-    if (!password) {
-      toast.error("Invalid Password");
-      return;
-    }
-
     // Prepare Data, Call API, Save to DB
-    let data = await postCreateNewUser(username, password, email, role, image);
+    let data = await putUpdateUser(dataUpdate.id, username, role, image);
     // Notify client when create user success or not
     if (data && data.EC === 0) {
       toast.success(data.EM);
