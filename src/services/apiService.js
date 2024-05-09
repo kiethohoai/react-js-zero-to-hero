@@ -28,4 +28,9 @@ const getAllUsers = () => {
   return axios.get("api/v1/participant/all");
 };
 
-export { postCreateNewUser, getAllUsers, putUpdateUser };
+//Delete User Via ID
+const deleteUser = (userId) => {
+  return axios.delete("api/v1/participant", { data: { id: userId } });
+};
+
+export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser };
