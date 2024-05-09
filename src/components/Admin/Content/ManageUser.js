@@ -5,13 +5,15 @@ import TableUser from "./TableUser";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "./../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
+import ModalDisplayUser from "./ModalDisplayUser";
 
 const ManageUser = (props) => {
+  const [listUsers, setListUsers] = useState([]);
+  const [dataUpdate, setDataUpdate] = useState({});
+  const [userInfor, setUserInfor] = useState({});
   const [showModelCreateUser, setShowModelCreateUser] = useState(false);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
-  const [listUsers, setListUsers] = useState([]);
-  // dataUpdate for user update their information
-  const [dataUpdate, setDataUpdate] = useState({});
+  const [showModalDisplayUser, setShowModalDisplayUser] = useState(false);
 
   //Conponent Didmount
   useEffect(() => {
@@ -37,6 +39,12 @@ const ManageUser = (props) => {
     setDataUpdate({});
   };
 
+  // Handle View User Button
+  const handleBtnViewUserInfo = (user) => {
+    setUserInfor(user);
+    setShowModalDisplayUser(true);
+  };
+
   return (
     <div className="manage-user-container">
       <div className="title">Manage User</div>
@@ -50,11 +58,11 @@ const ManageUser = (props) => {
             Add New User
           </button>
         </div>
-
         <div className="table-users-container">
           <TableUser
             listUsers={listUsers}
             handleClickUpdateModal={handleClickUpdateModal}
+            handleBtnViewUserInfo={handleBtnViewUserInfo}
           />
         </div>
         <ModalCreateUser
@@ -62,13 +70,19 @@ const ManageUser = (props) => {
           setShow={setShowModelCreateUser}
           fetchListUsers={fetchListUsers}
         />
-
         <ModalUpdateUser
           show={showModalUpdateUser}
           setShow={setShowModalUpdateUser}
           dataUpdate={dataUpdate}
           fetchListUsers={fetchListUsers}
           resetUpdateData={resetUpdateData}
+        />
+
+        <ModalDisplayUser
+          show={showModalDisplayUser}
+          setShow={setShowModalDisplayUser}
+          userInfor={userInfor}
+          setUserInfor={setUserInfor}
         />
       </div>
     </div>
