@@ -2,24 +2,30 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { putUpdateUser } from "./../../../services/apiService";
+import _ from "lodash";
 
 //ModalDisplayUser
 const ModalDisplayUser = (props) => {
+  const { show, setShow, dataUpdate, resetUpdateData } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
-  const { show, setShow, dataUpdate, resetUpdateData } = props;
 
+  //useEffect()
   useEffect(() => {
-    setUsername(dataUpdate.username);
-    setEmail(dataUpdate.email);
-    setRole(dataUpdate.role);
-    setImage(dataUpdate.image);
-    if (dataUpdate.image) {
-      setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
+    if (!_.isEmpty(dataUpdate)) {
+      setUsername(dataUpdate.username);
+      setEmail(dataUpdate.email);
+      setRole(dataUpdate.role);
+      setImage("");
+      if (dataUpdate.image) {
+        setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
+      }
     }
   }, [dataUpdate]);
 
@@ -32,7 +38,8 @@ const ModalDisplayUser = (props) => {
     setRole("USER");
     setImage("");
     setPreviewImage("");
-    // setUserInfor({});
+
+    // resetUpdateData
     resetUpdateData();
   };
 
@@ -46,7 +53,7 @@ const ModalDisplayUser = (props) => {
         onHide={handleClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>User Information</Modal.Title>
+          <Modal.Title>Update User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">

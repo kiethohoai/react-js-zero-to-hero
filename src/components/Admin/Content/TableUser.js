@@ -1,5 +1,6 @@
 const TableUser = (props) => {
-  const { listUsers, handleClickUpdateModal, handleBtnViewUserInfo } = props;
+  const { listUsers, handleClickUpdateModal, handleClickViewBtnDisplayUser } =
+    props;
 
   return (
     <>
@@ -25,7 +26,7 @@ const TableUser = (props) => {
                   <td>
                     <button
                       className="btn btn-secondary"
-                      onClick={() => handleBtnViewUserInfo(user)}
+                      onClick={() => handleClickViewBtnDisplayUser(user)}
                     >
                       View
                     </button>

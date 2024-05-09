@@ -38,8 +38,9 @@ const ManageUser = (props) => {
     setDataUpdate({});
   };
 
-  // Handle View User Button
-  const handleBtnViewUserInfo = (user) => {
+  // Handle Cick View Button in ModalDisplayUser
+  const handleClickViewBtnDisplayUser = (user) => {
+    // Check user maybe undefine?
     setDataUpdate(user);
     setShowModalDisplayUser(true);
   };
@@ -61,7 +62,7 @@ const ManageUser = (props) => {
           <TableUser
             listUsers={listUsers}
             handleClickUpdateModal={handleClickUpdateModal}
-            handleBtnViewUserInfo={handleBtnViewUserInfo}
+            handleClickViewBtnDisplayUser={handleClickViewBtnDisplayUser}
           />
         </div>
         <ModalCreateUser
