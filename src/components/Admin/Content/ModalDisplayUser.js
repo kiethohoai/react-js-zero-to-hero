@@ -5,23 +5,23 @@ import { FaPlusCircle } from "react-icons/fa";
 
 //ModalDisplayUser
 const ModalDisplayUser = (props) => {
-  const { show, setShow, userInfor, setUserInfor } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const { show, setShow, dataUpdate, resetUpdateData } = props;
 
   useEffect(() => {
-    setUsername(userInfor.username);
-    setEmail(userInfor.email);
-    setRole(userInfor.role);
-    setImage(userInfor.image);
-    if (userInfor.image) {
-      setPreviewImage(`data:image/jpeg;base64,${userInfor.image}`);
+    setUsername(dataUpdate.username);
+    setEmail(dataUpdate.email);
+    setRole(dataUpdate.role);
+    setImage(dataUpdate.image);
+    if (dataUpdate.image) {
+      setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
     }
-  }, [userInfor]);
+  }, [dataUpdate]);
 
   //handleClose
   const handleClose = () => {
@@ -32,7 +32,8 @@ const ModalDisplayUser = (props) => {
     setRole("USER");
     setImage("");
     setPreviewImage("");
-    setUserInfor({});
+    // setUserInfor({});
+    resetUpdateData();
   };
 
   return (

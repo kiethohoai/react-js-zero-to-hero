@@ -10,7 +10,6 @@ import ModalDisplayUser from "./ModalDisplayUser";
 const ManageUser = (props) => {
   const [listUsers, setListUsers] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
-  const [userInfor, setUserInfor] = useState({});
   const [showModelCreateUser, setShowModelCreateUser] = useState(false);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
   const [showModalDisplayUser, setShowModalDisplayUser] = useState(false);
@@ -41,7 +40,7 @@ const ManageUser = (props) => {
 
   // Handle View User Button
   const handleBtnViewUserInfo = (user) => {
-    setUserInfor(user);
+    setDataUpdate(user);
     setShowModalDisplayUser(true);
   };
 
@@ -81,8 +80,8 @@ const ManageUser = (props) => {
         <ModalDisplayUser
           show={showModalDisplayUser}
           setShow={setShowModalDisplayUser}
-          userInfor={userInfor}
-          setUserInfor={setUserInfor}
+          resetUpdateData={resetUpdateData}
+          dataUpdate={dataUpdate}
         />
       </div>
     </div>
