@@ -17,5 +17,9 @@
 
     .admin-main {
         // border: 1px solid black;
+        .user-paginate {
+                display: flex;
+                justify-content: center;
+            }
     }
 }
