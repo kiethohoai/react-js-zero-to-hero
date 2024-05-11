@@ -7,6 +7,14 @@
         justify-content: end;
         position: relative;
         right: 20px;
+        gap: 10px;
+        
+            button {
+                border: 1px solid black;
+                border-radius: 2px;
+                background-color: #fff;
+                margin-right: 8px;
+            }
 
     }
 
@@ -39,4 +47,13 @@
         }
 
     }
+}
+// forgot password text-decoration
+span.forgot-password {
+    text-decoration: underline;
+}
+
+// Back to Homepage
+.text-center.back-homepage {
+    cursor: pointer;
 }

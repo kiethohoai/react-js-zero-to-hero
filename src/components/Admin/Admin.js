@@ -3,8 +3,8 @@ import "../Admin/Admin.scss";
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const Admin = (props) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -27,7 +27,7 @@ const Admin = (props) => {
           <Outlet />
         </div>
       </div>
-      <ToastContainer
+      {/* <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -40,7 +40,7 @@ const Admin = (props) => {
         theme="light"
         // transition: Bounce,
       />
-      <ToastContainer />
+      <ToastContainer /> */}
     </div>
   );
 };
