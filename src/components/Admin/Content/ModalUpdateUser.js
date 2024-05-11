@@ -8,13 +8,21 @@ import _ from "lodash";
 
 //ModalUpdateUser
 const ModalUpdateUser = (props) => {
-  const { show, setShow, dataUpdate, resetUpdateData } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const {
+    show,
+    setShow,
+    dataUpdate,
+    resetUpdateData,
+    fetchListUsersWithPaginate,
+    currentPage,
+    setCurrentPage,
+  } = props;
 
   //useEffect()
   useEffect(() => {
@@ -62,7 +70,9 @@ const ModalUpdateUser = (props) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      await props.fetchListUsers();
+      // await props.fetchListUsers();
+      // setCurrentPage(1);
+      await fetchListUsersWithPaginate(currentPage);
     }
 
     if (data && data.EC !== 0) {

@@ -7,13 +7,19 @@ import { postCreateNewUser } from "./../../../services/apiService";
 
 //ModalCreateUser
 const ModalCreateUser = (props) => {
-  const { show, setShow } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const {
+    show,
+    setShow,
+    fetchListUsersWithPaginate,
+    currentPage,
+    setCurrentPage,
+  } = props;
 
   //handleClose
   const handleClose = () => {
@@ -65,7 +71,9 @@ const ModalCreateUser = (props) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      await props.fetchListUsers();
+      // await props.fetchListUsers();
+      setCurrentPage(1);
+      await fetchListUsersWithPaginate(1);
     }
 
     if (data && data.EC !== 0) {
