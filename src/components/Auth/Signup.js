@@ -1,14 +1,17 @@
 import { useState } from "react";
-import "./Login.scss";
+import "./Signup.scss";
 import { useNavigate } from "react-router-dom";
 import { postRegister } from "./../../services/apiService";
 import { toast } from "react-toastify";
+import { IoIosEye } from "react-icons/io";
+import { IoIosEyeOff } from "react-icons/io";
 
 const Signup = (props) => {
   ///// props & state /////
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isShowPassword, setIsShowPassword] = useState(false);
   const navigae = useNavigate();
 
   ///// handle /////
@@ -50,6 +53,14 @@ const Signup = (props) => {
     }
   };
 
+  const handleHidePassword = () => {
+    setIsShowPassword(false);
+  };
+
+  const handleShowPassword = () => {
+    setIsShowPassword(true);
+  };
+
   return (
     <div className="login-container">
       <div className="header">
@@ -60,7 +71,7 @@ const Signup = (props) => {
       <div className="welcome col-2 mx-auto">Create Account!</div>
       <div className="content-form col-2 mx-auto">
         <div className="form-group ">
-          <label htmlFor="">Email:</label>
+          <label htmlFor="">Email (*)</label>
           <input
             type="email"
             name=""
@@ -82,17 +93,36 @@ const Signup = (props) => {
           />
         </div>
 
-        <div className="form-group ">
-          <label htmlFor="">Password:</label>
+        <div className="form-group form-password">
+          <label htmlFor="">Password (*)</label>
           <input
-            type="password"
+            type={isShowPassword ? "text" : "password"}
             name=""
             className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
+          <div className="form-password-child">
+            {isShowPassword ? (
+              <span
+                className="hide-password"
+                onClick={() => handleHidePassword()}
+              >
+                <IoIosEye />
+              </span>
+            ) : (
+              <span
+                className="show-password"
+                onClick={() => handleShowPassword()}
+              >
+                <IoIosEyeOff />
+              </span>
+            )}
+          </div>
         </div>
+
         <span className="forgot-password">Forgot Password?</span>
         <div>
           <button className="btn-submit" onClick={() => handleSubmitRegister()}>
