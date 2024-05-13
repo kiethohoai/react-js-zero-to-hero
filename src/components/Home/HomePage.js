@@ -1,7 +1,10 @@
 import video from "../../assets/video-homepage.webm";
 import "../Home/HomePage.scss";
+// import { useSelector } from "react-redux";
 
 const HomePage = () => {
+  // const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  // const account = useSelector((state) => state.user.account);
   return (
     <div className="homepage-container">
       <div className="home-content">
