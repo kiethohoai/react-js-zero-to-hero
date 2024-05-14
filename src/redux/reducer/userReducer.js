@@ -15,7 +15,6 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_USER_LOGIN_SUCCESS:
-      console.log("🚀 CHECK => action =", action);
       return {
         ...state,
         account: {

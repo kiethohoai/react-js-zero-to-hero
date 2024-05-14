@@ -1,10 +1,11 @@
 import { useState } from "react";
-import "./Login.scss";
+import "./LoginFix.scss";
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "./../../services/apiService";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { doLogin } from "../../redux/action/userAction";
+import { ImSpinner10 } from "react-icons/im";
 
 const Login = (props) => {
   ///// props & state /////
@@ -12,6 +13,8 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const navigae = useNavigate();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  console.log("🚀 CHECK => isLoading =", isLoading);
 
   ///// handle /////
   //validateEmail
@@ -37,11 +40,12 @@ const Login = (props) => {
     }
 
     //Call API Submit
+    setIsLoading(true);
     let data = await postLogin(email, password);
     if (data && data.EC === 0) {
       dispatch(doLogin(data));
-
       toast.success(data.EM);
+      setIsLoading(false);
       navigae("/");
     }
 
@@ -85,8 +89,13 @@ const Login = (props) => {
         </div>
         <span className="forgot-password">Forgot Password?</span>
         <div>
-          <button className="btn-submit" onClick={() => handleLogin()}>
-            Log in
+          <button
+            className="btn-submit"
+            onClick={() => handleLogin()}
+            disabled={isLoading}
+          >
+            {isLoading === true && <ImSpinner10 className="loader-icon" />}
+            <span>Log in</span>
           </button>
         </div>
         <div className="text-center back-homepage">
