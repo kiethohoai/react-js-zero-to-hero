@@ -14,8 +14,6 @@ const Login = (props) => {
   const navigae = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  console.log("🚀 CHECK => isLoading =", isLoading);
-
   ///// handle /////
   //validateEmail
   const validateEmail = (email) => {
