@@ -1,8 +1,8 @@
+import "./FixDetailQuiz.scss";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDataQuiz } from "../../services/apiService";
 import _ from "lodash";
-import "./DetailQuizFix.scss";
 import { useLocation } from "react-router-dom";
 import Question from "./Question";
 
@@ -12,6 +12,7 @@ const DetailQuiz = (props) => {
   const location = useLocation();
   // Data Quesiton
   const [dataQuiz, setDataQuiz] = useState([]);
+
   // Current Question User Click
   const [index, setIndex] = useState(0);
 
@@ -21,7 +22,6 @@ const DetailQuiz = (props) => {
 
   const fetchQuestions = async () => {
     let res = await getDataQuiz(quizId);
-    console.log("🚀 CHECK => res (DetailQuiz.js) =", res);
 
     if (res && res.EC === 0) {
       let raw = res.DT;
@@ -40,20 +40,16 @@ const DetailQuiz = (props) => {
               questionDecription = item.description;
               image = item.image;
             }
-
+            item.answers.isSelected = false;
             answers.push(item.answers);
-            // console.log("item answer", item.answers);
           });
-          // console.log("value", value, "key", key);
           return { questionId: key, answers, questionDecription, image };
         })
         .value();
-      console.log("🚀 CHECK => data (DetailQuiz.js)", data);
       setDataQuiz(data);
+      console.log("🚀CHECK + file: DetailQuiz.js:50 + data:", data);
     }
   };
-
-  console.log("🚀 CHECK => dataQuiz (DetailQuiz.js) =", dataQuiz);
 
   // HANDLE PREV BUTTON
   const handlePrev = () => {
@@ -65,6 +61,36 @@ const DetailQuiz = (props) => {
   const handleNext = () => {
     if (dataQuiz && dataQuiz.length > index + 1) setIndex(index + 1);
   };
+
+  // HANDLE CHECKBOX
+  const handleCheckbox = (answerId, questionId) => {
+    let dataQuizClone = _.cloneDeep(dataQuiz);
+    let question = dataQuizClone.find(
+      (item) => +item.questionId === +questionId,
+    );
+    if (question && question.answers) {
+      console.log("🚀CHECK + file: DetailQuiz.js:72 + question:", question);
+      let b = question.answers.map((item) => {
+        if (+item.id === +answerId) {
+          // item.isSelected = true;
+          item.isSelected = !item.isSelected;
+        }
+        return item;
+      });
+      console.log("🚀CHECK + file: DetailQuiz.js:79 + b:", b);
+      question.answers = b;
+    }
+
+    let index = dataQuizClone.findIndex(
+      (item) => +item.questionId === +questionId,
+    );
+
+    if (index > -1) {
+      dataQuizClone[index] = question;
+      setDataQuiz(dataQuizClone);
+    }
+  };
+
   return (
     <div className="detail-quiz-container">
       {/* Left Content */}
@@ -78,6 +104,7 @@ const DetailQuiz = (props) => {
           <Question
             index={index}
             data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
+            handleCheckbox={handleCheckbox}
           />
         </div>
         <div className="footer">
