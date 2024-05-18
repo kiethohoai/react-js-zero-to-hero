@@ -7,8 +7,6 @@ const Question = (props) => {
   }
 
   const HandleCheckBoxQ = (e, aId, qId) => {
-    console.log("🚀CHECK + file: Question.js:5 + data:", data);
-    console.log("🚀CHECK + file: Question.js:10 + aId, qId:", aId, qId);
     props.handleCheckbox(aId, qId);
   };
 

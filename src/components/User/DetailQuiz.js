@@ -47,7 +47,6 @@ const DetailQuiz = (props) => {
         })
         .value();
       setDataQuiz(data);
-      console.log("🚀CHECK + file: DetailQuiz.js:50 + data:", data);
     }
   };
 
@@ -69,7 +68,6 @@ const DetailQuiz = (props) => {
       (item) => +item.questionId === +questionId,
     );
     if (question && question.answers) {
-      console.log("🚀CHECK + file: DetailQuiz.js:72 + question:", question);
       let b = question.answers.map((item) => {
         if (+item.id === +answerId) {
           // item.isSelected = true;
@@ -77,7 +75,6 @@ const DetailQuiz = (props) => {
         }
         return item;
       });
-      console.log("🚀CHECK + file: DetailQuiz.js:79 + b:", b);
       question.answers = b;
     }
 
@@ -89,6 +86,53 @@ const DetailQuiz = (props) => {
       dataQuizClone[index] = question;
       setDataQuiz(dataQuizClone);
     }
+  };
+  // handleFinishQuiz
+  const handleFinishQuiz = () => {
+    console.log("🚀CHECK + file: DetailQuiz.js + dataQuiz:", dataQuiz);
+    // if (dataQuiz && dataQuiz.length > 0) {
+    //   return {
+    //     quizId: 1,
+    //     answers: [
+    //       {
+    //         questionId: 1,
+    //         userAnswerId: [3],
+    //       },
+    //       {
+    //         questionId: 2,
+    //         userAnswerId: [6],
+    //       },
+    //     ],
+    //   };
+    // }
+
+    let payload = {
+      quizId: +quizId,
+      answers: [],
+    };
+
+    let answers = [];
+    if (dataQuiz && dataQuiz.length > 0) {
+      //logic
+      dataQuiz.forEach((item) => {
+        let questionId = +item.questionId;
+        let userAnswerId = [];
+
+        item.answers.forEach((an) => {
+          if (an.isSelected === true) {
+            userAnswerId.push(an.id);
+          }
+        });
+
+        answers.push({ questionId: questionId, userAnswerId: userAnswerId });
+      });
+    }
+
+    payload.answers = answers;
+    console.log("🚀CHECK + file: DetailQuiz.js + answers:", answers);
+    console.log("🚀CHECK + file: DetailQuiz.js + payload:", payload);
+
+    //End
   };
 
   return (
@@ -113,6 +157,13 @@ const DetailQuiz = (props) => {
           </button>
           <button onClick={() => handleNext()} className="btn btn-danger">
             Next
+          </button>
+
+          <button
+            onClick={() => handleFinishQuiz()}
+            className="btn btn-success"
+          >
+            Finish
           </button>
         </div>
       </div>
