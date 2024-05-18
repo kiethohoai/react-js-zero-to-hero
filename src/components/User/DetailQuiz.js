@@ -5,6 +5,8 @@ import { getDataQuiz } from "../../services/apiService";
 import _ from "lodash";
 import { useLocation } from "react-router-dom";
 import Question from "./Question";
+import { postSubmitQuiz } from "../../services/apiService";
+import ModalResult from "./ModalResult";
 
 const DetailQuiz = (props) => {
   let params = useParams();
@@ -15,6 +17,10 @@ const DetailQuiz = (props) => {
 
   // Current Question User Click
   const [index, setIndex] = useState(0);
+
+  // state ModalResult.js
+  const [isShowModalResult, setIsShowModalResult] = useState(false);
+  const [dataModalResult, setDataModalResult] = useState({});
 
   useEffect(() => {
     fetchQuestions();
@@ -88,24 +94,7 @@ const DetailQuiz = (props) => {
     }
   };
   // handleFinishQuiz
-  const handleFinishQuiz = () => {
-    console.log("🚀CHECK + file: DetailQuiz.js + dataQuiz:", dataQuiz);
-    // if (dataQuiz && dataQuiz.length > 0) {
-    //   return {
-    //     quizId: 1,
-    //     answers: [
-    //       {
-    //         questionId: 1,
-    //         userAnswerId: [3],
-    //       },
-    //       {
-    //         questionId: 2,
-    //         userAnswerId: [6],
-    //       },
-    //     ],
-    //   };
-    // }
-
+  const handleFinishQuiz = async () => {
     let payload = {
       quizId: +quizId,
       answers: [],
@@ -129,12 +118,21 @@ const DetailQuiz = (props) => {
     }
 
     payload.answers = answers;
-    console.log("🚀CHECK + file: DetailQuiz.js + answers:", answers);
-    console.log("🚀CHECK + file: DetailQuiz.js + payload:", payload);
-
-    //End
+    let res = await postSubmitQuiz(payload);
+    console.log("🚀CHECK + file: DetailQuiz.js + res:", res);
+    if (res && res.EC === 0) {
+      setDataModalResult({
+        countCorrect: res.DT.countCorrect,
+        countTotal: res.DT.countTotal,
+        quizData: res.DT.quizData,
+      });
+      setIsShowModalResult(true);
+    } else {
+      console.log("Something Wrong?");
+    }
   };
 
+  // Render
   return (
     <div className="detail-quiz-container">
       {/* Left Content */}
@@ -170,6 +168,14 @@ const DetailQuiz = (props) => {
 
       {/* Right Content */}
       <div className="right-content">Cown Down</div>
+
+      {/* ModalResult.js */}
+      <ModalResult
+        show={isShowModalResult}
+        setShow={setIsShowModalResult}
+        dataModalResult={dataModalResult}
+        setDataModalResult={setDataModalResult}
+      />
     </div>
   );
 };
