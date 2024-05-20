@@ -1,6 +1,5 @@
 .quiz-container {
-    padding: 15px;
-
+    // padding: 15px;
     .title {
         font-size: 32px;
         font-weight: 600;
@@ -8,5 +7,12 @@
 
     legend {
         font-size: 16px;
+    }
+}
+.quiz-container {
+    .accordion {}
+
+    .list-detail {
+        padding: 20px;
     }
 }
