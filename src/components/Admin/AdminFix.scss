@@ -7,6 +7,7 @@
         }
     }
 }
+
 .admin-content {
     width: 100%;
 
@@ -14,12 +15,15 @@
         height: 40px;
     }
 
-                .admin-main {
+    .admin-main {
+        height: calc(100vh - 40px);
+        // height: 100vh;
+
         .user-paginate {
-                display: flex;
-                justify-content: center;
-                position: relative;
-                right: 150px;
-            }
+            display: flex;
+            justify-content: center;
+            position: relative;
+            right: 150px;
+        }
     }
 }

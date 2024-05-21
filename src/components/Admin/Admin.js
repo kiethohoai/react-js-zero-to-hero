@@ -1,8 +1,9 @@
 import SideBar from "./SideBar";
-import "../Admin/Admin.scss";
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import "../Admin/AdminFix.scss";
 
 const Admin = (props) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -21,8 +22,11 @@ const Admin = (props) => {
             }}
           />
         </div>
+
         <div className="admin-main">
-          <Outlet />
+          <PerfectScrollbar>
+            <Outlet />
+          </PerfectScrollbar>
         </div>
       </div>
     </div>
