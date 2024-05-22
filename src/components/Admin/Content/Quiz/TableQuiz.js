@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { getAllQuizForAdmin } from "../../../../services/apiService";
 import UpdateQuizModal from "./UpdateQuizModal";
-
+import DeleteQuizModal from "./DeleteQuizModal";
 
 const TableQuiz = (props) => {
   // const [listQuiz, setListQuiz] = useState([]);
   const { listQuiz, setListQuiz } = props;
   const [showUpdateQuiz, setShowUpdateQuiz] = useState(false);
   const [currentQuizId, setCurrentQuizId] = useState(0);
+  const [showDeleteQuiz, setShowDeleteQuiz] = useState(false);
+  const [currentQuizName, setCurrentQuizName] = useState("");
 
   // HANDLE
   useEffect(() => {
@@ -26,6 +28,13 @@ const TableQuiz = (props) => {
   const handleUpdateQuiz = (quizId) => {
     setShowUpdateQuiz(true);
     setCurrentQuizId(quizId);
+  };
+
+  // handleBtnDeleteQuiz
+  const handleBtnDeleteQuiz = (quizId, quizName) => {
+    setShowDeleteQuiz(true);
+    setCurrentQuizId(quizId);
+    setCurrentQuizName(quizName);
   };
 
   return (
@@ -60,7 +69,12 @@ const TableQuiz = (props) => {
                     >
                       Update
                     </button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      onClick={() => handleBtnDeleteQuiz(item.id, item.name)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
@@ -71,6 +85,13 @@ const TableQuiz = (props) => {
         show={showUpdateQuiz}
         setShow={setShowUpdateQuiz}
         currentQuizId={currentQuizId}
+        fetchQuiz={fetchQuiz}
+      />
+      <DeleteQuizModal
+        show={showDeleteQuiz}
+        setShow={setShowDeleteQuiz}
+        currentQuizId={currentQuizId}
+        currentQuizName={currentQuizName}
         fetchQuiz={fetchQuiz}
       />
     </>
