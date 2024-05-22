@@ -1,10 +1,14 @@
 import { useState } from "react";
 import "./ManageQuiz.scss";
 import Select from "react-select";
-import { postCreateNewQuiz } from "./../../../../services/apiService";
+import {
+  postCreateNewQuiz,
+  getAllQuizForAdmin,
+} from "./../../../../services/apiService";
 import { toast } from "react-toastify";
 import TableQuiz from "./TableQuiz";
 import Accordion from "react-bootstrap/Accordion";
+import { MdFileUpload } from "react-icons/md";
 
 const options = [
   { value: "EASY", label: "EASY" },
@@ -17,12 +21,15 @@ const ManageQuiz = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
+  const [imagePrev, setImagePrev] = useState("");
+  const [listQuiz, setListQuiz] = useState([]);
 
   // HANDLE UPLOAD IMAGE FILE
   const handleChangeFile = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
+      setImagePrev(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -44,17 +51,29 @@ const ManageQuiz = (props) => {
       setName("");
       setDescription("");
       setType("");
-      setImage(null);
+      setImage("");
+      setImagePrev("");
+      fetchQuiz();
     } else {
       toast.error(res.EM);
     }
   };
 
+  // Fetch Quiz
+  const fetchQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      setListQuiz(res.DT);
+    }
+  };
+
   return (
     <div className="quiz-container">
-      <Accordion defaultActiveKey="0">
+      <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Manage Quizzes</Accordion.Header>
+          <Accordion.Header>
+            <b>CREATE A NEW QUIZ</b>
+          </Accordion.Header>
           <Accordion.Body>
             <div className="add-new">
               {/* <form> */}
@@ -95,21 +114,34 @@ const ManageQuiz = (props) => {
                 <div className="more-actions form-group">
                   <label className="mb-1" htmlFor="upload-image">
                     Upload Image
+                    <MdFileUpload size={"1.7rem"} />
                   </label>
                   <input
                     type="file"
                     id="upload-image"
                     className="form-control"
                     onChange={(e) => handleChangeFile(e)}
+                    hidden
                   />
                 </div>
+
+                {/* Image Preview */}
+                {imagePrev ? (
+                  <div className="image-preview">
+                    <img src={imagePrev} alt="" />
+                  </div>
+                ) : (
+                  <div className="image-preview">
+                    <span>Image Preview</span>
+                  </div>
+                )}
 
                 <div className="mt-3">
                   <button
                     onClick={() => handleSubmitQuiz()}
                     className="btn btn-warning"
                   >
-                    Save
+                    Save & Add New
                   </button>
                 </div>
               </fieldset>
@@ -122,7 +154,7 @@ const ManageQuiz = (props) => {
 
       {/* Table */}
       <div className="list-detail">
-        <TableQuiz />
+        <TableQuiz listQuiz={listQuiz} setListQuiz={setListQuiz} />
       </div>
     </div>
   );

@@ -4,7 +4,8 @@ import UpdateQuizModal from "./UpdateQuizModal";
 
 
 const TableQuiz = (props) => {
-  const [listQuiz, setListQuiz] = useState([]);
+  // const [listQuiz, setListQuiz] = useState([]);
+  const { listQuiz, setListQuiz } = props;
   const [showUpdateQuiz, setShowUpdateQuiz] = useState(false);
   const [currentQuizId, setCurrentQuizId] = useState(0);
 
@@ -29,7 +30,9 @@ const TableQuiz = (props) => {
 
   return (
     <>
-      <div>List Quizzes</div>
+      <h4>
+        <b>List Quizzes</b>
+      </h4>
       <table className="table table-hover table-bordered mt-2 my-2">
         <thead>
           <tr>

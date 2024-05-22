@@ -16,3 +16,34 @@
         padding: 20px;
     }
 }
+.more-actions.form-group {
+    width: fit-content;
+    padding: 4px;
+
+    label.mb-1 {
+        cursor: pointer;
+    }
+}
+
+
+.image-preview {
+    width: 50%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dotted #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    object-fit: contain;
+
+    span {
+        opacity: 0.6;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+}
