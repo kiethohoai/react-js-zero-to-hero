@@ -1,27 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "./UpdateQuizModal.scss";
 import { MdFileUpload } from "react-icons/md";
+import { getDetailQuizDataById } from "../../../../services/apiService";
 
 const UpdateQuizModal = (props) => {
   // PROPS STATE
-  const { show, setShow } = props;
+  const { show, setShow, currentQuizId } = props;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [difficulty, setDifficulty] = useState("EASY");
+  const [difficulty, setDifficulty] = useState("");
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState("");
 
-  // HANDLE
+  useEffect(() => {
+    fetchDetailDataQuiz();
+  }, [currentQuizId]);
+
+  // fetchDetailDataQuiz
+  const fetchDetailDataQuiz = async () => {
+    if (currentQuizId === 0) {
+      return;
+    }
+    let res = await getDetailQuizDataById(currentQuizId);
+    if (res && res.EC === 0) {
+      setName(res.DT.name);
+      setDescription(res.DT.description);
+      setDifficulty(res.DT.difficulty);
+      setImage(res.DT.image);
+      if (res.DT.image) {
+        setImagePrev(`data:image/jpeg;base64, ${res.DT.image}`);
+      }
+    }
+  };
+
+  // handleClose
   const handleClose = () => setShow(false);
 
-  // handleUpdateImage
-  const handleUpdateImage = (e) => {
+  // handleUploadImage
+  const handleUploadImage = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
       setImagePrev(URL.createObjectURL(e.target.files[0]));
     }
+  };
+
+  // handleUpdateQuizById
+  const handleUpdateQuizById = () => {
+    alert("handleUpdateQuizById");
   };
 
   // RENDER
@@ -72,6 +99,7 @@ const UpdateQuizModal = (props) => {
           <select
             className="form-select mb-3"
             aria-label="Default select example"
+            value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
           >
             <option value="EASY">EASY</option>
@@ -90,7 +118,7 @@ const UpdateQuizModal = (props) => {
               className="form-control"
               id="input-upload-file"
               //   value={image}
-              onChange={(e) => handleUpdateImage(e)}
+              onChange={(e) => handleUploadImage(e)}
               hidden
             />
           </div>
@@ -106,7 +134,9 @@ const UpdateQuizModal = (props) => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary">Save & Update</Button>
+          <Button onClick={() => handleUpdateQuizById()} variant="primary">
+            Save & Update
+          </Button>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import { getAllQuizForAdmin } from "../../../../services/apiService";
 import UpdateQuizModal from "./UpdateQuizModal";
 
+
 const TableQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState([]);
   const [showUpdateQuiz, setShowUpdateQuiz] = useState(false);
+  const [currentQuizId, setCurrentQuizId] = useState(0);
 
   // HANDLE
-  const handleUpdateQuiz = () => {
-    setShowUpdateQuiz(true);
-  };
-
   useEffect(() => {
     fetchQuiz();
   }, []);
@@ -21,6 +19,12 @@ const TableQuiz = (props) => {
     if (res && res.EC === 0) {
       setListQuiz(res.DT);
     }
+  };
+
+  // handleUpdateQuiz
+  const handleUpdateQuiz = (quizId) => {
+    setShowUpdateQuiz(true);
+    setCurrentQuizId(quizId);
   };
 
   return (
@@ -48,7 +52,7 @@ const TableQuiz = (props) => {
                   <td>{item.difficulty}</td>
                   <td>
                     <button
-                      onClick={handleUpdateQuiz}
+                      onClick={() => handleUpdateQuiz(item.id)}
                       className="btn btn-warning mx-2"
                     >
                       Update
@@ -60,7 +64,11 @@ const TableQuiz = (props) => {
             })}
         </tbody>
       </table>
-      <UpdateQuizModal show={showUpdateQuiz} setShow={setShowUpdateQuiz} />
+      <UpdateQuizModal
+        show={showUpdateQuiz}
+        setShow={setShowUpdateQuiz}
+        currentQuizId={currentQuizId}
+      />
     </>
   );
 };

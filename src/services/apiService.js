@@ -82,6 +82,11 @@ const getAllQuizForAdmin = () => {
   return axios.get(`api/v1/quiz/all`);
 };
 
+// API Get Detail Quiz Data Via Quiz Id
+const getDetailQuizDataById = (id) => {
+  return axios.get(`api/v1/quiz/${id}`);
+};
+
 export {
   postCreateNewUser,
   getAllUsers,
@@ -95,4 +100,5 @@ export {
   postSubmitQuiz,
   postCreateNewQuiz,
   getAllQuizForAdmin,
+  getDetailQuizDataById,
 };
