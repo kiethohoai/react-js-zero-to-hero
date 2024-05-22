@@ -87,6 +87,25 @@ const getDetailQuizDataById = (id) => {
   return axios.get(`api/v1/quiz/${id}`);
 };
 
+// API Update Detail Data Quiz By Id
+const putUpdateDetailQuizData = (
+  id,
+  description,
+  name,
+  difficulty,
+  quizImage,
+) => {
+  const data = new FormData();
+  data.append("id", id);
+  data.append("description", description);
+  data.append("name", name);
+  data.append("difficulty", difficulty);
+  data.append("quizImage", quizImage);
+  return axios.put("api/v1/quiz", data);
+};
+
+
+
 export {
   postCreateNewUser,
   getAllUsers,
@@ -101,4 +120,5 @@ export {
   postCreateNewQuiz,
   getAllQuizForAdmin,
   getDetailQuizDataById,
+  putUpdateDetailQuizData,
 };

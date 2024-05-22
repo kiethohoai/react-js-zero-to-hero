@@ -68,6 +68,7 @@ const TableQuiz = (props) => {
         show={showUpdateQuiz}
         setShow={setShowUpdateQuiz}
         currentQuizId={currentQuizId}
+        fetchQuiz={fetchQuiz}
       />
     </>
   );

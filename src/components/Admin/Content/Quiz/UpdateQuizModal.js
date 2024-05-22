@@ -3,11 +3,15 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "./UpdateQuizModal.scss";
 import { MdFileUpload } from "react-icons/md";
-import { getDetailQuizDataById } from "../../../../services/apiService";
+import {
+  getDetailQuizDataById,
+  putUpdateDetailQuizData,
+} from "../../../../services/apiService";
+import { toast } from "react-toastify";
 
 const UpdateQuizModal = (props) => {
   // PROPS STATE
-  const { show, setShow, currentQuizId } = props;
+  const { show, setShow, currentQuizId, fetchQuiz } = props;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [difficulty, setDifficulty] = useState("");
@@ -46,9 +50,36 @@ const UpdateQuizModal = (props) => {
     }
   };
 
-  // handleUpdateQuizById
-  const handleUpdateQuizById = () => {
-    alert("handleUpdateQuizById");
+  // handleBtnUpdateQuizById
+  const handleBtnUpdateQuizById = async () => {
+    // Validate
+    if (!name) {
+      toast.error("Name is required!");
+      return;
+    }
+
+    if (!description) {
+      toast.error("Description is required!");
+      return;
+    }
+
+    // Call API Submit Data
+    let res = await putUpdateDetailQuizData(
+      currentQuizId,
+      description,
+      name,
+      difficulty,
+      image,
+    );
+
+    // Notify & Re-render UI
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      handleClose();
+      fetchQuiz();
+    } else {
+      toast.error(res.EM);
+    }
   };
 
   // RENDER
@@ -134,7 +165,7 @@ const UpdateQuizModal = (props) => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => handleUpdateQuizById()} variant="primary">
+          <Button onClick={() => handleBtnUpdateQuizById()} variant="primary">
             Save & Update
           </Button>
           <Button variant="secondary" onClick={handleClose}>
