@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { getAllQuizForAdmin } from "../../../../services/apiService";
+import UpdateQuizModal from "./UpdateQuizModal";
 
 const TableQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState([]);
+  const [showUpdateQuiz, setShowUpdateQuiz] = useState(false);
+
+  // HANDLE
+  const handleUpdateQuiz = () => {
+    setShowUpdateQuiz(true);
+  };
 
   useEffect(() => {
     fetchQuiz();
@@ -11,7 +18,6 @@ const TableQuiz = (props) => {
   // Fetch Quiz
   const fetchQuiz = async () => {
     let res = await getAllQuizForAdmin();
-    console.log("🚀CHECK + file: TableQuiz.js:17 + res:", res);
     if (res && res.EC === 0) {
       setListQuiz(res.DT);
     }
@@ -41,7 +47,12 @@ const TableQuiz = (props) => {
                   <td>{item.description}</td>
                   <td>{item.difficulty}</td>
                   <td>
-                    <button className="btn btn-warning mx-2">Edit</button>
+                    <button
+                      onClick={handleUpdateQuiz}
+                      className="btn btn-warning mx-2"
+                    >
+                      Update
+                    </button>
                     <button className="btn btn-danger">Delete</button>
                   </td>
                 </tr>
@@ -49,6 +60,7 @@ const TableQuiz = (props) => {
             })}
         </tbody>
       </table>
+      <UpdateQuizModal show={showUpdateQuiz} setShow={setShowUpdateQuiz} />
     </>
   );
 };
