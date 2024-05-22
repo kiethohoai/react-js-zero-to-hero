@@ -1,0 +1,36 @@
+.q-container {
+    margin-left: 15px;
+
+    .q-title {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .q-select-quiz {
+        width: 50%;
+        margin: 8px 0;
+    }
+
+    .q-add-del-question {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .q-add-questions {
+            width: 50%;
+        }
+    }
+
+    .q-add-del-answers {
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .q-add-questions {
+            width: 50%;
+        }
+    }
+
+
+}
