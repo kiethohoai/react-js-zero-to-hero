@@ -1,36 +1,14 @@
-.q-container {
-    margin-left: 15px;
+.questions-container {
+    padding-left: 16px;
 
-    .q-title {
+    .title {
         font-size: 24px;
         font-weight: 600;
+        margin-bottom: 16px;
     }
 
-    .q-select-quiz {
-        width: 50%;
-        margin: 8px 0;
+        .select-quiz {
+            margin-bottom: 16px;
     }
-
-    .q-add-del-question {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .q-add-questions {
-            width: 50%;
-        }
-    }
-
-    .q-add-del-answers {
-        margin-top: 24px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .q-add-questions {
-            width: 50%;
-        }
-    }
-
-
+    
 }

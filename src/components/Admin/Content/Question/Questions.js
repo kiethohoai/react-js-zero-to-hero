@@ -1,98 +1,68 @@
-import { useState } from "react";
 import Select from "react-select";
-import "./Questions.scss";
-import { FaRegSquarePlus } from "react-icons/fa6";
-import { AiFillMinusSquare } from "react-icons/ai";
-import { MdAddBox } from "react-icons/md";
+import "./QuestionsFix.scss";
+import { useState } from "react";
+import { RiFolderUploadFill } from "react-icons/ri";
 
 const Questions = (props) => {
-  // PROPS & STATE
-  const [selectedQuiz, setSelectedQuiz] = useState({});
-
+  // Props & State
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
+    { value: "EASY", label: "EASY" },
+    { value: "MEDIUM", label: "MEDIUM" },
+    { value: "HARD", label: "HARD" },
   ];
 
+  const [selectQuiz, setSelectQuiz] = useState({});
+
   return (
-    <div className="q-container">
-      {/* Title */}
-      <div className="q-title">Manage Questions</div>
+    <div className="questions-container">
+      <div className="title">Manage Question</div>
+      <hr />
 
-      {/* Select Quiz */}
-      <div className="q-select-quiz">
-        <label htmlFor="">Select Quiz:</label>
-        <Select
-          defaultValue={selectedQuiz}
-          onChange={setSelectedQuiz}
-          options={options}
-        />
+      {/* select quiz */}
+      <div className="select-quiz">
+        Select Quiz
+        <Select value={selectQuiz} onChange={setSelectQuiz} options={options} />
       </div>
 
-      {/* PART 3 */}
-      <div>Add Questions:</div>
-      <div className="q-add-del-question">
-        {/* Add Questions */}
-        <div className="q-add-questions">
-          <label htmlFor="floatingInput" hidden>
-            Add Questions:
-          </label>
-          <input
-            type="type"
-            className="form-control"
-            id="floatingInput"
-            placeholder="Description"
-          />
+      {/* question content */}
+      <div className="questions-content">
+        <div>Add Question</div>
+        {/* add questions */}
+        <div className="add-questions">
+          <div className="input-questions">
+            <input type="text" class="form-control" id="add-question" placeholder="Description" />
+          </div>
+
+          <div>
+            <label for="formFile" class="form-label">
+              <RiFolderUploadFill size={"2em"} />
+            </label>
+            <input type="file" id="formFile" hidden />
+            <span> 0 file is uploaded</span>
+          </div>
+
+          <div className="btn-container">
+            <button className="btn btn-outline-success">Add</button>
+            <button className="btn btn-outline-danger">Del</button>
+          </div>
         </div>
 
-        {/* +Upload Image */}
-        <div className="q-upload-image">
-          <label htmlFor="upload-image">Upload Image: </label>
-          <input type={"file"} id="upload-image" hidden />
-          <span> myImage.png</span>
-        </div>
-
-        {/* +Increase & Decrease +/- */}
-        <div className="q-increase-decrease">
-          <span>
-            <MdAddBox size={"1.5em"} />
-          </span>
-          <span>
-            <AiFillMinusSquare size={"1.4em"} />
-          </span>
-        </div>
-      </div>
-
-      {/* PART 4 */}
-      <div className="q-add-del-answers">
-        {/* Checkbox */}
-        <div>
-          <input type="checkbox" />
-        </div>
-
-        {/* Add Answers */}
-        <div className="q-add-questions">
-          <input
-            type="type"
-            className="form-control"
-            id="floatingInput"
-            placeholder="Answers 1"
-          />
-        </div>
-
-        {/* Increase & Decrease +/- */}
-        <div className="q-increase-decrease">
-          <span>
-            <MdAddBox size={"1.5em"} />
-          </span>
-          <span>
-            <AiFillMinusSquare size={"1.4em"} />
-          </span>
+        {/* add answers */}
+        <div className="add-answers">
+          <div>
+            <input type="checkbox" name="" id="" />
+          </div>
+          <div class="input-answers">
+            <input type="text" class="form-control" id="add-question" placeholder="Answer" />
+          </div>
+          <div className="btn-add-del">
+            <button className="btn btn-outline-success">Add</button>
+            <button className="btn btn-outline-danger">Del</button>
+          </div>
         </div>
       </div>
 
-      {/* End */}
+      {/* End question-container */}
     </div>
   );
 };
