@@ -2,6 +2,8 @@ import Select from "react-select";
 import "./QuestionsFix.scss";
 import { useState } from "react";
 import { RiFolderUploadFill } from "react-icons/ri";
+import { v4 as uuidv4 } from "uuid";
+import _ from "lodash";
 
 const Questions = (props) => {
   // Props & State
@@ -12,9 +14,81 @@ const Questions = (props) => {
   ];
 
   const [selectQuiz, setSelectQuiz] = useState({});
+  const [questions, setQuestions] = useState([
+    {
+      id: uuidv4(),
+      description: "question 1",
+      imageFile: "",
+      imageName: "",
+      answers: [
+        {
+          id: uuidv4(),
+          description: "answer 1",
+          isCorrect: false,
+        },
+        {
+          id: uuidv4(),
+          description: "answer 2",
+          isCorrect: false,
+        },
+      ],
+    },
+    {
+      id: uuidv4(),
+      description: "question 2",
+      imageFile: "",
+      imageName: "",
+      answers: [
+        {
+          id: uuidv4(),
+          description: "answer 1",
+          isCorrect: false,
+        },
+        {
+          id: uuidv4(),
+          description: "answer 2",
+          isCorrect: false,
+        },
+      ],
+    },
+  ]);
 
+  const handleAddRemoveQuestion = (type, id) => {
+    console.log("🚀CHECK + file: Questions.js:56 + type, id:", type, id);
+    if (type === "ADD") {
+      const newQuestion = {
+        id: uuidv4(),
+        description: "",
+        imageFile: "",
+        imageName: "",
+        answers: [
+          {
+            id: uuidv4(),
+            description: "",
+            isCorrect: false,
+          },
+          {
+            id: uuidv4(),
+            description: "",
+            isCorrect: false,
+          },
+        ],
+      };
+      setQuestions([...questions, newQuestion]);
+    }
+
+    if (type === "REMOVE") {
+      let questionsClone = questions;
+      questionsClone = questionsClone.filter((item) => item.id !== id);
+      setQuestions(questionsClone);
+    }
+  };
+
+  console.log("🚀CHECK + file: Questions.js:56 + questions:", questions);
   return (
     <div className="questions-container">
+      {/* -------START------ */}
+
       <div className="title">Manage Question</div>
       <hr />
 
@@ -24,45 +98,86 @@ const Questions = (props) => {
         <Select value={selectQuiz} onChange={setSelectQuiz} options={options} />
       </div>
 
-      {/* question content */}
-      <div className="questions-content">
-        <div>Add Question</div>
-        {/* add questions */}
-        <div className="add-questions">
-          <div className="input-questions">
-            <input type="text" class="form-control" id="add-question" placeholder="Description" />
-          </div>
+      {questions &&
+        questions.length > 0 &&
+        questions.map((question, index) => {
+          return (
+            <div key={question.id} className="questions-content">
+              <div>
+                <b>Add Question {index + 1}</b>
+              </div>
+              {/* add questions */}
+              <div className="add-questions">
+                <div className="input-questions">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="add-question"
+                    placeholder={`Question's description ${index + 1}`}
+                    value={question.description}
+                  />
+                </div>
 
-          <div>
-            <label for="formFile" class="form-label">
-              <RiFolderUploadFill size={"2em"} />
-            </label>
-            <input type="file" id="formFile" hidden />
-            <span> 0 file is uploaded</span>
-          </div>
+                <div>
+                  <label htmlFor="formFile" className="form-label">
+                    <RiFolderUploadFill size={"2em"} />
+                  </label>
+                  <input type="file" id="formFile" hidden />
+                  <span> 0 file is uploaded</span>
+                </div>
 
-          <div className="btn-container">
-            <button className="btn btn-outline-success">Add</button>
-            <button className="btn btn-outline-danger">Del</button>
-          </div>
-        </div>
+                <div className="btn-container">
+                  <button
+                    onClick={() => handleAddRemoveQuestion("ADD", "")}
+                    className="btn btn-outline-success"
+                  >
+                    Add+
+                  </button>
+                  {questions.length > 1 && (
+                    <button
+                      onClick={() =>
+                        handleAddRemoveQuestion("REMOVE", question.id)
+                      }
+                      className="btn btn-outline-danger"
+                    >
+                      Del-
+                    </button>
+                  )}
+                </div>
+              </div>
 
-        {/* add answers */}
-        <div className="add-answers">
-          <div>
-            <input type="checkbox" name="" id="" />
-          </div>
-          <div class="input-answers">
-            <input type="text" class="form-control" id="add-question" placeholder="Answer" />
-          </div>
-          <div className="btn-add-del">
-            <button className="btn btn-outline-success">Add</button>
-            <button className="btn btn-outline-danger">Del</button>
-          </div>
-        </div>
-      </div>
+              {question.answers &&
+                question.answers.length > 0 &&
+                question.answers.map((answer, index) => {
+                  return (
+                    <div key={answer.id} className="add-answers">
+                      {/* add answers */}
+                      <div>
+                        <input type="checkbox" name="" id="" />
+                      </div>
+                      <div className="input-answers">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="add-question"
+                          placeholder={`Answer ${index + 1}`}
+                          value={answer.description}
+                        />
+                      </div>
+                      <div className="btn-add-del">
+                        <button className="btn btn-outline-success">
+                          Add+
+                        </button>
+                        <button className="btn btn-outline-danger">Del-</button>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          );
+        })}
 
-      {/* End question-container */}
+      {/* -------END------ */}
     </div>
   );
 };
