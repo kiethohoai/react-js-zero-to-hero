@@ -26,33 +26,11 @@ const Questions = (props) => {
           description: "answer 1",
           isCorrect: false,
         },
-        {
-          id: uuidv4(),
-          description: "answer 2",
-          isCorrect: false,
-        },
-      ],
-    },
-    {
-      id: uuidv4(),
-      description: "question 2",
-      imageFile: "",
-      imageName: "",
-      answers: [
-        {
-          id: uuidv4(),
-          description: "answer 1",
-          isCorrect: false,
-        },
-        {
-          id: uuidv4(),
-          description: "answer 2",
-          isCorrect: false,
-        },
       ],
     },
   ]);
 
+  // handleAddRemoveQuestion
   const handleAddRemoveQuestion = (type, id) => {
     console.log("🚀CHECK + file: Questions.js:56 + type, id:", type, id);
     if (type === "ADD") {
@@ -78,8 +56,36 @@ const Questions = (props) => {
     }
 
     if (type === "REMOVE") {
-      let questionsClone = questions;
+      let questionsClone = _.cloneDeep(questions);
       questionsClone = questionsClone.filter((item) => item.id !== id);
+      setQuestions(questionsClone);
+    }
+  };
+
+  // handleAddRemoveAnswer
+  const handleAddRemoveAnswer = (type, questionId, answerId) => {
+    console.log("🚀CHECK + file: Questions.js:72 + type:", type);
+    console.log("🚀CHECK + file: Questions.js:72 + questionId:", questionId);
+    console.log("🚀CHECK + file: Questions.js:72 + answerId:", answerId);
+
+    let questionsClone = _.cloneDeep(questions);
+    if (type === "ADD") {
+      const newAnswer = {
+        id: uuidv4(),
+        description: "",
+        isCorrect: false,
+      };
+
+      let index = questionsClone.findIndex((item) => item.id === questionId);
+      questionsClone[index].answers.push(newAnswer);
+      setQuestions(questionsClone);
+    }
+
+    if (type === "REMOVE") {
+      let index = questionsClone.findIndex((item) => item.id === questionId);
+      questionsClone[index].answers = questionsClone[index].answers.filter(
+        (item) => item.id !== answerId,
+      );
       setQuestions(questionsClone);
     }
   };
@@ -165,10 +171,28 @@ const Questions = (props) => {
                         />
                       </div>
                       <div className="btn-add-del">
-                        <button className="btn btn-outline-success">
+                        <button
+                          onClick={() =>
+                            handleAddRemoveAnswer("ADD", question.id)
+                          }
+                          className="btn btn-outline-success"
+                        >
                           Add+
                         </button>
-                        <button className="btn btn-outline-danger">Del-</button>
+                        {question.answers.length > 1 && (
+                          <button
+                            onClick={() =>
+                              handleAddRemoveAnswer(
+                                "REMOVE",
+                                question.id,
+                                answer.id,
+                              )
+                            }
+                            className="btn btn-outline-danger"
+                          >
+                            Del-
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
