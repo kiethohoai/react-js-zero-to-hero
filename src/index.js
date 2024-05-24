@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "nprogress/nprogress.css";
+import "react-awesome-lightbox/build/style.css";
 import Layout from "./Layout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

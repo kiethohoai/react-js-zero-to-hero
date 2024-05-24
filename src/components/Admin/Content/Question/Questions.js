@@ -4,6 +4,7 @@ import { useState } from "react";
 import { RiFolderUploadFill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import Lightbox from "react-awesome-lightbox";
 
 const Questions = (props) => {
   // Props & State
@@ -29,6 +30,24 @@ const Questions = (props) => {
       ],
     },
   ]);
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
+  const [dataImagePreview, setDataImagePreview] = useState({
+    title: "",
+    url: "",
+  });
+
+  // handlePreviewImage
+  const handlePreviewImage = (questionId) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === questionId);
+    if (index > -1) {
+      setIsPreviewImage(true);
+      setDataImagePreview({
+        url: URL.createObjectURL(questionsClone[index].imageFile),
+        title: questionsClone[index].imageName,
+      });
+    }
+  };
 
   // handleAddRemoveQuestion
   const handleAddRemoveQuestion = (type, id) => {
@@ -107,14 +126,6 @@ const Questions = (props) => {
   const handleCAnswerQuestion = (type, answerId, questionId, value) => {
     let questionsClone = _.cloneDeep(questions);
     let index = questionsClone.findIndex((item) => item.id === questionId);
-
-    console.log("🚀CHECK + file: Questions.js:82 + questions:", questions);
-    console.log("🚀CHECK + file: Questions.js:113 + type:", type);
-    console.log("🚀CHECK + file: Questions.js:113 + answerId:", answerId);
-    console.log("🚀CHECK + file: Questions.js:113 + questionId:", questionId);
-    console.log("🚀CHECK + file: Questions.js:113 + value:", value);
-    console.log("🚀CHECK + file: Questions.js:117 + index:", index);
-
     if (index > -1) {
       questionsClone[index].answers = questionsClone[index].answers.map((answer) => {
         if (answer.id === answerId) {
@@ -173,7 +184,7 @@ const Questions = (props) => {
                 </div>
 
                 <div className="upload-image">
-                  <label htmlFor={`${question.id}`} className="form-label">
+                  <label htmlFor={`${question.id}`} className="form-label" style={{ color: "red" }}>
                     <RiFolderUploadFill size={"2em"} />
                   </label>
                   <input
@@ -182,7 +193,15 @@ const Questions = (props) => {
                     id={`${question.id}`}
                     hidden
                   />
-                  <span> {question.imageName ? question.imageName : "0 file is uploaded"}</span>
+                  <span style={{ cursor: "pointer" }}>
+                    {question.imageName ? (
+                      <span onClick={() => handlePreviewImage(question.id)}>
+                        {question.imageName}
+                      </span>
+                    ) : (
+                      "0 file is uploaded"
+                    )}
+                  </span>
                 </div>
 
                 <div className="btn-container">
@@ -257,13 +276,21 @@ const Questions = (props) => {
             </div>
           );
         })}
-      {/* button submit */}
+
       {questions && questions.length > 0 && (
         <div>
           <button onClick={() => handleSubmitQuestionForQuiz()} className="btn btn-warning mb-3">
             Save Question
           </button>
         </div>
+      )}
+
+      {isPreviewImage === true && (
+        <Lightbox
+          image={dataImagePreview.url}
+          title={dataImagePreview.title}
+          onClose={() => setIsPreviewImage(false)}
+        ></Lightbox>
       )}
       {/* -------END------ */}
     </div>
