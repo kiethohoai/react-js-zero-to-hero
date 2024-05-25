@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import TableQuiz from "./TableQuiz";
 import Accordion from "react-bootstrap/Accordion";
 import { MdFileUpload } from "react-icons/md";
+import QuizQA from "./QuizQA";
+import AssignQuiz from "./AssignQuiz";
 
 const options = [
   { value: "EASY", label: "EASY" },
@@ -70,9 +72,10 @@ const ManageQuiz = (props) => {
   return (
     <div className="quiz-container">
       <Accordion>
+        {/* Create A New Quiz */}
         <Accordion.Item eventKey="0">
           <Accordion.Header>
-            <b>CREATE A NEW QUIZ</b>
+            <b>Create A New Quiz</b>
           </Accordion.Header>
           <Accordion.Body>
             <div className="add-new">
@@ -137,25 +140,41 @@ const ManageQuiz = (props) => {
                 )}
 
                 <div className="mt-3">
-                  <button
-                    onClick={() => handleSubmitQuiz()}
-                    className="btn btn-warning"
-                  >
+                  <button onClick={() => handleSubmitQuiz()} className="btn btn-warning">
                     Save & Add New
                   </button>
                 </div>
               </fieldset>
               {/* </form> */}
             </div>
-            <hr />
+
+            {/* Table */}
+            <div className="list-detail">
+              <TableQuiz listQuiz={listQuiz} setListQuiz={setListQuiz} />
+            </div>
+          </Accordion.Body>
+        </Accordion.Item>
+
+        {/* Update Q/A Quizzes*/}
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>
+            <b>Update Q/A Quizzes</b>
+          </Accordion.Header>
+          <Accordion.Body>
+            <QuizQA />
+          </Accordion.Body>
+        </Accordion.Item>
+
+        {/* Assign to Users*/}
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>
+            <b>Assign to Users</b>
+          </Accordion.Header>
+          <Accordion.Body>
+            <AssignQuiz />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-
-      {/* Table */}
-      <div className="list-detail">
-        <TableQuiz listQuiz={listQuiz} setListQuiz={setListQuiz} />
-      </div>
     </div>
   );
 };

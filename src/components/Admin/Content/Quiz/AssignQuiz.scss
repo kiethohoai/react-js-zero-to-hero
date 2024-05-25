@@ -1,0 +1,15 @@
+.assign-quiz-container {
+    .assign-quiz-content {
+        display: flex;
+        gap: 12px;
+
+        .select-quiz {
+            width: 50%;
+        }
+
+        .select-user {
+            width: 50%;
+        }
+    }
+
+}

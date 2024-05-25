@@ -1,0 +1,58 @@
+.questions-container {
+    padding-left: 16px;
+
+    .title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .select-quiz {
+        margin-bottom: 16px;
+        width: 50%;
+    }
+
+    .questions-content {
+        .add-questions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+
+            .input-questions {
+                width: 50%;
+            }
+
+            .btn-container {
+                display: flex;
+                gap: 4px;
+            }
+        }
+
+        .add-answers {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+
+
+            .input-answers {
+                width: 50%;
+            }
+
+            .btn-add-del {
+                display: flex;
+                gap: 4px;
+            }
+        }
+    }
+
+
+
+}
+
+.upload-image {
+    label.form-label {
+        cursor: pointer;
+    }
+}
