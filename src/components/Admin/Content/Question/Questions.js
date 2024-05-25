@@ -10,10 +10,12 @@ import {
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
 } from "../../../../services/apiService";
+import { toast } from "react-toastify";
 
 const Questions = (props) => {
   /////////////////// PROPS STATE ////////////////////
-  const [questions, setQuestions] = useState([
+
+  const initQuestion = [
     {
       id: uuidv4(),
       description: "",
@@ -27,7 +29,8 @@ const Questions = (props) => {
         },
       ],
     },
-  ]);
+  ];
+  const [questions, setQuestions] = useState(initQuestion);
 
   const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [dataImagePreview, setDataImagePreview] = useState({
@@ -167,32 +170,96 @@ const Questions = (props) => {
 
   // handleSubmitQuestionForQuiz
   const handleSubmitQuestionForQuiz = async () => {
-    // Validate Data ????
-
     console.log("🚀CHECK + file: Questions.js:82 + questions:", questions);
     console.log("🚀CHECK + file: Questions.js:169 + selectedQuiz:", selectedQuiz);
 
-    await Promise.all(
-      questions.map(async (question) => {
-        const q = await postCreateNewQuestionForQuiz(
-          +selectedQuiz.value,
-          question.description,
-          question.imageFile,
-        );
+    // Validate Data
+    // 1 validate quiz
+    if (_.isEmpty(selectedQuiz)) {
+      toast.error("Please Choose A Quiz!");
+      return;
+    }
 
-        console.log("Check q = ", q);
+    // 2 validate answer
+    questions.map((question) => {
+      question.answers.map((a) => {});
+    });
+
+    let isValidAnswer = true;
+    let indexQ = 0;
+    let indexA = 0;
+    for (let i = 0; i < questions.length; i++) {
+      for (let j = 0; j < questions[i].answers.length; j++) {
+        if (!questions[i].answers[j].description) {
+          isValidAnswer = false;
+          indexA = j;
+          break;
+        }
+      }
+      indexQ = i;
+      if (isValidAnswer === false) break;
+    }
+
+    if (isValidAnswer === false) {
+      toast.error(`Not Empty Answer ${indexA + 1} at Question ${indexQ + 1}`);
+      return;
+    }
+
+    // 3 validate question
+    let isValidQ = true;
+    let indexQ1 = 0;
+    for (let i = 0; i < questions.length; i++) {
+      if (!questions[i].description) {
+        isValidQ = false;
+        indexQ1 = i;
+        break;
+      }
+    }
+
+    if (isValidQ === false) {
+      toast.error(`Not Empty Description for Question ${indexQ1 + 1}`);
+      return;
+    }
+
+    // submit questions
+    for (const question of questions) {
+      const q = await postCreateNewQuestionForQuiz(
+        +selectedQuiz.value,
+        question.description,
+        question.imageFile,
+      );
+
+      // submit answers
+      for (const answer of question.answers) {
         await Promise.all(
           question.answers.map(async (answer) => {
             await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
           }),
         );
-      }),
-    );
+      }
+    }
 
-    // submit questions
+    toast.success("Create Questions & Answers Successfully! ");
+    setQuestions(initQuestion);
 
-    // submit answers
-  };
+    // submit questions & submit answers
+    // await Promise.all(
+    //   questions.map(async (question) => {
+    //     const q = await postCreateNewQuestionForQuiz(
+    //       +selectedQuiz.value,
+    //       question.description,
+    //       question.imageFile,
+    //     );
+    //     console.log("Check q = ", q);
+
+    //     await Promise.all(
+    //       question.answers.map(async (answer) => {
+    //         await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
+    //       }),
+    //     );
+    //   }),
+    // );
+  }; // End handleSubmitQuestionForQuiz
 
   /////////////////// RETURN ////////////////////
   return (
