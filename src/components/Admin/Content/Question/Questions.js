@@ -1,20 +1,18 @@
 import Select from "react-select";
 import "./QuestionsFix.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiFolderUploadFill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import Lightbox from "react-awesome-lightbox";
+import {
+  getAllQuizForAdmin,
+  postCreateNewQuestionForQuiz,
+  postCreateNewAnswerForQuestion,
+} from "../../../../services/apiService";
 
 const Questions = (props) => {
-  // Props & State
-  const options = [
-    { value: "EASY", label: "EASY" },
-    { value: "MEDIUM", label: "MEDIUM" },
-    { value: "HARD", label: "HARD" },
-  ];
-
-  const [selectQuiz, setSelectQuiz] = useState({});
+  /////////////////// PROPS STATE ////////////////////
   const [questions, setQuestions] = useState([
     {
       id: uuidv4(),
@@ -30,11 +28,36 @@ const Questions = (props) => {
       ],
     },
   ]);
+
   const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [dataImagePreview, setDataImagePreview] = useState({
     title: "",
     url: "",
   });
+
+  const [listQuiz, setListQuiz] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState({});
+
+  /////////////////// HANDLE ////////////////////
+  useEffect(() => {
+    fetchQuiz();
+  }, []);
+
+  // Fetch Quiz
+  const fetchQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      let newQuiz = res.DT.map((item) => {
+        return {
+          value: item.id,
+          label: `${item.id} - ${item.description}`,
+        };
+      });
+      setListQuiz(newQuiz);
+    }
+  };
+
+  console.log("🚀CHECK + file: Questions.js:41 + listQuiz:", listQuiz);
 
   // handlePreviewImage
   const handlePreviewImage = (questionId) => {
@@ -143,10 +166,35 @@ const Questions = (props) => {
   };
 
   // handleSubmitQuestionForQuiz
-  const handleSubmitQuestionForQuiz = () => {
+  const handleSubmitQuestionForQuiz = async () => {
+    // Validate Data ????
+
     console.log("🚀CHECK + file: Questions.js:82 + questions:", questions);
+    console.log("🚀CHECK + file: Questions.js:169 + selectedQuiz:", selectedQuiz);
+
+    await Promise.all(
+      questions.map(async (question) => {
+        const q = await postCreateNewQuestionForQuiz(
+          +selectedQuiz.value,
+          question.description,
+          question.imageFile,
+        );
+
+        console.log("Check q = ", q);
+        await Promise.all(
+          question.answers.map(async (answer) => {
+            await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
+          }),
+        );
+      }),
+    );
+
+    // submit questions
+
+    // submit answers
   };
 
+  /////////////////// RETURN ////////////////////
   return (
     <div className="questions-container">
       {/* -------START------ */}
@@ -157,7 +205,7 @@ const Questions = (props) => {
       {/* select quiz */}
       <div className="select-quiz">
         Select Quiz
-        <Select value={selectQuiz} onChange={setSelectQuiz} options={options} />
+        <Select value={selectedQuiz} onChange={setSelectedQuiz} options={listQuiz} />
       </div>
 
       {questions &&

@@ -109,6 +109,24 @@ const deleteQuizById = (id) => {
   return axios.delete(`api/v1/quiz/${id}`);
 };
 
+// postCreateNewQuestionForQuiz
+const postCreateNewQuestionForQuiz = (quiz_id, description, image) => {
+  const data = new FormData();
+  data.append("quiz_id", quiz_id);
+  data.append("description", description);
+  data.append("image", image);
+  return axios.post("api/v1/question", data);
+};
+
+// postCreateNewAnswerForQuestion
+const postCreateNewAnswerForQuestion = (description, correct_answer, question_id) => {
+  return axios.post("api/v1/answer", {
+    description,
+    correct_answer,
+    question_id,
+  });
+};
+
 export {
   postCreateNewUser,
   getAllUsers,
@@ -125,4 +143,6 @@ export {
   getDetailQuizDataById,
   putUpdateDetailQuizData,
   deleteQuizById,
+  postCreateNewQuestionForQuiz,
+  postCreateNewAnswerForQuestion,
 };
