@@ -79,5 +79,6 @@ code {
   .app-content {
     width: 1170px;
     margin: 0 auto;
+    height: calc(100vh - 50px);
   }
 }

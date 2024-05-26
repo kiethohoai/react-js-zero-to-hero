@@ -60,8 +60,6 @@ const Questions = (props) => {
     }
   };
 
-  console.log("🚀CHECK + file: Questions.js:41 + listQuiz:", listQuiz);
-
   // handlePreviewImage
   const handlePreviewImage = (questionId) => {
     let questionsClone = _.cloneDeep(questions);
@@ -170,9 +168,6 @@ const Questions = (props) => {
 
   // handleSubmitQuestionForQuiz
   const handleSubmitQuestionForQuiz = async () => {
-    console.log("🚀CHECK + file: Questions.js:82 + questions:", questions);
-    console.log("🚀CHECK + file: Questions.js:169 + selectedQuiz:", selectedQuiz);
-
     // Validate Data
     // 1 validate quiz
     if (_.isEmpty(selectedQuiz)) {
@@ -223,42 +218,19 @@ const Questions = (props) => {
 
     // submit questions
     for (const question of questions) {
-      const q = await postCreateNewQuestionForQuiz(
+      let q = await postCreateNewQuestionForQuiz(
         +selectedQuiz.value,
         question.description,
         question.imageFile,
       );
-
       // submit answers
       for (const answer of question.answers) {
-        await Promise.all(
-          question.answers.map(async (answer) => {
-            await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
-          }),
-        );
+        let a = await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
       }
     }
 
     toast.success("Create Questions & Answers Successfully! ");
     setQuestions(initQuestion);
-
-    // submit questions & submit answers
-    // await Promise.all(
-    //   questions.map(async (question) => {
-    //     const q = await postCreateNewQuestionForQuiz(
-    //       +selectedQuiz.value,
-    //       question.description,
-    //       question.imageFile,
-    //     );
-    //     console.log("Check q = ", q);
-
-    //     await Promise.all(
-    //       question.answers.map(async (answer) => {
-    //         await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
-    //       }),
-    //     );
-    //   }),
-    // );
   }; // End handleSubmitQuestionForQuiz
 
   /////////////////// RETURN ////////////////////

@@ -9,6 +9,7 @@ import {
   getAllQuizForAdmin,
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
+  getQuizWithQA,
 } from "../../../../services/apiService";
 import { toast } from "react-toastify";
 
@@ -40,11 +41,60 @@ const QuizQA = (props) => {
 
   const [listQuiz, setListQuiz] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState({});
+  console.log("🚀CHECK + file: QuizQA.js:44 + selectedQuiz:", selectedQuiz);
 
   /////////////////// HANDLE ////////////////////
   useEffect(() => {
     fetchQuiz();
   }, []);
+
+  useEffect(() => {
+    if (!_.isEmpty(selectedQuiz)) {
+      fetchQuizWithQA();
+    }
+  }, [selectedQuiz]);
+
+  // return a promise that resolves with a File instance
+  function urltoFile(url, filename, mimeType) {
+    if (url.startsWith("data:")) {
+      var arr = url.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[arr.length - 1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      var file = new File([u8arr], filename, { type: mime || mimeType });
+      return Promise.resolve(file);
+    }
+    return fetch(url)
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new File([buf], filename, { type: mimeType }));
+  }
+
+  //Usage example:
+  // urltoFile("data:text/plain;base64,aGVsbG8=", "hello.txt", "text/plain").then(function (file) {
+  //   console.log(file);
+  // });
+
+  const fetchQuizWithQA = async () => {
+    let res = await getQuizWithQA(selectedQuiz.value);
+    if (res && res.EC === 0) {
+      // convert base64 to object file
+      let newQA = [];
+      for (let i = 0; i < res.DT.qa.length; i++) {
+        let q = res.DT.qa[i];
+        if (q.imageFile) {
+          q.imageName = `Question-${q.id}`;
+          q.imageFile = await urltoFile(`data:image/png;base64,${q.imageFile}`, `Question-${q.id}`, "image/png");
+        }
+        newQA.push(q);
+      }
+      setQuestions(newQA);
+      console.log("🚀CHECK + file: QuizQA.js:58 + res:", res);
+    }
+  };
 
   // Fetch Quiz
   const fetchQuiz = async () => {
@@ -116,9 +166,7 @@ const QuizQA = (props) => {
 
     if (type === "REMOVE") {
       let index = questionsClone.findIndex((item) => item.id === questionId);
-      questionsClone[index].answers = questionsClone[index].answers.filter(
-        (item) => item.id !== answerId,
-      );
+      questionsClone[index].answers = questionsClone[index].answers.filter((item) => item.id !== answerId);
       setQuestions(questionsClone);
     }
   };
@@ -221,11 +269,7 @@ const QuizQA = (props) => {
 
     // submit questions
     for (const question of questions) {
-      const q = await postCreateNewQuestionForQuiz(
-        +selectedQuiz.value,
-        question.description,
-        question.imageFile,
-      );
+      const q = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
 
       // submit answers
       for (const answer of question.answers) {
@@ -272,9 +316,7 @@ const QuizQA = (props) => {
                     id="add-question"
                     placeholder={`Question's description ${index + 1}`}
                     value={question.description}
-                    onChange={(e) =>
-                      handleOnChangeQuestionDescription("QUESTION", question.id, e.target.value)
-                    }
+                    onChange={(e) => handleOnChangeQuestionDescription("QUESTION", question.id, e.target.value)}
                   />
                 </div>
 
@@ -290,9 +332,7 @@ const QuizQA = (props) => {
                   />
                   <span style={{ cursor: "pointer" }}>
                     {question.imageName ? (
-                      <span onClick={() => handlePreviewImage(question.id)}>
-                        {question.imageName}
-                      </span>
+                      <span onClick={() => handlePreviewImage(question.id)}>{question.imageName}</span>
                     ) : (
                       "0 file is uploaded"
                     )}
@@ -300,10 +340,7 @@ const QuizQA = (props) => {
                 </div>
 
                 <div className="btn-container">
-                  <button
-                    onClick={() => handleAddRemoveQuestion("ADD", "")}
-                    className="btn btn-outline-success"
-                  >
+                  <button onClick={() => handleAddRemoveQuestion("ADD", "")} className="btn btn-outline-success">
                     Add+
                   </button>
                   {questions.length > 1 && (
@@ -327,14 +364,7 @@ const QuizQA = (props) => {
                         <input
                           type="checkbox"
                           checked={answer.isCorrect}
-                          onChange={(e) =>
-                            handleCAnswerQuestion(
-                              "CHECKBOX",
-                              answer.id,
-                              question.id,
-                              e.target.checked,
-                            )
-                          }
+                          onChange={(e) => handleCAnswerQuestion("CHECKBOX", answer.id, question.id, e.target.checked)}
                         />
                       </div>
                       <div className="input-answers">
@@ -344,9 +374,7 @@ const QuizQA = (props) => {
                           id="add-question"
                           placeholder={`Answer ${index + 1}`}
                           value={answer.description}
-                          onChange={(e) =>
-                            handleCAnswerQuestion("INPUT", answer.id, question.id, e.target.value)
-                          }
+                          onChange={(e) => handleCAnswerQuestion("INPUT", answer.id, question.id, e.target.value)}
                         />
                       </div>
                       <div className="btn-add-del">
