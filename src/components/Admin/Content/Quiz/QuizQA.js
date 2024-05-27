@@ -10,6 +10,7 @@ import {
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
   getQuizWithQA,
+  postUpsertQA,
 } from "../../../../services/apiService";
 import { toast } from "react-toastify";
 
@@ -41,7 +42,6 @@ const QuizQA = (props) => {
 
   const [listQuiz, setListQuiz] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState({});
-  console.log("🚀CHECK + file: QuizQA.js:44 + selectedQuiz:", selectedQuiz);
 
   /////////////////// HANDLE ////////////////////
   useEffect(() => {
@@ -92,7 +92,6 @@ const QuizQA = (props) => {
         newQA.push(q);
       }
       setQuestions(newQA);
-      console.log("🚀CHECK + file: QuizQA.js:58 + res:", res);
     }
   };
 
@@ -216,9 +215,6 @@ const QuizQA = (props) => {
 
   // handleSubmitQuestionForQuiz
   const handleSubmitQuestionForQuiz = async () => {
-    console.log("🚀CHECK + file: Questions.js:82 + questions:", questions);
-    console.log("🚀CHECK + file: Questions.js:169 + selectedQuiz:", selectedQuiz);
-
     // Validate Data
     // 1 validate quiz
     if (_.isEmpty(selectedQuiz)) {
@@ -267,32 +263,52 @@ const QuizQA = (props) => {
       return;
     }
 
-    // submit questions
-    for (const question of questions) {
-      const q = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
-
-      // submit answers
-      for (const answer of question.answers) {
-        await Promise.all(
-          question.answers.map(async (answer) => {
-            await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
-          }),
-        );
+    let questionsClone = _.cloneDeep(questions);
+    for (let i = 0; i < questionsClone.length; i++) {
+      if (questionsClone[i].imageFile) {
+        questionsClone[i].imageFile = await toBase64(questionsClone[i].imageFile);
       }
     }
+    console.log("🚀CHECK + file: QuizQA.js:272 + questionsClone:", questionsClone);
 
-    toast.success("Create Questions & Answers Successfully! ");
-    setQuestions(initQuestion);
-  }; // End handleSubmitQuestionForQuiz
+    let res = await postUpsertQA({
+      quizId: selectedQuiz.value,
+      questions: questionsClone,
+    });
+
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      fetchQuizWithQA();
+    }
+    console.log("🚀CHECK + file: QuizQA.js:295 + res:", res);
+
+    // toast.success("Create Questions & Answers Successfully! ");
+    // setQuestions(initQuestion);
+
+    // submit questions
+    // for (const question of questions) {
+    //   const q = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
+
+    //   // submit answers
+    //   for (const answer of question.answers) {
+    //     await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
+    //   }
+    // }
+  };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
 
   /////////////////// RETURN ////////////////////
+  console.log("🚀CHECK + file: QuizQA.js:36 + questions:", questions);
+
   return (
     <div className="questions-container">
-      {/* -------START------ */}
-
-      {/* <div className="title">Manage Question</div>
-      <hr /> */}
-
       {/* select quiz */}
       <div className="select-quiz">
         Select Quiz

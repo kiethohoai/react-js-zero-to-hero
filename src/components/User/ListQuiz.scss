@@ -1,6 +1,8 @@
 .list-quiz-container {
     display: flex;
     justify-content: space-around;
+        height: calc(100vh - 100px);
         row-gap: 48px;
         flex-wrap: wrap;
+
 }
