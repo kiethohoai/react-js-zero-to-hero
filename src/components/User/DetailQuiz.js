@@ -13,45 +13,38 @@ const DetailQuiz = (props) => {
 
   const fetchQuestions = async () => {
     let res = await getDataQuiz(quizId);
-    console.log("🚀CHECK + file: DetailQuiz.js:15 + res:", res);
-
     if (res && res.EC === 0) {
+      let quizDescription = "";
+      let quizImageFile = null;
+      let quizImageName = "";
+      // let quizAnswers = [];
       let raw = res.DT;
 
-      //loash group by
+      // Group the elements of Array based on `id` property
+      // `key` is group's name (id), `value` is the array of objects
       let data = _.chain(raw)
-        // Group the elements of Array based on `id` property
         .groupBy("id")
-        // `key` is group's name (id), `value` is the array of objects
         .map((value, key) => {
-          console.log("🚀CHECK + file: DetailQuiz.js:27 + value:", value);
-          console.log("🚀CHECK + file: DetailQuiz.js:27 + key:", key);
-
-          let answers = [];
-          let questionDescription = null;
-          let image = null;
+          let quizAnswers = [];
           value.forEach((item, index) => {
             if (index === 0) {
-              questionDescription = item.description;
-              image = item.image;
+              quizDescription = item.description;
+              quizImageFile = item.image;
             }
-            answers.push(item.answers);
-            console.log(
-              "🚀CHECK + file: DetailQuiz.js:30 + item.answers",
-              item.answers,
-            );
+            quizAnswers.push(item.answers);
           });
 
           return {
-            questionId: key,
-            answers: answers,
-            questionDescription: questionDescription,
-            image: image,
+            quizId: key,
+            quizDescription,
+            quizImageFile,
+            quizImageName,
+            quizAnswers,
           };
         })
         .value();
 
-      console.log("🚀CHECK + file: DetailQuiz.js:23 + data:", data);
+      console.log("🚀CHECK + file: DetailQuiz.js:21 + data:", data);
     }
   };
 
