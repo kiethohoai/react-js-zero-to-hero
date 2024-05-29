@@ -6,27 +6,36 @@ const Question = (props) => {
     return <></>;
   }
 
+  const handleOnChangeCheckBox = (aId, qId, value) => {
+    props.handleCheckbox(aId, qId);
+  };
+
   return (
     <>
       <div className="q-body">
         <img
           className="q-body-image"
-          src={`data:image/jpeg;base64,${data.quizImageFile}`}
+          src={`data:image/jpeg;base64,${data.imageFile}`}
           alt="no-question-image"
         />
       </div>
 
       <div className="q-content">
         <div className="q-question">
-          Question {indexQ + 1}: {data.quizDescription}
+          Question {indexQ + 1}: {data.description}
         </div>
         <div className="q-answer">
-          {data.quizAnswers &&
-            data.quizAnswers.length > 0 &&
-            data.quizAnswers.map((a, index) => {
+          {data.answers &&
+            data.answers.length > 0 &&
+            data.answers.map((a, index) => {
               return (
                 <div key={`answer${index}`}>
-                  <input className="form-check-input me-2" type="checkbox" />
+                  <input
+                    className="form-check-input me-2"
+                    type="checkbox"
+                    onChange={(e) => handleOnChangeCheckBox(a.id, data.id, e.target.checked)}
+                    checked={a.isSelected}
+                  />
                   {a.description}
                 </div>
               );

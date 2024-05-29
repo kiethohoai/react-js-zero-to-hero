@@ -21,10 +21,10 @@ const DetailQuiz = (props) => {
   const fetchQuestions = async () => {
     let res = await getDataQuiz(quizId);
     if (res && res.EC === 0) {
-      let quizDescription = "";
-      let quizImageFile = null;
-      let quizImageName = "";
-      // let quizAnswers = [];
+      let description = "";
+      let imageFile = null;
+      let imageName = "";
+      // let answers = [];
       let raw = res.DT;
 
       // Group the elements of Array based on `id` property
@@ -32,21 +32,22 @@ const DetailQuiz = (props) => {
       let data = _.chain(raw)
         .groupBy("id")
         .map((value, key) => {
-          let quizAnswers = [];
+          let answers = [];
           value.forEach((item, index) => {
             if (index === 0) {
-              quizDescription = item.description;
-              quizImageFile = item.image;
+              description = item.description;
+              imageFile = item.image;
             }
-            quizAnswers.push(item.answers);
+            item.answers.isSelected = false;
+            answers.push(item.answers);
           });
 
           return {
-            quizId: key,
-            quizDescription,
-            quizImageFile,
-            quizImageName,
-            quizAnswers,
+            id: key,
+            description,
+            imageFile,
+            imageName,
+            answers,
           };
         })
         .value();
@@ -68,6 +69,32 @@ const DetailQuiz = (props) => {
     }
   };
 
+  const handleCheckbox = (answerId, questionId) => {
+    // Clone
+    let dataQuizClone = _.cloneDeep(dataQuiz);
+    // q.id === questionId
+    if (dataQuizClone && dataQuizClone.length > 0) {
+      let question = dataQuizClone.find((q) => +q.id === +questionId);
+      // a.id === answerId
+      if (question.answers && question.answers.length > 0) {
+        let aTemp = question.answers.map((a) => {
+          if (+a.id === +answerId) {
+            a.isSelected = !a.isSelected;
+          }
+          return a;
+        });
+        // Update question.answers
+        question.answers = aTemp;
+      }
+
+      let index = dataQuizClone.findIndex((item) => +item.id === +questionId);
+      if (index > -1) {
+        dataQuizClone[index] = question;
+        setDataQuiz(dataQuizClone);
+      }
+    }
+  };
+
   return (
     <div className="detail-quiz-container">
       {/* Left Content */}
@@ -79,19 +106,14 @@ const DetailQuiz = (props) => {
           data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[indexQ] : []}
           indexQ={indexQ}
           setIndexQ={setIndexQ}
+          handleCheckbox={handleCheckbox}
         />
 
         <div className="q-footer">
-          <button
-            onClick={() => handleBtnPrev()}
-            className="btn btn-outline-warning"
-          >
+          <button onClick={() => handleBtnPrev()} className="btn btn-outline-warning">
             Prev
           </button>
-          <button
-            onClick={() => handleBtnNext()}
-            className="btn btn-outline-success"
-          >
+          <button onClick={() => handleBtnNext()} className="btn btn-outline-success">
             Next
           </button>
         </div>
