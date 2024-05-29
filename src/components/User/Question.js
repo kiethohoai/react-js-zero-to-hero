@@ -2,7 +2,6 @@ import _ from "lodash";
 
 const Question = (props) => {
   const { data, indexQ } = props;
-  // data = {} render <></> nothing!
   if (_.isEmpty(data)) {
     return <></>;
   }
