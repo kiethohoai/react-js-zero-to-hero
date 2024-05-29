@@ -1,16 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDataQuiz } from "../../services/apiService";
 import _ from "lodash";
 import "./DetailQuiz.scss";
 import { useLocation } from "react-router-dom";
+import Question from "./Question";
 
 const DetailQuiz = (props) => {
   let params = useParams();
   let quizId = params.id;
   const location = useLocation();
-  console.log("🚀CHECK + file: DetailQuiz.js:12 + location:", location);
+  const [dataQuiz, setDataQuiz] = useState([]);
+  const [indexQ, setIndexQ] = useState(0);
 
+  // Show Info
   useEffect(() => {
     fetchQuestions();
   }, [quizId]);
@@ -47,8 +50,21 @@ const DetailQuiz = (props) => {
           };
         })
         .value();
+      setDataQuiz(data);
+    }
+  };
 
-      console.log("🚀CHECK + file: DetailQuiz.js:21 + data:", data);
+  const handleBtnPrev = () => {
+    if (indexQ - 1 < 0) {
+      return;
+    }
+    setIndexQ(indexQ - 1);
+  };
+  const handleBtnNext = () => {
+    if (dataQuiz && dataQuiz.length > indexQ + 1) {
+      setIndexQ(indexQ + 1);
+    } else {
+      return;
     }
   };
 
@@ -58,30 +74,26 @@ const DetailQuiz = (props) => {
       <div className="left-content">
         <div className="q-title">Quiz 1 - {location?.state?.quizTitle}</div>
 
-        <div className="q-body">
-          <img
-            className="q-body-image"
-            src={
-              "https://cungcau.qltns.mediacdn.vn/thumb_w/830/421196537165905920/2022/11/15/edit-23483620238557462278653442744539141427549008n-2021-11-03-01-21-16685111322531772509746.jpeg"
-            }
-            alt="no-image"
-          />
-        </div>
-
-        <div className="q-content">
-          <div className="q-question">
-            Question 1: Lorem ipsum dolor sit, amet consectetur adipisicing.
-          </div>
-          <div className="q-answer">
-            <div>A. Lorem ipsum dolor sit amet.</div>
-            <div>B. Lorem ipsum dolor sit amet.</div>
-            <div>C. Lorem ipsum dolor sit amet.</div>
-          </div>
-        </div>
+        {/* q-content - Question Component */}
+        <Question
+          data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[indexQ] : []}
+          indexQ={indexQ}
+          setIndexQ={setIndexQ}
+        />
 
         <div className="q-footer">
-          <button className="btn btn-outline-warning">Prev</button>
-          <button className="btn btn-outline-success">Next</button>
+          <button
+            onClick={() => handleBtnPrev()}
+            className="btn btn-outline-warning"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => handleBtnNext()}
+            className="btn btn-outline-success"
+          >
+            Next
+          </button>
         </div>
       </div>
 
