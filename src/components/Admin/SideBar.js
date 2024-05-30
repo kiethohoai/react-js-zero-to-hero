@@ -15,9 +15,11 @@ import { MdDashboard } from "react-icons/md";
 import sidebarBg from "./../../assets/bg2.jpg";
 import "./../Admin/SideBar.scss";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
+  const navigate = useNavigate();
   return (
     <ProSidebar
       image={sidebarBg}
@@ -40,16 +42,15 @@ const SideBar = (props) => {
           }}
         >
           <DiReact size={"3em"} color="00bfff" />
-          <span>ReactJS</span>
+          <span onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+            ReactJS
+          </span>
         </div>
       </SidebarHeader>
 
       <SidebarContent>
         <Menu iconShape="circle">
-          <MenuItem
-            icon={<MdDashboard />}
-            suffix={<span className="badge red">New</span>}
-          >
+          <MenuItem icon={<MdDashboard />} suffix={<span className="badge red">New</span>}>
             Dashboard
             <Link to="/admin" />
           </MenuItem>
@@ -64,7 +65,10 @@ const SideBar = (props) => {
               Manage Users
               <Link to="/admin/manage-user" />
             </MenuItem>
-            <MenuItem>Manage Quiz</MenuItem>
+            <MenuItem>
+              Manage Quiz
+              <Link to="/admin/manage-quiz" />
+            </MenuItem>
             <MenuItem>Manage Questions</MenuItem>
           </SubMenu>
         </Menu>
@@ -78,10 +82,12 @@ const SideBar = (props) => {
           }}
         >
           <a
-            href="/"
+            // href="/"
             target="_blank"
             className="sidebar-btn"
             rel="noopener noreferrer"
+            onClick={() => navigate("/")}
+            style={{ cursor: "pointer" }}
           >
             <FaGithub />
             <span

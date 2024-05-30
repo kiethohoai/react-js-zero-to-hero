@@ -1,0 +1,52 @@
+.q-container {
+    .q-title {
+        margin-bottom: 12px;
+        font-size: 28px;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+
+    .q-add {
+        fieldset {
+            legend {
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .q-upload-image {
+                margin-top: 12px;
+                width: fit-content;
+                display: flex;
+                align-items: center;
+
+                .label-upload {
+                    cursor: pointer;
+                    margin-right: 8px;
+                }
+            }
+
+            .q-image-preview {
+                margin-top: 10px;
+                width: 50%;
+                height: 40vh;
+                border: 1px solid #cccccc;
+                border-radius: 6px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+
+                span {
+                    opacity: 0.5;
+                }
+
+                img {
+                    object-fit: cover;
+                    width: 100%;
+                    height: auto;
+                }
+
+            }
+        }
+    }
+}
