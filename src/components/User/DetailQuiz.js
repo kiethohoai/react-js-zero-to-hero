@@ -95,6 +95,51 @@ const DetailQuiz = (props) => {
     }
   };
 
+  // handleFinishQuiz
+  const handleFinishQuiz = () => {
+    // {
+    // "quizId": 1,
+    // "answers": [
+    //     {
+    //         "questionId": 1,
+    //         "userAnswerId": [3]
+    //     },
+    //     {
+    //         "questionId": 2,
+    //         "userAnswerId": [6]
+    //     }
+    // ]
+    // }
+
+    console.log("🚀CHECK  file: DetailQuiz.js:14  dataQuiz =", dataQuiz);
+
+    let payload = {
+      quizId: +quizId,
+      answers: [],
+    };
+
+    let answersTemp = [];
+    if (dataQuiz && dataQuiz.length > 0) {
+      dataQuiz.forEach((item) => {
+        let questionId = +item.id;
+        let userAnswerId = [];
+
+        item.answers.forEach((a) => {
+          if (a.isSelected === true) {
+            userAnswerId.push(a.id);
+          }
+        });
+
+        answersTemp.push({
+          questionId: +questionId,
+          userAnswerId: userAnswerId,
+        });
+      });
+      payload.answers = answersTemp;
+      console.log("🚀CHECK  file: DetailQuiz.js:120  payload =", payload);
+    }
+  };
+
   return (
     <div className="detail-quiz-container">
       {/* Left Content */}
@@ -115,6 +160,9 @@ const DetailQuiz = (props) => {
           </button>
           <button onClick={() => handleBtnNext()} className="btn btn-outline-success">
             Next
+          </button>
+          <button onClick={() => handleFinishQuiz()} className="btn btn-outline-danger">
+            Finish
           </button>
         </div>
       </div>
