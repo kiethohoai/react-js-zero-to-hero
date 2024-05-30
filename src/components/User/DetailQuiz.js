@@ -5,6 +5,9 @@ import _ from "lodash";
 import "./DetailQuiz.scss";
 import { useLocation } from "react-router-dom";
 import Question from "./Question";
+import { postSubmitAnswersFinishQuiz } from "../../services/apiService";
+import { toast } from "react-toastify";
+import ModalResult from "./ModalResult";
 
 const DetailQuiz = (props) => {
   let params = useParams();
@@ -12,6 +15,8 @@ const DetailQuiz = (props) => {
   const location = useLocation();
   const [dataQuiz, setDataQuiz] = useState([]);
   const [indexQ, setIndexQ] = useState(0);
+  const [isShowModalResult, setIsShowModalResult] = useState(false);
+  const [dataModalResult, setDataModalResult] = useState({});
 
   // Show Info
   useEffect(() => {
@@ -96,23 +101,7 @@ const DetailQuiz = (props) => {
   };
 
   // handleFinishQuiz
-  const handleFinishQuiz = () => {
-    // {
-    // "quizId": 1,
-    // "answers": [
-    //     {
-    //         "questionId": 1,
-    //         "userAnswerId": [3]
-    //     },
-    //     {
-    //         "questionId": 2,
-    //         "userAnswerId": [6]
-    //     }
-    // ]
-    // }
-
-    console.log("🚀CHECK  file: DetailQuiz.js:14  dataQuiz =", dataQuiz);
-
+  const handleFinishQuiz = async () => {
     let payload = {
       quizId: +quizId,
       answers: [],
@@ -136,7 +125,19 @@ const DetailQuiz = (props) => {
         });
       });
       payload.answers = answersTemp;
-      console.log("🚀CHECK  file: DetailQuiz.js:120  payload =", payload);
+      // submit API
+      let res = await postSubmitAnswersFinishQuiz(payload);
+      if (res && res.EC === 0) {
+        toast.success(res.EM);
+        setDataModalResult({
+          countTotal: res.DT.countTotal,
+          countCorrect: res.DT.countCorrect,
+          quizData: res.DT.quizData,
+        });
+        setIsShowModalResult(true);
+      } else {
+        toast.error(res.EM);
+      }
     }
   };
 
@@ -169,6 +170,11 @@ const DetailQuiz = (props) => {
 
       {/* Right Content */}
       <div className="right-content">Cowndown & Select Quiz Number</div>
+      <ModalResult
+        show={isShowModalResult}
+        setShow={setIsShowModalResult}
+        dataModalResult={dataModalResult}
+      />
     </div>
   );
 };
