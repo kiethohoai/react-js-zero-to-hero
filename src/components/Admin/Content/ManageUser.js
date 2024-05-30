@@ -22,7 +22,7 @@ const ManageUser = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [pageCount, setPageCount] = useState(0);
-  const LIMIT_USER = 3;
+  const LIMIT_USER = 10;
 
   //Conponent Didmount
   useEffect(() => {

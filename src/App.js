@@ -13,6 +13,7 @@ const App = () => {
         <div className="sidenav-container"></div>
         <div className="app-content">
           <Outlet />
+
         </div>
       </div>
     </div>

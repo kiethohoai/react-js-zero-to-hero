@@ -2,6 +2,8 @@ import Select from "react-select";
 import { FaFileUpload } from "react-icons/fa";
 import "./ManageQuiz.scss";
 import { useState } from "react";
+import { postCreateNewQuiz } from "../../../services/apiService";
+import { toast } from "react-toastify";
 
 const ManageQuiz = (props) => {
   const options = [
@@ -23,6 +25,39 @@ const ManageQuiz = (props) => {
     }
   };
 
+  const handleAddNewQuiz = async () => {
+    // Validate
+    if (!name) {
+      toast.error("Invalid Name.");
+      return;
+    }
+
+    if (!description) {
+      toast.error("Invalid Description.");
+      return;
+    }
+
+    if (!image) {
+      toast.error("Please Upload An Image!");
+      return;
+    }
+
+    //  API Add New Quiz
+    let res = await postCreateNewQuiz(description, name, difficulty?.value, image);
+
+    // Notify
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      setName("");
+      setDescription("");
+      setDifficulty({ value: "EASY", label: "EASY" });
+      setImage("");
+      setImagePreview("");
+    } else {
+      toast.error(res.EM);
+    }
+  };
+
   return (
     <div className="q-container">
       {/* Quiz Title */}
@@ -41,6 +76,7 @@ const ManageQuiz = (props) => {
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
             <label htmlFor="floatingName">Name</label>
           </div>
@@ -54,6 +90,7 @@ const ManageQuiz = (props) => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
             />
             <label htmlFor="floatingDescription">Description</label>
           </div>
@@ -84,11 +121,18 @@ const ManageQuiz = (props) => {
           <div className="q-image-preview">
             {imagePreview ? <img src={imagePreview} alt="no-image" /> : <span>Preview Image</span>}
           </div>
+
+          {/* button add new */}
+          <div className="q-button-add mt-2">
+            <button onClick={handleAddNewQuiz} className="btn btn-success">
+              Confirm & Save
+            </button>
+          </div>
         </fieldset>
       </div>
 
       {/* List Quiz */}
-      <div className="q-list mt-3">
+      {/* <div className="q-list mt-3">
         <div>List Quiz</div>
         <div>
           <table className="table table-hover">
@@ -121,7 +165,7 @@ const ManageQuiz = (props) => {
             </tbody>
           </table>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

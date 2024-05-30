@@ -32,7 +32,6 @@ const SideBar = (props) => {
         <div
           style={{
             padding: "24px",
-            textTransform: "uppercase",
             fontWeight: "bold",
             fontSize: 14,
             letterSpacing: "1px",
