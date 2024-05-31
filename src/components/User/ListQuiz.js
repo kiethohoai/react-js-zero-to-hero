@@ -27,16 +27,12 @@ const ListQuiz = (props) => {
         listQ.map((q, i) => {
           return (
             <div key={`quiz-${i}`} className="card" style={{ width: "18rem" }}>
-              <img
-                src={`data:image/jpg;base64,${q.image}`}
-                className="card-img-top"
-                alt="..."
-              />
+              <img src={`data:image/jpg;base64,${q.image}`} className="card-img-top" alt="..." />
               <div className="card-body">
                 <h5 className="card-title">{`Quiz ${q.id}`}</h5>
                 <p className="card-text">{q.description}</p>
                 <a
-                  href=""
+                  href="#!"
                   className="btn btn-primary"
                   onClick={() =>
                     navigate(`/quiz/${q.id}`, {

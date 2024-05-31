@@ -1,11 +1,9 @@
-import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 const ModalResult = (props) => {
   const { show, setShow, dataModalResult } = props;
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   return (
     <>

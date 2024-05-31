@@ -13,11 +13,7 @@ const Question = (props) => {
   return (
     <>
       <div className="q-body">
-        <img
-          className="q-body-image"
-          src={`data:image/jpeg;base64,${data.imageFile}`}
-          alt="no-question-image"
-        />
+        <img className="q-body-image" src={`data:image/jpeg;base64,${data.imageFile}`} alt="" />
       </div>
 
       <div className="q-content">

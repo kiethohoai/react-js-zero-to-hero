@@ -26,23 +26,21 @@ const ModalUpdateQuiz = (props) => {
       });
 
       // setImage & setImagePreview
+      const convertBase64ToFile = async () => {
+        let res = await urltoFile(
+          `data:image/jpg;base64,${curQuizData.image}`,
+          `image-${curQuizData.id}`,
+          "image/jpg",
+        );
+
+        if (res) {
+          setImage(res);
+          setImagePreview(URL.createObjectURL(res));
+        }
+      };
       convertBase64ToFile();
     }
   }, [curQuizData]);
-
-  // convertBase64ToFile
-  const convertBase64ToFile = async () => {
-    let res = await urltoFile(
-      `data:image/jpg;base64,${curQuizData.image}`,
-      `image-${curQuizData.id}`,
-      "image/jpg",
-    );
-
-    if (res) {
-      setImage(res);
-      setImagePreview(URL.createObjectURL(res));
-    }
-  };
 
   // React Select options
   const options = [
@@ -152,7 +150,7 @@ const ModalUpdateQuiz = (props) => {
 
           {/* image preview */}
           <div className="q-image-preview">
-            {imagePreview ? <img src={imagePreview} alt="no-image" /> : <span>Preview Image</span>}
+            {imagePreview ? <img src={imagePreview} alt="" /> : <span>Preview Image</span>}
           </div>
         </Modal.Body>
         <Modal.Footer>

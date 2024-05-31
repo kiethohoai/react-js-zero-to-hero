@@ -68,7 +68,10 @@ const SideBar = (props) => {
               Manage Quiz
               <Link to="/admin/manage-quiz" />
             </MenuItem>
-            <MenuItem>Manage Questions</MenuItem>
+            <MenuItem>
+              Manage Questions
+              <Link to="/admin/manage-questions" />
+            </MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>
@@ -81,7 +84,7 @@ const SideBar = (props) => {
           }}
         >
           <a
-            // href="/"
+            href="#!"
             target="_blank"
             className="sidebar-btn"
             rel="noopener noreferrer"

@@ -144,11 +144,7 @@ const ManageQuiz = (props) => {
 
                 {/* image preview */}
                 <div className="q-image-preview">
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="no-image" />
-                  ) : (
-                    <span>Preview Image</span>
-                  )}
+                  {imagePreview ? <img src={imagePreview} alt="" /> : <span>Preview Image</span>}
                 </div>
 
                 {/* button add new */}

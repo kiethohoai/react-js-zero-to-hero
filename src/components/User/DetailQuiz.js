@@ -20,45 +20,46 @@ const DetailQuiz = (props) => {
 
   // Show Info
   useEffect(() => {
+    const fetchQuestions = async () => {
+      let res = await getDataQuiz(quizId);
+      if (res && res.EC === 0) {
+        let description = "";
+        let imageFile = null;
+        let imageName = "";
+        // let answers = [];
+        let raw = res.DT;
+
+        // Group the elements of Array based on `id` property
+        // `key` is group's name (id), `value` is the array of objects
+        let data = _.chain(raw)
+          .groupBy("id")
+          .map((value, key) => {
+            let answers = [];
+            value.forEach((item, index) => {
+              if (index === 0) {
+                description = item.description;
+                imageFile = item.image;
+              }
+              item.answers.isSelected = false;
+              answers.push(item.answers);
+            });
+
+            return {
+              id: key,
+              description,
+              imageFile,
+              imageName,
+              answers,
+            };
+          })
+          .value();
+        setDataQuiz(data);
+      }
+    };
     fetchQuestions();
   }, [quizId]);
 
-  const fetchQuestions = async () => {
-    let res = await getDataQuiz(quizId);
-    if (res && res.EC === 0) {
-      let description = "";
-      let imageFile = null;
-      let imageName = "";
-      // let answers = [];
-      let raw = res.DT;
 
-      // Group the elements of Array based on `id` property
-      // `key` is group's name (id), `value` is the array of objects
-      let data = _.chain(raw)
-        .groupBy("id")
-        .map((value, key) => {
-          let answers = [];
-          value.forEach((item, index) => {
-            if (index === 0) {
-              description = item.description;
-              imageFile = item.image;
-            }
-            item.answers.isSelected = false;
-            answers.push(item.answers);
-          });
-
-          return {
-            id: key,
-            description,
-            imageFile,
-            imageName,
-            answers,
-          };
-        })
-        .value();
-      setDataQuiz(data);
-    }
-  };
 
   const handleBtnPrev = () => {
     if (indexQ - 1 < 0) {
