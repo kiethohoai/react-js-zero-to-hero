@@ -94,6 +94,10 @@ const putUpdateAQuiz = (id, description, name, difficulty, quizImage) => {
   return axios.put("api/v1/quiz", data);
 };
 
+// API Delete A Quiz via quizId
+const deleteQuizById = (quizId) => {
+  return axios.delete(`api/v1/quiz/${quizId}`);
+}
 
 export {
   postCreateNewUser,
@@ -109,4 +113,5 @@ export {
   postCreateNewQuiz,
   getAllQuizForAdmin,
   putUpdateAQuiz,
+  deleteQuizById,
 };
