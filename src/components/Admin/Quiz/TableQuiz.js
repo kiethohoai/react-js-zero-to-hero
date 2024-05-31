@@ -1,10 +1,20 @@
 import _ from "lodash";
+import { useState } from "react";
+import ModalUpdateQuiz from "./ModalUpdateQuiz";
 
 const TableQuiz = (props) => {
-  const { listQuiz } = props;
+  const { listQuiz, fetchListQuiz } = props;
+  const [showModalUpdateQ, setShowModalUpdateQ] = useState(false);
+  const [curQuizData, setCurQuizData] = useState({});
+
   if (_.isEmpty(listQuiz)) {
     return <></>;
   }
+
+  const handleUpdateAQuiz = (quizData) => {
+    setShowModalUpdateQ(true);
+    setCurQuizData(quizData);
+  };
 
   return (
     <>
@@ -33,7 +43,12 @@ const TableQuiz = (props) => {
                       <td>{item.description}</td>
                       <td>{item.difficulty}</td>
                       <td>
-                        <button className="btn btn-outline-success">Update</button>
+                        <button
+                          onClick={() => handleUpdateAQuiz(item)}
+                          className="btn btn-outline-success"
+                        >
+                          Update
+                        </button>
                         <button className="btn btn-outline-danger ms-2">Delete</button>
                       </td>
                     </tr>
@@ -43,6 +58,12 @@ const TableQuiz = (props) => {
           </table>
         </div>
       </div>
+      <ModalUpdateQuiz
+        show={showModalUpdateQ}
+        setShow={setShowModalUpdateQ}
+        curQuizData={curQuizData}
+        fetchListQuiz={fetchListQuiz}
+      />
     </>
   );
 };

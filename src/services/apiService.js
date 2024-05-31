@@ -83,6 +83,18 @@ const getAllQuizForAdmin = () => {
   return axios.get("api/v1/quiz/all");
 };
 
+// API Update A Quiz
+const putUpdateAQuiz = (id, description, name, difficulty, quizImage) => {
+  const data = new FormData();
+  data.append("id", id);
+  data.append("description", description);
+  data.append("name", name);
+  data.append("difficulty", difficulty);
+  data.append("quizImage", quizImage);
+  return axios.put("api/v1/quiz", data);
+};
+
+
 export {
   postCreateNewUser,
   getAllUsers,
@@ -96,4 +108,5 @@ export {
   postSubmitAnswersFinishQuiz,
   postCreateNewQuiz,
   getAllQuizForAdmin,
+  putUpdateAQuiz,
 };

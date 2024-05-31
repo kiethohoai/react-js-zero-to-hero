@@ -68,6 +68,7 @@ const ManageQuiz = (props) => {
       setDifficulty({ value: "EASY", label: "EASY" });
       setImage("");
       setImagePreview("");
+      fetchListQuiz();
     } else {
       toast.error(res.EM);
     }
@@ -164,7 +165,7 @@ const ManageQuiz = (props) => {
 
       {/* List Quiz */}
       <div className="q-list mt-3">
-        <TableQuiz listQuiz={listQuiz} />
+        <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
       </div>
     </div>
   );
