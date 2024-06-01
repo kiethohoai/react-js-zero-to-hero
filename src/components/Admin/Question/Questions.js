@@ -5,6 +5,8 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
+// 14P
+
 const Questions = (props) => {
   const options = [
     { value: "chocolate", label: "Chocolate" },
@@ -17,13 +19,13 @@ const Questions = (props) => {
   const [questions, setQuestions] = useState([
     {
       id: uuidv4(),
-      description: "Description question 1",
+      description: "",
       imageFile: "",
       imageName: "",
       answers: [
         {
           id: uuidv4(),
-          description: "answer 1",
+          description: "",
           isCorrect: false,
         },
       ],
@@ -85,6 +87,56 @@ const Questions = (props) => {
       setQuestions(questionsClone);
     }
   };
+
+  // handleQuestionDescription
+  const handleQuestionDescription = (value, questionId, type) => {
+    if (type === "QUESTION") {
+      let questionsClone = _.cloneDeep(questions);
+      let index = questionsClone.findIndex((item) => item.id === questionId);
+      if (index > -1) {
+        questionsClone[index].description = value;
+        setQuestions(questionsClone);
+      }
+    }
+  };
+
+  // handleOnChangeUploadFile
+  const handleOnChangeUploadFile = (e, qId) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === qId);
+    if (index > -1 && e.target && e.target.files && e.target.files[0]) {
+      questionsClone[index].imageFile = e.target.files[0];
+      questionsClone[index].imageName = e.target.files[0].name;
+      setQuestions(questionsClone);
+    }
+  };
+
+  // handleCheckboxAnswerQuestion
+  const handleCheckboxAnswerQuestion = (type, aId, qId, value) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === qId);
+    if (index > -1) {
+      questionsClone[index].answers = questionsClone[index].answers.map((answer) => {
+        if (answer.id === aId) {
+          if (type === "CHECKBOX") {
+            answer.isCorrect = value;
+          }
+
+          if (type === "INPUT") {
+            answer.description = value;
+          }
+        }
+        return answer;
+      });
+      setQuestions(questionsClone);
+    }
+  };
+
+  // handleSubmitQuestionForQuiz
+  const handleSubmitQuestionForQuiz = () => {
+    console.log("🚀CHECK  file: Questions.js:139  questions =", questions);
+  };
+
   return (
     <div className="qs-container">
       <div className="qs-title">Manage Questions</div>
@@ -119,7 +171,10 @@ const Questions = (props) => {
                     className="form-control"
                     id={`question-input-${index + 1}`}
                     placeholder={`Question's description ${index + 1}`}
-                    // value={question.description}
+                    value={question.description}
+                    onChange={(e) =>
+                      handleQuestionDescription(e.target.value, question.id, "QUESTION")
+                    }
                   />
                 </div>
 
@@ -142,18 +197,18 @@ const Questions = (props) => {
                 </div>
 
                 <div className="qs-upload-image">
-                  <label className="label-upload" htmlFor="input-upload">
+                  <label className="label-upload" htmlFor={`${question.id}`}>
                     <FaFileUpload size={"1.4em"} color={"red"} />
                     Upload Image:
                   </label>
                   <input
                     type="file"
-                    id="input-upload"
+                    id={`${question.id}`}
+                    onChange={(e) => handleOnChangeUploadFile(e, question.id)}
                     hidden
-                    //   onChange={(e) => handleUploadImage(e)}
                   />
                   <label className="label-image-name">
-                    {image && image.name ? image.name : "0 File Upload"}
+                    {question.imageName ? question.imageName : "0 File Upload"}
                   </label>
                 </div>
               </div>
@@ -166,12 +221,33 @@ const Questions = (props) => {
                     <div key={answer.id} className="qs-add-answers">
                       <div className="qs-input-answer input-group">
                         <div className="input-group-text">
-                          <input type="checkbox" className="form-check-input" />
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            checked={answer.isCorrect}
+                            onChange={(e) =>
+                              handleCheckboxAnswerQuestion(
+                                "CHECKBOX",
+                                answer.id,
+                                question.id,
+                                e.target.checked,
+                              )
+                            }
+                          />
                         </div>
                         <input
                           type="text"
                           className="form-control"
                           placeholder={`Answer's description ${index + 1}`}
+                          value={answer.description}
+                          onChange={(e) =>
+                            handleCheckboxAnswerQuestion(
+                              "INPUT",
+                              answer.id,
+                              question.id,
+                              e.target.value,
+                            )
+                          }
                         />
                       </div>
 
@@ -198,6 +274,14 @@ const Questions = (props) => {
             </div>
           );
         })}
+
+      {questions && questions.length > 0 && (
+        <div>
+          <button onClick={() => handleSubmitQuestionForQuiz()} className="btn btn-outline-warning">
+            Save Question
+          </button>
+        </div>
+      )}
 
       {/* End Container */}
     </div>
