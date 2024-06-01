@@ -4,8 +4,7 @@ import "./Questions.scss";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
-
-// 14P
+import Lightbox from "react-awesome-lightbox";
 
 const Questions = (props) => {
   const options = [
@@ -14,8 +13,12 @@ const Questions = (props) => {
     { value: "vanilla", label: "Vanilla" },
   ];
 
-  const image = false;
+  const [dataPreviewImage, setDataPreviewImage] = useState({
+    image: "",
+    title: "",
+  });
 
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [questions, setQuestions] = useState([
     {
       id: uuidv4(),
@@ -137,6 +140,19 @@ const Questions = (props) => {
     console.log("🚀CHECK  file: Questions.js:139  questions =", questions);
   };
 
+  // handlePreviewImage
+  const handlePreviewImage = (qId) => {
+    setIsPreviewImage(true);
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === qId);
+    if (index > -1) {
+      setDataPreviewImage({
+        image: URL.createObjectURL(questionsClone[index].imageFile),
+        title: questionsClone[index].imageName,
+      });
+    }
+  };
+
   return (
     <div className="qs-container">
       <div className="qs-title">Manage Questions</div>
@@ -208,7 +224,12 @@ const Questions = (props) => {
                     hidden
                   />
                   <label className="label-image-name">
-                    {question.imageName ? question.imageName : "0 File Upload"}
+                    <span
+                      onClick={() => handlePreviewImage(question.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {question.imageName ? question.imageName : "0 File Upload"}
+                    </span>
                   </label>
                 </div>
               </div>
@@ -281,6 +302,14 @@ const Questions = (props) => {
             Save Question
           </button>
         </div>
+      )}
+
+      {isPreviewImage && isPreviewImage === true && (
+        <Lightbox
+          image={dataPreviewImage.image}
+          title={dataPreviewImage.title}
+          onClose={() => setIsPreviewImage(false)}
+        ></Lightbox>
       )}
 
       {/* End Container */}
