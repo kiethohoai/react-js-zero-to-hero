@@ -17,6 +17,13 @@ const DetailQuiz = (props) => {
   const [indexQ, setIndexQ] = useState(0);
   const [isShowModalResult, setIsShowModalResult] = useState(false);
   const [dataModalResult, setDataModalResult] = useState({});
+  const [titleQuiz, setTitleQuiz] = useState("");
+
+  useEffect(() => {
+    if (location) {
+      setTitleQuiz(location?.state?.quizTitle);
+    }
+  }, []);
 
   // Show Info
   useEffect(() => {
@@ -58,8 +65,6 @@ const DetailQuiz = (props) => {
     };
     fetchQuestions();
   }, [quizId]);
-
-
 
   const handleBtnPrev = () => {
     if (indexQ - 1 < 0) {
@@ -146,7 +151,8 @@ const DetailQuiz = (props) => {
     <div className="detail-quiz-container">
       {/* Left Content */}
       <div className="left-content">
-        <div className="q-title">Quiz 1 - {location?.state?.quizTitle}</div>
+        <div className="q-title">Quiz 1 - {titleQuiz}</div>
+        {/* <div className="q-title">Quiz 1 - {location?.state?.quizTitle}</div> */}
 
         {/* q-content - Question Component */}
         <Question

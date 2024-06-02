@@ -1,7 +1,12 @@
 import Select from "react-select";
 import { useState, useEffect } from "react";
-import { getAllQuizForAdmin, getAllUsers } from "../../../services/apiService";
+import {
+  getAllQuizForAdmin,
+  getAllUsers,
+  postAssignQuizToUser,
+} from "../../../services/apiService";
 import "./AssignQuiz.scss";
+import { toast } from "react-toastify";
 
 const AssignQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState([]);
@@ -19,13 +24,11 @@ const AssignQuiz = (props) => {
   // fetchListQuiz
   const fetchListQuiz = async () => {
     let res = await getAllQuizForAdmin();
-    console.log("🚀CHECK  file: AssignQuiz.js:22  res =", res);
-
     if (res && res.DT) {
       let newQuiz = res.DT.map((item) => {
         return {
           value: item.id,
-          label: `QuizID: ${item.id} - Name: ${item.name} - ${item.difficulty}`,
+          label: `ID: ${item.id} - Name: ${item.name} - ${item.difficulty}`,
         };
       });
       setListQuiz(newQuiz);
@@ -39,13 +42,25 @@ const AssignQuiz = (props) => {
       let newUser = res.DT.map((user) => {
         return {
           value: user.id,
-          label: `UserID: ${user.id} - Email: ${user.email} - Username: ${user.username}`,
+          label: `ID: ${user.id} - Email: ${user.email} - Username: ${user.username}`,
         };
       });
 
       if (res && res.EC === 0) {
         setListUser(newUser);
       }
+    }
+  };
+
+  // handleAssign
+  const handleAssign = async () => {
+    let res = await postAssignQuizToUser(selectedQuiz.value, selectedUser.value);
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      setSelectedQuiz({});
+      setSelectedUser({});
+    } else {
+      toast.error(res.EM);
     }
   };
 
@@ -64,7 +79,9 @@ const AssignQuiz = (props) => {
       </div>
 
       <div className="assign-btn">
-        <button className="btn btn-warning">Assign To User</button>
+        <button onClick={() => handleAssign()} className="btn btn-warning">
+          Assign To User
+        </button>
       </div>
     </>
   );

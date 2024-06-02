@@ -16,8 +16,6 @@ const ListQuiz = (props) => {
     if (res && res.EC === 0) {
       setListQ(res.DT);
     }
-
-    console.log("🚀CHECK + file: ListQuiz.js:13 + res:", res);
   };
 
   return (

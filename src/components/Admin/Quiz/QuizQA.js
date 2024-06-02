@@ -9,6 +9,7 @@ import {
   getAllQuizForAdmin,
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
+  getQuizWithQA,
 } from "../../../services/apiService";
 import { toast } from "react-toastify";
 
@@ -37,11 +38,37 @@ const QuizQA = (props) => {
   const [questions, setQuestions] = useState(initQuestions);
   const [listQuiz, setListQuiz] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState({});
+  useEffect(() => {
+    if (!_.isEmpty(selectedQuiz)) {
+      fetchQuizWithQA();
+    }
+  }, [selectedQuiz]);
 
   // useEffect
   useEffect(() => {
     fetchListQuiz();
   }, []);
+
+  const fetchQuizWithQA = async () => {
+    let res = await getQuizWithQA(selectedQuiz.value);
+    // convert base64 to File Object
+    if (res && res.EC === 0) {
+      let questionsClone = _.cloneDeep(res.DT.qa);
+      questionsClone.forEach(async (question) => {
+        if (question.imageFile) {
+          question.imageFile = await urltoFile(
+            `data:image/jpg;base64,${question.imageFile}`,
+            `question-${question.id}`,
+            "image/jpg",
+          );
+          question.imageName = `question-${question.id}`;
+        }
+        return question;
+      });
+
+      setQuestions(questionsClone);
+    }
+  };
 
   // fetchListQuiz
   const fetchListQuiz = async () => {
@@ -56,6 +83,25 @@ const QuizQA = (props) => {
       setListQuiz(newQuiz);
     }
   };
+
+  // Convert Base64 to File {}
+  function urltoFile(url, filename, mimeType) {
+    if (url.startsWith("data:")) {
+      var arr = url.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[arr.length - 1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      var file = new File([u8arr], filename, { type: mime || mimeType });
+      return Promise.resolve(file);
+    }
+    return fetch(url)
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new File([buf], filename, { type: mimeType }));
+  }
 
   // handleAddRemoveQuestions
   const handleAddRemoveQuestions = (type, qId) => {
