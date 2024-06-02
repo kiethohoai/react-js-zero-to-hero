@@ -6,6 +6,8 @@ import { postCreateNewQuiz, getAllQuizForAdmin } from "../../../services/apiServ
 import { toast } from "react-toastify";
 import TableQuiz from "./TableQuiz";
 import Accordion from "react-bootstrap/Accordion";
+import QuizQA from "./QuizQA";
+import AssignQuiz from "./AssignQuiz";
 
 const ManageQuiz = (props) => {
   const options = [
@@ -76,9 +78,10 @@ const ManageQuiz = (props) => {
 
   return (
     <div className="q-container">
+      {/* Manage Quiz */}
       <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Add New Quiz</Accordion.Header>
+          <Accordion.Header>Manage Quiz</Accordion.Header>
           <Accordion.Body>
             {/* Quiz Title */}
             {/* <div className="q-title">Manage Quiz</div> */}
@@ -155,14 +158,34 @@ const ManageQuiz = (props) => {
                 </div>
               </fieldset>
             </div>
+
+            {/* List Quiz */}
+            <div className="q-list mt-3">
+              <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
+            </div>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
 
-      {/* List Quiz */}
-      <div className="q-list mt-3">
-        <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
-      </div>
+      {/* Update Q/A Quiz */}
+      <Accordion>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Update Q/A Quiz</Accordion.Header>
+          <Accordion.Body>
+            <QuizQA />
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+
+      {/* Assign To User */}
+      <Accordion>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Assign To User</Accordion.Header>
+          <Accordion.Body>
+            <AssignQuiz />
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </div>
   );
 };

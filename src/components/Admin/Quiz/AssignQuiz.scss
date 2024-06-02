@@ -1,0 +1,20 @@
+.assign-container {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+
+    .assign-select-quiz {
+        //
+        width: 50%;
+    }
+
+    .assign-select-user {
+        //
+        width: 50%;
+    }
+}
+
+.assign-btn {
+    margin-top: 16px;
+}
