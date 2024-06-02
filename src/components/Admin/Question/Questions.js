@@ -10,6 +10,7 @@ import {
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
 } from "../../../services/apiService";
+import { toast } from "react-toastify";
 
 const Questions = (props) => {
   const [dataPreviewImage, setDataPreviewImage] = useState({
@@ -17,7 +18,8 @@ const Questions = (props) => {
     title: "",
   });
   const [isPreviewImage, setIsPreviewImage] = useState(false);
-  const [questions, setQuestions] = useState([
+
+  const initQuestions = [
     {
       id: uuidv4(),
       description: "",
@@ -31,7 +33,8 @@ const Questions = (props) => {
         },
       ],
     },
-  ]);
+  ];
+  const [questions, setQuestions] = useState(initQuestions);
   const [listQuiz, setListQuiz] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState({});
 
@@ -169,7 +172,52 @@ const Questions = (props) => {
 
   // handleSubmitQuestionForQuiz
   const handleSubmitQuestionForQuiz = async () => {
-    // validate data
+    // validate listQuiz
+    if (_.isEmpty(selectedQuiz)) {
+      toast.error("Please choose a quiz!");
+      return;
+    }
+
+    // validate question
+    let isValidQuestion = true;
+    let indexQuestion = 0;
+    for (let i = 0; i < questions.length; i++) {
+      if (!questions[i].description) {
+        isValidQuestion = false;
+        indexQuestion = i;
+        break;
+      }
+    }
+
+    if (isValidQuestion === false) {
+      toast.error(`Not empty description at "Question ${indexQuestion + 1}"`);
+      return;
+    }
+
+    // validate answer
+    let isValidAnswer = true;
+    let indexQ = 0;
+    let indexA = 0;
+
+    for (let i = 0; i < questions.length; i++) {
+      for (let j = 0; j < questions[i].answers.length; j++) {
+        if (!questions[i].answers[j].description) {
+          indexA = j;
+          isValidAnswer = false;
+          break;
+        }
+      }
+
+      indexQ = i;
+      if (isValidAnswer === false) {
+        break;
+      }
+    }
+
+    if (isValidAnswer === false) {
+      toast.error(`Not empty "Answer ${indexA + 1}" at "Question ${indexQ + 1}"`);
+      return;
+    }
 
     // submit question
     for (let question of questions) {
@@ -188,10 +236,12 @@ const Questions = (props) => {
         );
       }
     }
+
+    toast.success("Create Questions & Answers Successfully!");
+    setQuestions(initQuestions);
+    setSelectedQuiz({});
   };
 
-  // console.log("🚀CHECK  selectedQuiz =", selectedQuiz);
-  // console.log("🚀CHECK  questions =", questions);
   return (
     <div className="qs-container">
       <div className="qs-title">Manage Questions</div>
