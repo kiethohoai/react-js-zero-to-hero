@@ -1,23 +1,21 @@
 import Select from "react-select";
 import { FaFileUpload } from "react-icons/fa";
 import "./Questions.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import Lightbox from "react-awesome-lightbox";
+import {
+  getAllQuizForAdmin,
+  postCreateNewQuestionForQuiz,
+  postCreateNewAnswerForQuestion,
+} from "../../../services/apiService";
 
 const Questions = (props) => {
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
   const [dataPreviewImage, setDataPreviewImage] = useState({
     image: "",
     title: "",
   });
-
   const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [questions, setQuestions] = useState([
     {
@@ -34,6 +32,27 @@ const Questions = (props) => {
       ],
     },
   ]);
+  const [listQuiz, setListQuiz] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState({});
+
+  // useEffect
+  useEffect(() => {
+    fetchListQuiz();
+  }, []);
+
+  // fetchListQuiz
+  const fetchListQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.DT) {
+      let newQuiz = res.DT.map((item) => {
+        return {
+          value: item.id,
+          label: `${item.id} - ${item.name}`,
+        };
+      });
+      setListQuiz(newQuiz);
+    }
+  };
 
   // handleAddRemoveQuestions
   const handleAddRemoveQuestions = (type, qId) => {
@@ -135,11 +154,6 @@ const Questions = (props) => {
     }
   };
 
-  // handleSubmitQuestionForQuiz
-  const handleSubmitQuestionForQuiz = () => {
-    console.log("🚀CHECK  file: Questions.js:139  questions =", questions);
-  };
-
   // handlePreviewImage
   const handlePreviewImage = (qId) => {
     setIsPreviewImage(true);
@@ -153,6 +167,31 @@ const Questions = (props) => {
     }
   };
 
+  // handleSubmitQuestionForQuiz
+  const handleSubmitQuestionForQuiz = async () => {
+    // validate data
+
+    // submit question
+    for (let question of questions) {
+      let questionTemp = await postCreateNewQuestionForQuiz(
+        +selectedQuiz.value,
+        question.description,
+        question.imageFile,
+      );
+
+      // submit answer
+      for (let answer of question.answers) {
+        await postCreateNewAnswerForQuestion(
+          answer.description,
+          answer.isCorrect,
+          questionTemp.DT.id,
+        );
+      }
+    }
+  };
+
+  // console.log("🚀CHECK  selectedQuiz =", selectedQuiz);
+  // console.log("🚀CHECK  questions =", questions);
   return (
     <div className="qs-container">
       <div className="qs-title">Manage Questions</div>
@@ -161,11 +200,7 @@ const Questions = (props) => {
         <div>
           <b>Select Quiz</b>
         </div>
-        <Select
-          // value={selectedOption}
-          // onChange={this.handleChange}
-          options={options}
-        />
+        <Select value={selectedQuiz} onChange={setSelectedQuiz} options={listQuiz} />
       </div>
 
       {/* add questions */}
