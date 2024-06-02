@@ -10,6 +10,7 @@ import {
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
   getQuizWithQA,
+  postUpsertWithQA,
 } from "../../../services/apiService";
 import { toast } from "react-toastify";
 
@@ -38,6 +39,7 @@ const QuizQA = (props) => {
   const [questions, setQuestions] = useState(initQuestions);
   const [listQuiz, setListQuiz] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState({});
+
   useEffect(() => {
     if (!_.isEmpty(selectedQuiz)) {
       fetchQuizWithQA();
@@ -266,27 +268,54 @@ const QuizQA = (props) => {
     }
 
     // submit question
-    for (let question of questions) {
-      let questionTemp = await postCreateNewQuestionForQuiz(
-        +selectedQuiz.value,
-        question.description,
-        question.imageFile,
-      );
+    // for (let question of questions) {
+    //   let questionTemp = await postCreateNewQuestionForQuiz(
+    //     +selectedQuiz.value,
+    //     question.description,
+    //     question.imageFile,
+    //   );
 
-      // submit answer
-      for (let answer of question.answers) {
-        await postCreateNewAnswerForQuestion(
-          answer.description,
-          answer.isCorrect,
-          questionTemp.DT.id,
-        );
+    //   // submit answer
+    //   for (let answer of question.answers) {
+    //     await postCreateNewAnswerForQuestion(
+    //       answer.description,
+    //       answer.isCorrect,
+    //       questionTemp.DT.id,
+    //     );
+    //   }
+    // }
+
+    // API Update/Delete Question
+    let questionsClone = _.cloneDeep(questions);
+    // Convert (Image) File to Base64
+    for (let i = 0; i < questionsClone.length; i++) {
+      if (questionsClone[i].imageFile) {
+        questionsClone[i].imageFile = await toBase64(questionsClone[i].imageFile);
       }
     }
 
-    toast.success("Create Questions & Answers Successfully!");
-    setQuestions(initQuestions);
-    setSelectedQuiz({});
+    let res = await postUpsertWithQA({
+      quizId: selectedQuiz.value,
+      questions: questionsClone,
+    });
+
+    // return;
+    if (res && res.EC === 0) {
+      toast.success("Create Questions & Answers Successfully!");
+      setQuestions(initQuestions);
+      setSelectedQuiz({});
+      // fetchQuizWithQA();
+    }
   };
+
+  // File => toBase64
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
 
   return (
     <div className="qs-container">
