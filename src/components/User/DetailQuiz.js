@@ -8,6 +8,7 @@ import Question from "./Question";
 import { postSubmitAnswersFinishQuiz } from "../../services/apiService";
 import { toast } from "react-toastify";
 import ModalResult from "./ModalResult";
+import RightContent from "./Content/RightContent";
 
 const DetailQuiz = (props) => {
   let params = useParams();
@@ -176,7 +177,9 @@ const DetailQuiz = (props) => {
       </div>
 
       {/* Right Content */}
-      <div className="right-content">Cowndown & Select Quiz Number</div>
+      <div className="right-content">
+        <RightContent dataQuiz={dataQuiz} />
+      </div>
       <ModalResult
         show={isShowModalResult}
         setShow={setIsShowModalResult}

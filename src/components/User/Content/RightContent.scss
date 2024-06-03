@@ -1,0 +1,30 @@
+.main-timmer {
+    border-bottom: 1px dashed black;
+    text-align: center;
+    padding: 17px 0;
+    font-weight: 600;
+}
+
+.main-question {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .question {
+        margin-top: 24px;
+        margin-left: 46px;
+        width: 40px;
+        height: 40px;
+        border: 1.5px dotted black;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+            color: red;
+        }
+
+    }
+}
