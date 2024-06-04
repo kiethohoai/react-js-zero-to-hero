@@ -6,6 +6,10 @@ const RightContent = (props) => {
   const { dataQuiz, handleFinishQuiz, indexQ, setIndexQ } = props;
   console.log("🚀CHECK  file: RightContent.js:7  dataQuiz =", dataQuiz);
 
+  useEffect(() => {
+    //
+  }, [indexQ]);
+
   // getClassQuestion
   const getClassQuestion = (index, question) => {
     // check answered
