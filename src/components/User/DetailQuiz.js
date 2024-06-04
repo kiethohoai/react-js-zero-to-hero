@@ -178,8 +178,15 @@ const DetailQuiz = (props) => {
 
       {/* Right Content */}
       <div className="right-content">
-        <RightContent dataQuiz={dataQuiz} handleFinishQuiz={handleFinishQuiz} />
+        <RightContent
+          dataQuiz={dataQuiz}
+          handleFinishQuiz={handleFinishQuiz}
+          indexQ={indexQ}
+          setIndexQ={setIndexQ}
+        />
       </div>
+
+      {/* Modal Result */}
       <ModalResult
         show={isShowModalResult}
         setShow={setIsShowModalResult}

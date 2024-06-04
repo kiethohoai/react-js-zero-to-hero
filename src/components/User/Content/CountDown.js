@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 const CownDown = (props) => {
   const { handleFinishQuiz } = props;
-  let initCount = 10;
+  let initCount = 10000;
   let temp = initCount;
   const [count, setCount] = useState(initCount);
   useEffect(() => {
