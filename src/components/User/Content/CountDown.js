@@ -7,20 +7,18 @@ const CownDown = (props) => {
   let temp = initCount;
   const [count, setCount] = useState(initCount);
   useEffect(() => {
+    let stop = setInterval(() => {
+      temp = temp - 1;
+      setCount(temp);
+
+      if (temp == 0) {
+        handleFinishQuiz();
+      }
+    }, 1000);
+
     setTimeout(() => {
-      let stop = setInterval(() => {
-        temp = temp - 1;
-        setCount(temp);
-
-        if (temp == 0) {
-          handleFinishQuiz();
-        }
-      }, 1000);
-
-      setTimeout(() => {
-        clearInterval(stop);
-      }, initCount * 1000);
-    }, 3000);
+      clearInterval(stop);
+    }, initCount * 1000);
   }, []);
 
   // convert second to hhmmss
