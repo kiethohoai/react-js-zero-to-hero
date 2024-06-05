@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../services/apiService";
 import { toast } from "react-toastify";
 import { doLogout } from "../../redux/action/userAction";
+import Language from "./Language";
 
 const Header = () => {
   ///////////////// props & state ////////////////
@@ -76,6 +77,9 @@ const Header = () => {
                 <NavDropdown.Item onClick={() => handleLogOut()}>Logout</NavDropdown.Item>
               </NavDropdown>
             )}
+
+            {/* Change Language */}
+            <Language />
           </Nav>
         </Navbar.Collapse>
       </Container>

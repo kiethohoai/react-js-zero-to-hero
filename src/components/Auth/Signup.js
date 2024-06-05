@@ -5,6 +5,7 @@ import { postRegister } from "./../../services/apiService";
 import { toast } from "react-toastify";
 import { IoIosEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
+import Language from "../Header/Language";
 
 const Signup = (props) => {
   ///// props & state /////
@@ -66,6 +67,7 @@ const Signup = (props) => {
       <div className="header">
         <span>Already have an account?</span>
         <button onClick={() => handleNavigateLogin()}>Log in</button>
+        <Language />
       </div>
       <div className="title col-2 mx-auto">Typeform</div>
       <div className="welcome col-2 mx-auto">Create Account!</div>
@@ -106,17 +108,11 @@ const Signup = (props) => {
 
           <div className="form-password-child">
             {isShowPassword ? (
-              <span
-                className="hide-password"
-                onClick={() => handleHidePassword()}
-              >
+              <span className="hide-password" onClick={() => handleHidePassword()}>
                 <IoIosEye />
               </span>
             ) : (
-              <span
-                className="show-password"
-                onClick={() => handleShowPassword()}
-              >
+              <span className="show-password" onClick={() => handleShowPassword()}>
                 <IoIosEyeOff />
               </span>
             )}

@@ -82,3 +82,9 @@ code {
     height: calc(100vh - 100px);
   }
 }
+
+.change-language {
+  .dropdown-toggle::after {
+    display: none
+  }
+}
