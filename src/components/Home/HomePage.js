@@ -2,28 +2,30 @@ import video from "../../assets/video-homepage.webm";
 import "../Home/HomePage.scss";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation, Trans } from "react-i18next";
 
 const HomePage = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const account = useSelector((state) => state.user.account);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  // 23P
 
   return (
     <div className="homepage-container">
       <div className="home-content">
-        <h1>Make forms worth filling out</h1>
-        <p>
-          Get more data—like signups, feedback, and anything else—with forms
-          designed to be refreshingly different.
-        </p>
+        <h1>{t("homepage.title1")}</h1>
+
+        <p>{t("homepage.title2")}</p>
 
         {isAuthenticated === true ? (
           <button onClick={() => navigate("/user")} className="btn btn-dark">
-            Doing Quiz Now
+            {t("homepage.title4")}
           </button>
         ) : (
           <button onClick={() => navigate("/login")} className="btn btn-dark">
-            Get started—it's free
+            {t("homepage.title3")}
           </button>
         )}
       </div>
