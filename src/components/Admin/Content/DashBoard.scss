@@ -4,33 +4,46 @@
     .title {
         font-size: 24px;
         font-weight: 600;
+        margin-bottom: 16px;
     }
 
     .content {
         display: flex;
-        gap: 4px;
+        gap: 20px;
 
         .content-left {
             width: 50%;
             height: 50vh;
-            border: 1px solid #ccc;
+            // border: 1px solid #ccc;
             display: flex;
             flex-wrap: wrap;
+            gap: 20px;
 
             .left-child {
-                width: 50%;
+                width: calc(50% - 10px);
                 height: auto;
                 border: 1px solid #ccc;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
+                border-radius: 10px;
+                
+                    .text-1 {
+                        font-weight: 600;
+                    }
+                
+                    .text-2 {
+                        font-size: 20px;
+                    }
             }
         }
 
         .content-right {
             width: 50%;
-            height: 50vh;
-            border: 1px solid #ccc;
+            height: 52vh;
+                // border: 1px solid #ccc;
+                // border-radius: 10px;
         }
     }
 }

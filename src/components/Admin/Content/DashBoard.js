@@ -1,5 +1,5 @@
 import "./DashBoard.scss";
-import React, { PureComponent } from "react";
+import React, { PureComponent, useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -11,63 +11,86 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { getOverview } from "../../../services/apiService";
 
 const DashBoard = (props) => {
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+  const [dataOverView, setDataOverView] = useState([]);
 
+  const [dataChart, setDataChart] = useState([]);
+
+  useEffect(() => {
+    fetchDataOverView();
+  }, []);
+
+  const fetchDataOverView = async () => {
+    let res = await getOverview();
+    if (res && res.EC === 0) {
+      setDataOverView(res.DT);
+      // process dataChart
+      let Qz = 0;
+      let Qs = 0;
+      let As = 0;
+
+      Qz = res?.DT?.others?.countQuiz ?? 0;
+      Qs = res?.DT?.others?.countQuestions ?? 0;
+      As = res?.DT?.others?.countAnswers ?? 0;
+
+      const data = [
+        {
+          name: "Quizzes",
+          Qz: Qz,
+        },
+        {
+          name: "Question",
+          Qs: Qs,
+        },
+        {
+          name: "Answers",
+          As: As,
+        },
+      ];
+
+      setDataChart(data);
+    }
+  };
   return (
     <div className="dashboard-container">
       <div className="title">Analytics DashBoard</div>
       <div className="content">
         {/* content-left */}
         <div className="content-left">
-          <div className="left-child">Total Users</div>
-          <div className="left-child">Total Quizzes</div>
-          <div className="left-child">Total Questions</div>
-          <div className="left-child">Total Answers</div>
+          <div className="left-child">
+            <span className="text-1">Total Users</span>
+            <span className="text-2">
+              {dataOverView && dataOverView.users && dataOverView.users.total
+                ? dataOverView.users.total
+                : 0}
+            </span>
+          </div>
+          <div className="left-child">
+            <span className="text-1"> Total Quizzes</span>
+            <span className="text-2">
+              {dataOverView && dataOverView.others && dataOverView.others.countQuiz
+                ? dataOverView.others.countQuiz
+                : 0}
+            </span>
+          </div>
+          <div className="left-child">
+            <span className="text-1"> Total Questions</span>
+            <span className="text-2">
+              {dataOverView && dataOverView.others && dataOverView.others.countQuestions
+                ? dataOverView.others.countQuestions
+                : 0}
+            </span>
+          </div>
+          <div className="left-child">
+            <span className="text-1">Total Answers</span>
+            <span className="text-2">
+              {dataOverView && dataOverView.others && dataOverView.others.countAnswers
+                ? dataOverView.others.countAnswers
+                : 0}
+            </span>
+          </div>
         </div>
         {/* content-right */}
         <div className="content-right">
@@ -75,7 +98,7 @@ const DashBoard = (props) => {
             <BarChart
               width={500}
               height={300}
-              data={data}
+              data={dataChart}
               margin={{
                 top: 5,
                 right: 30,
@@ -83,18 +106,23 @@ const DashBoard = (props) => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              {/* <CartesianGrid strokeDasharray="3 3" /> */}
               <XAxis dataKey="name" />
-              <YAxis />
+              {/* <YAxis /> */}
               <Tooltip />
               <Legend />
               <Bar
-                dataKey="pv"
+                dataKey="Qz"
                 fill="#8884d8"
                 activeBar={<Rectangle fill="pink" stroke="blue" />}
               />
               <Bar
-                dataKey="uv"
+                dataKey="Qs"
+                fill="#d70e0e"
+                activeBar={<Rectangle fill="pink" stroke="blue" />}
+              />
+              <Bar
+                dataKey="As"
                 fill="#82ca9d"
                 activeBar={<Rectangle fill="gold" stroke="purple" />}
               />
