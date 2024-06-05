@@ -57,6 +57,13 @@ const Login = (props) => {
     navigae("/signup");
   };
 
+  // handleOnKeyDown
+  const handleOnKeyDown = (e) => {
+    if (e && e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="header">
@@ -84,15 +91,12 @@ const Login = (props) => {
             className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => handleOnKeyDown(e)}
           />
         </div>
         <span className="forgot-password">Forgot Password?</span>
         <div>
-          <button
-            className="btn-submit"
-            onClick={() => handleLogin()}
-            disabled={isLoading}
-          >
+          <button className="btn-submit" onClick={() => handleLogin()} disabled={isLoading}>
             {isLoading === true && <ImSpinner10 className="loader-icon" />}
             <span>Log in</span>
           </button>
