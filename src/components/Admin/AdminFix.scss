@@ -1,0 +1,45 @@
+.admin-container {
+    display: flex;
+
+    .admin-sidebar {
+        .pro-sidebar {
+            height: 100vh;
+        }
+    }
+}
+
+.admin-content {
+    width: 100%;
+
+    .admin-header {
+        height: 40px;
+        border: 1px solid #ccc;
+        padding-left: 10px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 4px;
+
+        .admin-icon {}
+
+        .admin-setting {
+            display: flex;
+            gap: 10px;
+            padding-right: 12px;
+        }
+
+    }
+
+    .admin-main {
+        height: calc(100vh - 50px);
+
+        // border: 1px solid black;
+        .user-paginate {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            right: 150px;
+        }
+    }
+}
