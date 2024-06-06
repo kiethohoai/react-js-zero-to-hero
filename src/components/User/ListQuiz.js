@@ -30,7 +30,7 @@ const ListQuiz = (props) => {
                 <h5 className="card-title">{`Quiz ${q.id}`}</h5>
                 <p className="card-text">{q.description}</p>
                 <a
-                  href="#!"
+                  href=""
                   className="btn btn-primary"
                   onClick={() =>
                     navigate(`/quiz/${q.id}`, {

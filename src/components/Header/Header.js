@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { doLogout } from "../../redux/action/userAction";
 import Language from "./Language";
 import { useTranslation, Trans } from "react-i18next";
+import Profile from "./Profile";
+import { useState } from "react";
 
 const Header = () => {
   ///////////////// props & state ////////////////
@@ -18,6 +20,8 @@ const Header = () => {
   const account = useSelector((state) => state.user.account);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const [isShowProfile, setIsShowProfile] = useState(false);
 
   ///////////////// handle ////////////////
   const handleLogin = () => {
@@ -41,52 +45,63 @@ const Header = () => {
     }
   };
 
+  // handleClickProfile
+  const handleClickProfile = () => {
+    setIsShowProfile(true);
+  };
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        {/* <Navbar.Brand href="#home">Become-Master</Navbar.Brand> */}
-        <NavLink className="navbar-brand" to="/">
-          {t("header.logo")}
-        </NavLink>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <NavLink className="nav-link" to="/">
-              {t("header.home")}
-            </NavLink>
-            <NavLink className="nav-link" to="/user">
-              {t("header.user")}
-            </NavLink>
-            <NavLink className="nav-link" to="/admin">
-              {t("header.admin")}
-            </NavLink>
-          </Nav>
+    <>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <NavLink className="navbar-brand" to="/">
+            {t("header.logo")}
+          </NavLink>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <NavLink className="nav-link" to="/">
+                {t("header.home")}
+              </NavLink>
+              <NavLink className="nav-link" to="/user">
+                {t("header.user")}
+              </NavLink>
+              <NavLink className="nav-link" to="/admin">
+                {t("header.admin")}
+              </NavLink>
+            </Nav>
 
-          <Nav>
-            {isAuthenticated === false ? (
-              <>
-                <button className="btn btn-light" onClick={() => handleLogin()}>
-                  {t("header.login")}
-                </button>
-                <button className="btn btn-dark" onClick={() => handleSignup()}>
-                  {t("header.signup")}
-                </button>
-              </>
-            ) : (
-              <NavDropdown title={t("header.setting")} id="basic-nav-dropdown">
-                <NavDropdown.Item>{t("header.profile")}</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => handleLogOut()}>
-                  {t("header.logout")}
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
+            <Nav>
+              {isAuthenticated === false ? (
+                <>
+                  <button className="btn btn-light" onClick={() => handleLogin()}>
+                    {t("header.login")}
+                  </button>
+                  <button className="btn btn-dark" onClick={() => handleSignup()}>
+                    {t("header.signup")}
+                  </button>
+                </>
+              ) : (
+                <NavDropdown title={t("header.setting")} id="basic-nav-dropdown">
+                  <NavDropdown.Item onClick={() => handleClickProfile()}>
+                    {t("header.profile")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => handleLogOut()}>
+                    {t("header.logout")}
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
 
-            {/* Change Language */}
-            <Language />
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+              {/* Change Language */}
+              <Language />
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      {/* Profile Component */}
+      <Profile show={isShowProfile} setShow={setIsShowProfile} />
+    </>
   );
 };
 

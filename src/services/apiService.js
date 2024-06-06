@@ -154,6 +154,14 @@ const getOverview = () => {
   return axios.get(`api/v1/overview`);
 };
 
+// Update Profile
+const postUpdateProfileUser = (username, userImage) => {
+  const data = new FormData();
+  data.append("username", username);
+  data.append("userImage", userImage);
+  return axios.post(`api/v1/profile`, data);
+};
+
 export {
   postCreateNewUser,
   getAllUsers,
@@ -177,4 +185,5 @@ export {
   logout,
   getOverview,
   getDetailQuizById,
+  postUpdateProfileUser,
 };
