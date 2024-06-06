@@ -4,5 +4,46 @@
     "title2": "Get more data like signups, feedback, and anything else with forms designed to be refreshingly different",
     "title3": "Get started—it's free",
     "title4": "Doing Quiz Now!"
+  },
+  "header": {
+    "logo": "Typeform",
+    "home": "Home",
+    "user": "User",
+    "admin": "Admin",
+    "login": "Log in",
+    "signup": "Sign up",
+    "profile": "Profile",
+    "logout": "Logout",
+    "setting": "Setting"
+  },
+  "dashboard": {
+    "analytics": "Analytics DashBoard",
+    "user": "Total Users",
+    "quiz": "Total Quizzes",
+    "question": "Total Questions",
+    "answer": "Total Answers"
+  },
+  "manageuser": {
+    "manage": "Manage User",
+    "add": "Add New User"
+  },
+  "modalcreateuser": {
+    "addnew": "Add New User",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "role": "Role",
+    "user": "USER",
+    "admin": "ADMIN",
+    "upload": "Upload Image File",
+    "preview": "Preview Image"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "feature": "Feature",
+    "muser": "Manage Users",
+    "mquiz": "Manage Quiz",
+    "mques": "Manage Questions",
+    "home": "Home"
   }
 }

@@ -4,5 +4,46 @@
         "title2": "Nhận được nhiều dữ liệu hơn như đăng ký, phản hồi và bất kỳ dữ liệu nào khác với các biểu mẫu được thiết kế hoàn toàn khác biệt.",
         "title3": "Miễn phí—đăng ký ngay",
         "title4": "Bắt đầu ngay!"
+    },
+    "header": {
+        "logo": "Typeform",
+        "home": "Trang Chủ",
+        "user": "Tài khoản",
+        "admin": "Quản Trị Viên",
+        "login": "Đăng nhập",
+        "signup": "Đăng ký",
+        "profile": "Trang cá nhân",
+        "logout": "Đăng xuất",
+        "setting": "Cài đặt"
+    },
+    "dashboard": {
+        "analytics": "Bảng phân tích",
+        "user": "Tổng số người dùng",
+        "quiz": "Tổng số bài quiz",
+        "question": "Tống số câu hỏi",
+        "answer": "Tổng số câu trả lời"
+    },
+    "manageuser": {
+        "manage": "Quản lý Users",
+        "add": "Thêm mới User"
+    },
+    "modalcreateuser": {
+        "addnew": "Thêm mới User",
+        "username": "Tài khoản",
+        "password": "Mật khẩu",
+        "email": "Email",
+        "role": "Vài trò",
+        "user": "Người dùng",
+        "admin": "Quản trị",
+        "upload": "Tải ảnh lên",
+        "preview": "Ảnh xem trước"
+    },
+    "sidebar": {
+        "dashboard": "Bảng Điều Khiển",
+        "feature": "Chức Năng",
+        "muser": "Quản lý Users",
+        "mquiz": "Quản lý Bài Quiz",
+        "mques": "Quản lý Câu Hỏi",
+        "home": "Trang Chủ"
     }
 }

@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import { FaPlusCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { postCreateNewUser } from "./../../../services/apiService";
+import { useTranslation, Trans } from "react-i18next";
 
 //ModalCreateUser
 const ModalCreateUser = (props) => {
@@ -13,13 +14,8 @@ const ModalCreateUser = (props) => {
   const [role, setRole] = useState("USER");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
-  const {
-    show,
-    setShow,
-    fetchListUsersWithPaginate,
-    currentPage,
-    setCurrentPage,
-  } = props;
+  const { show, setShow, fetchListUsersWithPaginate, currentPage, setCurrentPage } = props;
+  const { t } = useTranslation();
 
   //handleClose
   const handleClose = () => {
@@ -91,12 +87,12 @@ const ModalCreateUser = (props) => {
         onHide={handleClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
+          <Modal.Title>{t("modalcreateuser.addnew")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
             <div className="col-md-6">
-              <label className="form-label">Username</label>
+              <label className="form-label">{t("modalcreateuser.username")}</label>
               <input
                 type="text"
                 className="form-control"
@@ -106,7 +102,7 @@ const ModalCreateUser = (props) => {
               />
             </div>
             <div className="col-md-6">
-              <label className="form-label">Password</label>
+              <label className="form-label">{t("modalcreateuser.password")}</label>
               <input
                 type="password"
                 className="form-control"
@@ -116,7 +112,7 @@ const ModalCreateUser = (props) => {
               />
             </div>
             <div className="col-md-6">
-              <label className="form-label">Email</label>
+              <label className="form-label">{t("modalcreateuser.email")}</label>
               <input
                 type="email"
                 className="form-control"
@@ -125,23 +121,20 @@ const ModalCreateUser = (props) => {
               />
             </div>
             <div className="col-md-4">
-              <label className="form-label">Role</label>
+              <label className="form-label">{t("modalcreateuser.role")}</label>
               <select
                 className="form-select"
                 onChange={(e) => setRole(e.target.value)}
                 value={role}
               >
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
+                <option value="USER">{t("modalcreateuser.user")}</option>
+                <option value="ADMIN">{t("modalcreateuser.admin")}</option>
               </select>
             </div>
             <div className="col-md-12">
-              <label
-                htmlFor="upload-image-file"
-                className="form-label form-label-upload"
-              >
+              <label htmlFor="upload-image-file" className="form-label form-label-upload">
                 <FaPlusCircle />
-                Upload Image File
+                {t("modalcreateuser.upload")}
               </label>
               <input
                 type="file"
@@ -157,7 +150,7 @@ const ModalCreateUser = (props) => {
               {previewImage ? (
                 <img src={previewImage} alt="" />
               ) : (
-                <span>Preview Image</span>
+                <span>{t("modalcreateuser.preview")}</span>
               )}
             </div>
           </form>

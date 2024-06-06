@@ -12,10 +12,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getOverview } from "../../../services/apiService";
+import { useTranslation, Trans } from "react-i18next";
 
 const DashBoard = (props) => {
+  const { t } = useTranslation();
   const [dataOverView, setDataOverView] = useState([]);
-
   const [dataChart, setDataChart] = useState([]);
 
   useEffect(() => {
@@ -55,12 +56,12 @@ const DashBoard = (props) => {
   };
   return (
     <div className="dashboard-container">
-      <div className="title">Analytics DashBoard</div>
+      <div className="title">{t("dashboard.analytics")}</div>
       <div className="content">
         {/* content-left */}
         <div className="content-left">
           <div className="left-child">
-            <span className="text-1">Total Users</span>
+            <span className="text-1">{t("dashboard.user")}</span>
             <span className="text-2">
               {dataOverView && dataOverView.users && dataOverView.users.total
                 ? dataOverView.users.total
@@ -68,7 +69,7 @@ const DashBoard = (props) => {
             </span>
           </div>
           <div className="left-child">
-            <span className="text-1"> Total Quizzes</span>
+            <span className="text-1">{t("dashboard.quiz")}</span>
             <span className="text-2">
               {dataOverView && dataOverView.others && dataOverView.others.countQuiz
                 ? dataOverView.others.countQuiz
@@ -76,7 +77,7 @@ const DashBoard = (props) => {
             </span>
           </div>
           <div className="left-child">
-            <span className="text-1"> Total Questions</span>
+            <span className="text-1">{t("dashboard.question")}</span>
             <span className="text-2">
               {dataOverView && dataOverView.others && dataOverView.others.countQuestions
                 ? dataOverView.others.countQuestions
@@ -84,7 +85,7 @@ const DashBoard = (props) => {
             </span>
           </div>
           <div className="left-child">
-            <span className="text-1">Total Answers</span>
+            <span className="text-1">{t("dashboard.answer")}</span>
             <span className="text-2">
               {dataOverView && dataOverView.others && dataOverView.others.countAnswers
                 ? dataOverView.others.countAnswers

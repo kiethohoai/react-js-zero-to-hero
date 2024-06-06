@@ -11,6 +11,7 @@ import ModalUpdateUser from "./ModalUpdateUser";
 import ModalDisplayUser from "./ModalDisplayUser";
 import ModalDeleteUser from "./ModalDeleteUser";
 import TableUserPaginate from "./TableUserPaginate";
+import { useTranslation, Trans } from "react-i18next";
 
 const ManageUser = (props) => {
   const [listUsers, setListUsers] = useState([]);
@@ -23,6 +24,7 @@ const ManageUser = (props) => {
 
   const [pageCount, setPageCount] = useState(0);
   const LIMIT_USER = 10;
+  const { t } = useTranslation();
 
   //Conponent Didmount
   useEffect(() => {
@@ -73,15 +75,12 @@ const ManageUser = (props) => {
 
   return (
     <div className="manage-user-container">
-      <div className="title">Manage User</div>
+      <div className="title">{t("manageuser.manage")}</div>
       <div className="users-content">
         <div className="btn-add-new">
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowModelCreateUser(true)}
-          >
+          <button className="btn btn-primary" onClick={() => setShowModelCreateUser(true)}>
             <FaUserPlus size={"1.3em"} />
-            Add New User
+            {t("manageuser.add")}
           </button>
         </div>
         <div className="table-users-container">

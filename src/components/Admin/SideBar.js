@@ -16,10 +16,13 @@ import sidebarBg from "./../../assets/bg2.jpg";
 import "./../Admin/SideBar.scss";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation, Trans } from "react-i18next";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   return (
     <ProSidebar
       image={sidebarBg}
@@ -50,7 +53,7 @@ const SideBar = (props) => {
       <SidebarContent>
         <Menu iconShape="circle">
           <MenuItem icon={<MdDashboard />} suffix={<span className="badge red">New</span>}>
-            Dashboard
+            {t("sidebar.dashboard")}
             <Link to="/admin" />
           </MenuItem>
         </Menu>
@@ -58,18 +61,18 @@ const SideBar = (props) => {
           <SubMenu
             suffix={<span className="badge yellow">3</span>}
             icon={<MdDashboard />}
-            title={"Feature"}
+            title={t("sidebar.feature")}
           >
             <MenuItem>
-              Manage Users
+              {t("sidebar.muser")}
               <Link to="/admin/manage-user" />
             </MenuItem>
             <MenuItem>
-              Manage Quiz
+              {t("sidebar.mquiz")}
               <Link to="/admin/manage-quiz" />
             </MenuItem>
             <MenuItem>
-              Manage Questions
+              {t("sidebar.mques")}
               <Link to="/admin/manage-questions" />
             </MenuItem>
           </SubMenu>
@@ -99,7 +102,7 @@ const SideBar = (props) => {
                 overflow: "hidden",
               }}
             >
-              Home
+              {t("sidebar.home")}
             </span>
           </a>
         </div>

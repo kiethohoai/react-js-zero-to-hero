@@ -6,7 +6,6 @@ const Language = (props) => {
 
   const handleChangeLanguage = (language) => {
     i18n.changeLanguage(language);
-    console.log("🚀CHECK  file: Language.js:11  i18n.languages[0] =", i18n.languages[0]);
   };
 
   return (
