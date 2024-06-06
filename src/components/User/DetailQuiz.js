@@ -5,7 +5,7 @@ import _ from "lodash";
 import "./DetailQuiz.scss";
 import { useLocation } from "react-router-dom";
 import Question from "./Question";
-import { postSubmitAnswersFinishQuiz } from "../../services/apiService";
+import { postSubmitAnswersFinishQuiz, getDetailQuizById } from "../../services/apiService";
 import { toast } from "react-toastify";
 import ModalResult from "./ModalResult";
 import RightContent from "./Content/RightContent";
@@ -23,10 +23,22 @@ const DetailQuiz = (props) => {
   const [titleQuiz, setTitleQuiz] = useState("");
 
   useEffect(() => {
-    if (location) {
-      setTitleQuiz(location?.state?.quizTitle);
-    }
+    fetchDetailQuiz();
   }, []);
+
+  // useEffect(() => {
+  //   if (location) {
+  //     setTitleQuiz(location?.state?.quizTitle);
+  //   }
+  // }, []);
+
+  // fetDetailQuiz
+  const fetchDetailQuiz = async () => {
+    let res = await getDetailQuizById(quizId);
+    if (res && res.EC === 0) {
+      setTitleQuiz(res.DT.description);
+    }
+  };
 
   // Show Info
   useEffect(() => {

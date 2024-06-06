@@ -78,6 +78,11 @@ const postCreateNewQuiz = (description, name, difficulty, quizImage) => {
   return axios.post("api/v1/quiz", data);
 };
 
+// API getDetailQuizById
+const getDetailQuizById = (quizId) => {
+  return axios.get(`api/v1/quiz/${quizId}`);
+};
+
 // API getAllQuiz
 const getAllQuizForAdmin = () => {
   return axios.get("api/v1/quiz/all");
@@ -171,4 +176,5 @@ export {
   postUpsertWithQA,
   logout,
   getOverview,
+  getDetailQuizById,
 };
