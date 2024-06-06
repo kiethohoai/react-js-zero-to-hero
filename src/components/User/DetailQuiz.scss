@@ -1,7 +1,13 @@
+.breadcrumb {
+    position: relative;
+    left: 10px;
+    top: 10px;
+    font-size: 16px;
+}
 .detail-quiz-container {
     display: flex;
     gap: 12px;
-    padding: 50px;
+    margin: 16px;
     height: 100vh;
 
     .left-content {
@@ -33,6 +39,7 @@
 
         .q-content {
             margin-top: 12px;
+            margin-left: 80px;
 
             .q-question {
                 font-size: 20px;

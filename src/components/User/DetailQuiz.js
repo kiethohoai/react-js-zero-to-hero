@@ -9,6 +9,8 @@ import { postSubmitAnswersFinishQuiz } from "../../services/apiService";
 import { toast } from "react-toastify";
 import ModalResult from "./ModalResult";
 import RightContent from "./Content/RightContent";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const DetailQuiz = (props) => {
   let params = useParams();
@@ -151,50 +153,70 @@ const DetailQuiz = (props) => {
   };
 
   return (
-    <div className="detail-quiz-container">
-      {/* Left Content */}
-      <div className="left-content">
-        <div className="q-title">Quiz 1 - {titleQuiz}</div>
-        {/* <div className="q-title">Quiz 1 - {location?.state?.quizTitle}</div> */}
+    <>
+      <div className="breadcrumb">
+        <Breadcrumb>
+          <NavLink className="nav-link" to="/">
+            Home &gt;
+          </NavLink>
+          <NavLink className="nav-link" to="/user">
+            User &gt;
+          </NavLink>
+          <Breadcrumb.Item active>Quiz {quizId}</Breadcrumb.Item>
 
-        {/* q-content - Question Component */}
-        <Question
-          data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[indexQ] : []}
-          indexQ={indexQ}
-          setIndexQ={setIndexQ}
-          handleCheckbox={handleCheckbox}
-        />
+          {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>User</Breadcrumb.Item>
+          <Breadcrumb.Item active>Quiz</Breadcrumb.Item> */}
+        </Breadcrumb>
+      </div>
 
-        <div className="q-footer">
-          <button onClick={() => handleBtnPrev()} className="btn btn-outline-warning">
-            Prev
-          </button>
-          <button onClick={() => handleBtnNext()} className="btn btn-outline-success">
-            Next
-          </button>
-          <button onClick={() => handleFinishQuiz()} className="btn btn-outline-danger">
-            Finish
-          </button>
+      <div className="detail-quiz-container">
+        {/* Left Content */}
+        <div className="left-content">
+          <div className="q-title">
+            Quiz {quizId} - {titleQuiz}
+          </div>
+          {/* <div className="q-title">Quiz 1 - {location?.state?.quizTitle}</div> */}
+
+          {/* q-content - Question Component */}
+          <Question
+            data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[indexQ] : []}
+            indexQ={indexQ}
+            setIndexQ={setIndexQ}
+            handleCheckbox={handleCheckbox}
+          />
+
+          <div className="q-footer">
+            <button onClick={() => handleBtnPrev()} className="btn btn-outline-warning">
+              Prev
+            </button>
+            <button onClick={() => handleBtnNext()} className="btn btn-outline-success">
+              Next
+            </button>
+            <button onClick={() => handleFinishQuiz()} className="btn btn-outline-danger">
+              Finish
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Right Content */}
-      <div className="right-content">
-        <RightContent
-          dataQuiz={dataQuiz}
-          handleFinishQuiz={handleFinishQuiz}
-          indexQ={indexQ}
-          setIndexQ={setIndexQ}
+        {/* Right Content */}
+        <div className="right-content">
+          <RightContent
+            dataQuiz={dataQuiz}
+            handleFinishQuiz={handleFinishQuiz}
+            indexQ={indexQ}
+            setIndexQ={setIndexQ}
+          />
+        </div>
+
+        {/* Modal Result */}
+        <ModalResult
+          show={isShowModalResult}
+          setShow={setIsShowModalResult}
+          dataModalResult={dataModalResult}
         />
       </div>
-
-      {/* Modal Result */}
-      <ModalResult
-        show={isShowModalResult}
-        setShow={setIsShowModalResult}
-        dataModalResult={dataModalResult}
-      />
-    </div>
+    </>
   );
 };
 
