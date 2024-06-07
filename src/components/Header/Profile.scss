@@ -22,3 +22,53 @@
     margin-top: 16px;
     text-align: end;
 }
+.password-container {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+
+    // current password
+    .p-current-password {
+        margin-left: 20px;
+
+        .input-password {
+            display: flex;
+            align-items: center;
+
+            .input-password {}
+
+            .icon-password {
+                position: relative;
+                right: 24px;
+                top: -3px;
+            }
+        }
+    }
+
+    // new password
+    .p-new-password {
+        margin-left: 42px;
+        margin-top: -6px;
+        margin-bottom: 12px;
+
+        .input-new-password {
+            display: flex;
+            align-items: center;
+
+            .icon-new-password {
+                position: relative;
+                right: 24px;
+                top: -3px;
+            }
+        }
+
+
+    }
+
+    .btn-submit-password {
+        display: flex;
+        gap: 4px;
+        margin-left: 20px;
+    }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Tab from "react-bootstrap/Tab";
@@ -6,18 +6,30 @@ import Tabs from "react-bootstrap/Tabs";
 import "./Profile.scss";
 import { store } from "../../redux/store";
 import _ from "lodash";
-import { postUpdateProfileUser } from "../../services/apiService";
+import { postUpdateProfileUser, postChangeUserPassword } from "../../services/apiService";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { LiaEyeSolid } from "react-icons/lia";
+import { LiaEyeSlash } from "react-icons/lia";
 
 const Profile = (props) => {
   const { show, setShow } = props;
   const [username, setUsername] = useState("");
   const [image, setImage] = useState("");
-  console.log("🚀CHECK  file: Profile.js:17  image =", image);
-
   const [previewImage, setPreviewImage] = useState("");
-  console.log("🚀CHECK  file: Profile.js:18  previewImage =", previewImage);
+  const [isShowCurPassWord, setIsShowCurPassWord] = useState(false);
+  const [isShowNewPassWord, setIsShowNewPassWord] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  // handleShowHideCurPassword
+  const handleShowHideCurPassword = () => {
+    setIsShowCurPassWord(!isShowCurPassWord);
+  };
+
+  // handleShowHideNewPassword
+  const handleShowHideNewPassword = () => {
+    setIsShowNewPassWord(!isShowNewPassWord);
+  };
 
   //handleClose
   const handleClose = () => {
@@ -78,17 +90,18 @@ const Profile = (props) => {
     let res = await postUpdateProfileUser(username, image);
 
     // handleClose();
-    console.log("🚀CHECK  file: Profile.js:74  res =", res);
     if (res && res.EC === 0) {
       store.getState().user.account.username = res.DT.username;
       let imageBase64 = await toBase64(image);
       store.getState().user.account.image = imageBase64;
       toast.success(res.EM);
+      toast.success("Please Login Again To Apply These Changes!");
     } else {
       toast.error(res.EM);
     }
   };
 
+  // toBase64
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -97,7 +110,20 @@ const Profile = (props) => {
       reader.onerror = reject;
     });
 
-  console.log("store.getState() = ", store.getState());
+  // handleChangePassword
+  const handleChangePassword = async () => {
+    // API
+    let res = await postChangeUserPassword(currentPassword, newPassword);
+    console.log("🚀CHECK  file: Profile.js:117  res =", res);
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      setCurrentPassword("");
+      setNewPassword("");
+    } else {
+      toast.error(res.EM);
+    }
+  };
+
   return (
     <>
       <Modal size="xl" show={show} onHide={handleClose} backdrop="static" keyboard={false}>
@@ -113,6 +139,7 @@ const Profile = (props) => {
             fill
             onClick={() => handleUpdateProfile()}
           >
+            {/* Update Profile */}
             <Tab eventKey="update" title="Update Profile">
               <div className="p-username mb-3">
                 <label htmlFor="username" className="form-label">
@@ -149,9 +176,89 @@ const Profile = (props) => {
                 </Button>
               </div>
             </Tab>
+
+            {/* Change Password */}
             <Tab eventKey="password" title="Change Password">
-              Tab content for Profile
+              <div className="password-container">
+                {/* current password */}
+                <div className="p-current-password row g-3 align-items-center">
+                  <div className="col-auto">
+                    <label htmlFor="current-password" className="col-form-label">
+                      Current Password:
+                    </label>
+                  </div>
+                  <div className="input-password col-auto">
+                    <input
+                      type={isShowCurPassWord && isShowCurPassWord === true ? "text" : "password"}
+                      id="current-password"
+                      className="form-control"
+                      aria-describedby="passwordHelpInline"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+
+                    {isShowCurPassWord && isShowCurPassWord === true ? (
+                      <span className="icon-password" onClick={() => handleShowHideCurPassword()}>
+                        <LiaEyeSolid />
+                      </span>
+                    ) : (
+                      <span className="icon-password" onClick={() => handleShowHideCurPassword()}>
+                        <LiaEyeSlash />
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* new password */}
+                <div className="p-new-password row g-3 align-items-center">
+                  <div className="col-auto">
+                    <label htmlFor="new-password" className="col-form-label">
+                      New Password:
+                    </label>
+                  </div>
+                  <div className="input-new-password col-auto">
+                    <input
+                      type={isShowNewPassWord && isShowNewPassWord === true ? "text" : "password"}
+                      id="new-password"
+                      className="form-control"
+                      aria-describedby="passwordHelpInline"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+
+                    {isShowNewPassWord && isShowNewPassWord === true ? (
+                      <span
+                        className="icon-new-password"
+                        onClick={() => handleShowHideNewPassword()}
+                      >
+                        <LiaEyeSolid />
+                      </span>
+                    ) : (
+                      <span
+                        className="icon-new-password"
+                        onClick={() => handleShowHideNewPassword()}
+                      >
+                        <LiaEyeSlash />
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="btn-submit-password">
+                  <button
+                    className="btn btn-outline-success"
+                    onClick={() => handleChangePassword()}
+                  >
+                    Change
+                  </button>
+                  <button className="btn btn-outline-danger" onClick={() => handleClose()}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </Tab>
+
+            {/* History */}
             <Tab eventKey="history" title="Test History">
               Tab content for Loooonger Tab
             </Tab>
