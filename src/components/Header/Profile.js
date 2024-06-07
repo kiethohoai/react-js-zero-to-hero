@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Tab from "react-bootstrap/Tab";
@@ -6,7 +6,11 @@ import Tabs from "react-bootstrap/Tabs";
 import "./Profile.scss";
 import { store } from "../../redux/store";
 import _ from "lodash";
-import { postUpdateProfileUser, postChangeUserPassword } from "../../services/apiService";
+import {
+  postUpdateProfileUser,
+  postChangeUserPassword,
+  getHistory,
+} from "../../services/apiService";
 import { toast } from "react-toastify";
 import { LiaEyeSolid } from "react-icons/lia";
 import { LiaEyeSlash } from "react-icons/lia";
@@ -20,6 +24,19 @@ const Profile = (props) => {
   const [isShowNewPassWord, setIsShowNewPassWord] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const [key, setKey] = useState("history");
+  const [dataHistory, setDataHistory] = useState([]);
+
+  useEffect(() => {
+    if (key === "update") {
+      handleUpdateProfile();
+    }
+
+    if (key === "history") {
+      handleTabHistory();
+    }
+  }, [key]);
 
   // handleShowHideCurPassword
   const handleShowHideCurPassword = () => {
@@ -114,13 +131,20 @@ const Profile = (props) => {
   const handleChangePassword = async () => {
     // API
     let res = await postChangeUserPassword(currentPassword, newPassword);
-    console.log("🚀CHECK  file: Profile.js:117  res =", res);
     if (res && res.EC === 0) {
       toast.success(res.EM);
       setCurrentPassword("");
       setNewPassword("");
     } else {
       toast.error(res.EM);
+    }
+  };
+
+  const handleTabHistory = async () => {
+    // alert("ME");
+    let res = await getHistory();
+    if (res && res.EC === 0) {
+      setDataHistory(res.DT.data);
     }
   };
 
@@ -131,15 +155,13 @@ const Profile = (props) => {
           <Modal.Title>Profile Setting</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Content */}
           <Tabs
-            defaultActiveKey="profile"
-            id="fill-tab-example"
+            id="controlled-tab-example"
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
             className="mb-3"
-            fill
-            onClick={() => handleUpdateProfile()}
           >
-            {/* Update Profile */}
+            {/* UPDATE */}
             <Tab eventKey="update" title="Update Profile">
               <div className="p-username mb-3">
                 <label htmlFor="username" className="form-label">
@@ -177,8 +199,8 @@ const Profile = (props) => {
               </div>
             </Tab>
 
-            {/* Change Password */}
-            <Tab eventKey="password" title="Change Password">
+            {/* PASSWORD */}
+            <Tab eventKey="password" title="Update Password">
               <div className="password-container">
                 {/* current password */}
                 <div className="p-current-password row g-3 align-items-center">
@@ -258,9 +280,42 @@ const Profile = (props) => {
               </div>
             </Tab>
 
-            {/* History */}
-            <Tab eventKey="history" title="Test History">
-              Tab content for Loooonger Tab
+            {/* HISTORY */}
+            <Tab eventKey="history" title="History">
+              <table className="table table-striped table-borderless">
+                <thead>
+                  <tr>
+                    <th className="text-center">Order</th>
+                    <th className="text-center">Quiz History</th>
+
+                    <th className="text-center">QuizId</th>
+                    <th className="text-center">UserID</th>
+
+                    <th className="text-center">Total Question</th>
+                    <th className="text-center">Total Correct</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataHistory &&
+                    dataHistory.length > 0 &&
+                    dataHistory.map((item, index) => {
+                      return (
+                        <tr key={`his-${index}`}>
+                          <td className="text-center">{item.id}</td>
+                          <td>
+                            {item.quizHistory.id} - {item.quizHistory.name} <br />
+                            {item.quizHistory.description}
+                          </td>
+                          <td className="text-center">{item.quiz_id}</td>
+                          <td className="text-center">{item.participant_id}</td>
+
+                          <td className="text-center">{item.total_questions}</td>
+                          <td className="text-center">{item.total_correct}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
             </Tab>
           </Tabs>
         </Modal.Body>

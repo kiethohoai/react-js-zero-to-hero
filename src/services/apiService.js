@@ -170,6 +170,11 @@ const postChangeUserPassword = (current_password, new_password) => {
   });
 };
 
+// getHistory
+const getHistory = () => {
+  return axios.get(`api/v1/history`);
+}
+
 export {
   postCreateNewUser,
   getAllUsers,
@@ -195,4 +200,5 @@ export {
   getDetailQuizById,
   postUpdateProfileUser,
   postChangeUserPassword,
+  getHistory,
 };
