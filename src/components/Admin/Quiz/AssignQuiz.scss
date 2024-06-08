@@ -1,20 +1,20 @@
 .assign-container {
     display: flex;
-    gap: 12px;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 
     .assign-select-quiz {
         //
-        width: 50%;
+        width: 45%;
     }
 
     .assign-select-user {
         //
-        width: 50%;
+        width: 45%;
     }
 }
 
 .assign-btn {
     margin-top: 16px;
+    margin-left: 37px;
 }

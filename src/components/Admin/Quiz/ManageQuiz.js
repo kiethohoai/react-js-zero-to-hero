@@ -8,6 +8,8 @@ import TableQuiz from "./TableQuiz";
 import Accordion from "react-bootstrap/Accordion";
 import QuizQA from "./QuizQA";
 import AssignQuiz from "./AssignQuiz";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 
 const ManageQuiz = (props) => {
   const options = [
@@ -78,114 +80,95 @@ const ManageQuiz = (props) => {
 
   return (
     <div className="q-container">
-      {/* Manage Quiz */}
-      <Accordion>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>Manage Quiz</Accordion.Header>
-          <Accordion.Body>
-            {/* Quiz Title */}
-            {/* <div className="q-title">Manage Quiz</div> */}
+      <Tabs defaultActiveKey="profile" id="fill-tab-example" className="mb-3" fill>
+        <Tab eventKey="home" title="Manage Quiz">
+          {/* Add Quiz */}
+          <div className="q-add">
+            <fieldset className="border p-2">
+              <legend className="w-auto">Add New Quiz</legend>
+              {/* name */}
+              <div className="form-floating mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="floatingName"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+                <label htmlFor="floatingName">Name</label>
+              </div>
 
-            {/* Add Quiz */}
-            <div className="q-add">
-              <fieldset className="border p-2">
-                <legend className="w-auto">Add New Quiz</legend>
-                {/* name */}
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="floatingName"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                  <label htmlFor="floatingName">Name</label>
-                </div>
+              {/* description */}
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="floatingDescription"
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+                <label htmlFor="floatingDescription">Description</label>
+              </div>
 
-                {/* description */}
-                <div className="form-floating">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="floatingDescription"
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                  />
-                  <label htmlFor="floatingDescription">Description</label>
-                </div>
+              {/* difficulty */}
+              <div className="mt-3">
+                <Select
+                  defaultValue={difficulty}
+                  onChange={setDifficulty}
+                  options={options}
+                  placeholder={"Choose the difficulty..."}
+                />
+              </div>
 
-                {/* difficulty */}
-                <div className="mt-3">
-                  <Select
-                    defaultValue={difficulty}
-                    onChange={setDifficulty}
-                    options={options}
-                    placeholder={"Choose the difficulty..."}
-                  />
-                </div>
+              {/* upload image */}
+              <div className="q-upload-image">
+                <label className="label-upload" htmlFor="input-upload">
+                  Upload Image
+                  <FaFileUpload size={"1.5em"} color={"red"} />
+                </label>
+                <input
+                  type="file"
+                  id="input-upload"
+                  hidden
+                  onChange={(e) => handleUploadImage(e)}
+                />
+                <label className="label-image-name">
+                  {image && image.name ? image.name : "0 File Upload"}
+                </label>
+              </div>
 
-                {/* upload image */}
-                <div className="q-upload-image">
-                  <label className="label-upload" htmlFor="input-upload">
-                    Upload Image
-                    <FaFileUpload size={"1.5em"} color={"red"} />
-                  </label>
-                  <input
-                    type="file"
-                    id="input-upload"
-                    hidden
-                    onChange={(e) => handleUploadImage(e)}
-                  />
-                  <label className="label-image-name">
-                    {image && image.name ? image.name : "0 File Upload"}
-                  </label>
-                </div>
+              {/* image preview */}
+              <div className="q-image-preview">
+                {imagePreview ? <img src={imagePreview} alt="" /> : <span>Preview Image</span>}
+              </div>
 
-                {/* image preview */}
-                <div className="q-image-preview">
-                  {imagePreview ? <img src={imagePreview} alt="" /> : <span>Preview Image</span>}
-                </div>
+              {/* button add new */}
+              <div className="q-button-add mt-2">
+                <button onClick={handleAddNewQuiz} className="btn btn-success">
+                  Confirm & Save
+                </button>
+              </div>
+            </fieldset>
+          </div>
 
-                {/* button add new */}
-                <div className="q-button-add mt-2">
-                  <button onClick={handleAddNewQuiz} className="btn btn-success">
-                    Confirm & Save
-                  </button>
-                </div>
-              </fieldset>
-            </div>
+          {/* List Quiz */}
+          <div className="q-list mt-3">
+            <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
+          </div>
+        </Tab>
 
-            {/* List Quiz */}
-            <div className="q-list mt-3">
-              <TableQuiz listQuiz={listQuiz} fetchListQuiz={fetchListQuiz} />
-            </div>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+        <Tab eventKey="profile" title="Update Q/A Quiz">
+          <QuizQA />
+        </Tab>
 
-      {/* Update Q/A Quiz */}
-      <Accordion>
-        <Accordion.Item eventKey="1">
-          <Accordion.Header>Update Q/A Quiz</Accordion.Header>
-          <Accordion.Body>
-            <QuizQA />
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-
-      {/* Assign To User */}
-      <Accordion>
-        <Accordion.Item eventKey="2">
-          <Accordion.Header>Assign To User</Accordion.Header>
-          <Accordion.Body>
-            <AssignQuiz />
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+        <Tab eventKey="longer-tab" title="Assign To User">
+          <AssignQuiz />
+        </Tab>
+      </Tabs>
     </div>
   );
 };
