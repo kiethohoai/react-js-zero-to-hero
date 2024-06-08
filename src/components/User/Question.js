@@ -1,9 +1,11 @@
 import _ from "lodash";
 import Lightbox from "react-awesome-lightbox";
 import { useState } from "react";
+import { FcCheckmark } from "react-icons/fc";
+import { MdClose } from "react-icons/md";
 
 const Question = (props) => {
-  const { data, indexQ } = props;
+  const { data, indexQ, isDisableFinish, isShowAnswers } = props;
   const [isPreviewImage, setIsPreviewImage] = useState(false);
 
   if (_.isEmpty(data)) {
@@ -47,8 +49,21 @@ const Question = (props) => {
                     type="checkbox"
                     onChange={(e) => handleOnChangeCheckBox(a.id, data.id, e.target.checked)}
                     checked={a.isSelected}
+                    disabled={isDisableFinish}
                   />
                   {a.description}
+
+                  {isShowAnswers === true && a.isSelected === true && a.isCorrected === true && (
+                    <FcCheckmark className="correct" />
+                  )}
+
+                  {isShowAnswers === true && a.isSelected === false && a.isCorrected === true && (
+                    <FcCheckmark className="correct" />
+                  )}
+
+                  {isShowAnswers === true && a.isSelected === true && a.isCorrected === false && (
+                    <MdClose className="incorrect" />
+                  )}
                 </div>
               );
             })}

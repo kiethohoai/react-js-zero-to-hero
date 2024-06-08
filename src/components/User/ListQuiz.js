@@ -29,6 +29,8 @@ const ListQuiz = (props) => {
               <div className="card-body">
                 <h5 className="card-title">{`Quiz ${q.id}`}</h5>
                 <p className="card-text">{q.description}</p>
+              </div>
+              <div className="card-btn">
                 <a
                   href=""
                   className="btn btn-primary"

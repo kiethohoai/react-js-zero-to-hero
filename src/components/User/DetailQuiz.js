@@ -10,27 +10,22 @@ import { toast } from "react-toastify";
 import ModalResult from "./ModalResult";
 import RightContent from "./Content/RightContent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const DetailQuiz = (props) => {
   let params = useParams();
   let quizId = params.id;
-  const location = useLocation();
   const [dataQuiz, setDataQuiz] = useState([]);
   const [indexQ, setIndexQ] = useState(0);
   const [isShowModalResult, setIsShowModalResult] = useState(false);
   const [dataModalResult, setDataModalResult] = useState({});
   const [titleQuiz, setTitleQuiz] = useState("");
+  const [isDisableFinish, setIsDisableFinish] = useState(false);
+  const [isShowAnswers, setIsShowAnswers] = useState(false);
 
   useEffect(() => {
     fetchDetailQuiz();
   }, []);
-
-  // useEffect(() => {
-  //   if (location) {
-  //     setTitleQuiz(location?.state?.quizTitle);
-  //   }
-  // }, []);
 
   // fetDetailQuiz
   const fetchDetailQuiz = async () => {
@@ -63,6 +58,7 @@ const DetailQuiz = (props) => {
                 imageFile = item.image;
               }
               item.answers.isSelected = false;
+              item.answers.isCorrected = false;
               answers.push(item.answers);
             });
 
@@ -148,6 +144,7 @@ const DetailQuiz = (props) => {
         });
       });
       payload.answers = answersTemp;
+
       // submit API
       let res = await postSubmitAnswersFinishQuiz(payload);
       if (res && res.EC === 0) {
@@ -161,6 +158,25 @@ const DetailQuiz = (props) => {
       } else {
         toast.error(res.EM);
       }
+
+      setIsDisableFinish(true);
+      // DOING SOMETHING HERE???????????????????????????????????????????????????????
+      // 01
+      let dataClone = _.cloneDeep(dataQuiz);
+      let dataFinish = res.DT.quizData;
+
+      // 02
+      // 03
+      for (let i = 0; i < dataClone.length; i++) {
+        let question = dataFinish.find((item) => item.questionId === +dataClone[i].id);
+        for (let j = 0; j < dataClone[i].answers.length; j++) {
+          if (question.systemAnswers[0].id === dataClone[i].answers[j].id) {
+            dataClone[i].answers[j].isCorrected = true;
+          }
+        }
+      }
+      // DOING SOMETHING WITH dataClone Update In Here
+      setDataQuiz(dataClone);
     }
   };
 
@@ -175,10 +191,6 @@ const DetailQuiz = (props) => {
             User &gt;
           </NavLink>
           <Breadcrumb.Item active>Quiz {quizId}</Breadcrumb.Item>
-
-          {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>User</Breadcrumb.Item>
-          <Breadcrumb.Item active>Quiz</Breadcrumb.Item> */}
         </Breadcrumb>
       </div>
 
@@ -188,7 +200,6 @@ const DetailQuiz = (props) => {
           <div className="q-title">
             Quiz {quizId} - {titleQuiz}
           </div>
-          {/* <div className="q-title">Quiz 1 - {location?.state?.quizTitle}</div> */}
 
           {/* q-content - Question Component */}
           <Question
@@ -196,6 +207,8 @@ const DetailQuiz = (props) => {
             indexQ={indexQ}
             setIndexQ={setIndexQ}
             handleCheckbox={handleCheckbox}
+            isDisableFinish={isDisableFinish}
+            isShowAnswers={isShowAnswers}
           />
 
           <div className="q-footer">
@@ -205,7 +218,11 @@ const DetailQuiz = (props) => {
             <button onClick={() => handleBtnNext()} className="btn btn-outline-success">
               Next
             </button>
-            <button onClick={() => handleFinishQuiz()} className="btn btn-outline-danger">
+            <button
+              onClick={() => handleFinishQuiz()}
+              className="btn btn-outline-danger"
+              disabled={isDisableFinish}
+            >
               Finish
             </button>
           </div>
@@ -226,6 +243,7 @@ const DetailQuiz = (props) => {
           show={isShowModalResult}
           setShow={setIsShowModalResult}
           dataModalResult={dataModalResult}
+          setIsShowAnswers={setIsShowAnswers}
         />
       </div>
     </>
